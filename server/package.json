@@ -2,5 +2,12 @@
   "name": "@twitter-clone/server",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "backpack",
+    "build": "backpack build"
+  },
+  "dependencies": {
+    "backpack-core": "^0.8.3"
+  }
 }
