@@ -10,10 +10,16 @@
     "reset-db": "knex-migrate down --to 0 && knex-migrate up"
   },
   "dependencies": {
+    "apollo-errors": "^1.9.0",
+    "apollo-resolvers": "^1.4.1",
+    "apollo-server-express": "^2.4.8",
     "backpack-core": "^0.8.3",
     "express": "^4.16.4",
+    "graphql": "^14.2.0",
+    "graphql-tools": "^4.0.4",
     "knex": "^0.16.3",
     "knex-migrate": "^1.7.2",
+    "merge-graphql-schemas": "^1.5.8",
     "pg": "^7.9.0"
   }
 }

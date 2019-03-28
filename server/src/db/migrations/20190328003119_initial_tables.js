@@ -6,7 +6,13 @@ exports.up = async function(knex) {
       .notNullable()
       .primary()
       .defaultTo(knex.raw('uuid_generate_v4()'));
-    table.string('username').unique();
+    table.text('username').unique();
+    table.text('password').notNullable();
+    table.text('email').unique();
+    table.text('name').notNullable();
+    table.text('bio');
+    table.text('avatar_source_url');
+    table.text('cover_source_url');
     table.timestamps(true, true);
   });
 };

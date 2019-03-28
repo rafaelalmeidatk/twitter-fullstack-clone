@@ -13,6 +13,8 @@ const base = {
     max: 10,
   },
   databaseDebug: true,
+
+  port: process.env.PORT || '4100',
   env,
 };
 
