@@ -5,9 +5,15 @@
   "license": "MIT",
   "scripts": {
     "dev": "backpack",
-    "build": "backpack build"
+    "build": "backpack build",
+    "migrate": "knex-migrate",
+    "reset-db": "knex-migrate down --to 0 && knex-migrate up"
   },
   "dependencies": {
-    "backpack-core": "^0.8.3"
+    "backpack-core": "^0.8.3",
+    "express": "^4.16.4",
+    "knex": "^0.16.3",
+    "knex-migrate": "^1.7.2",
+    "pg": "^7.9.0"
   }
 }
