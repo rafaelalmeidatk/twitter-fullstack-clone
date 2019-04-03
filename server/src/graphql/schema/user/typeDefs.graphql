@@ -11,7 +11,7 @@ type Query {
   allUsers: [User!]!
 }
 
-input CreateUserInput {
+input RegisterUserInput {
   username: String!
   password: String!
   email: String!
@@ -19,5 +19,5 @@ input CreateUserInput {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User
+  registerUser(input: RegisterUserInput!): User!
 }

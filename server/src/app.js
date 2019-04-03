@@ -1,7 +1,5 @@
 import express from 'express';
-import { formatError } from 'apollo-errors';
-
-import { ApolloServer, graphiqlExpress } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 import schema from './graphql';
 
 const start = options => {
@@ -20,7 +18,6 @@ const start = options => {
 
     const apolloServer = new ApolloServer({
       schema,
-      formatError,
       playground: !!__DEV__,
       debug: !!__DEV__,
     });
@@ -28,6 +25,10 @@ const start = options => {
 
     //--------------------
     // Turn on
+
+    app.get('/', (req, res) => {
+      res.end('hi');
+    });
 
     const server = app.listen(options.port);
     server.on('listening', () => resolve(server));

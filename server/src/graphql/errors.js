@@ -1,11 +1,17 @@
-import { createError } from 'apollo-errors';
+import { ApolloError } from 'apollo-server-express';
 
-// Mask any internal errors
-export const UnknownError = createError('UnknownError', {
-  message: 'An unknown error has occurred',
-});
+export class UnknownError extends ApolloError {
+  constructor(properties) {
+    super('An unknown error has occurred', 'UNKNOWN', properties);
 
-// User should be logged in but isn't
-export const UnauthorizedError = createError('UnauthorizedError', {
-  message: 'You must login to do that',
-});
+    Object.defineProperty(this, 'name', { value: 'UnknownError' });
+  }
+}
+
+export class AlreadyInUseError extends ApolloError {
+  constructor(message, field) {
+    super(message, 'ALREADY_IN_USE', { field });
+
+    Object.defineProperty(this, 'name', { value: 'AlreadyInUseError' });
+  }
+}

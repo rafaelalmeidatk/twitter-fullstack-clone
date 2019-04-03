@@ -10,7 +10,6 @@
     "reset-db": "knex-migrate down --to 0 && knex-migrate up"
   },
   "dependencies": {
-    "apollo-errors": "^1.9.0",
     "apollo-resolvers": "^1.4.1",
     "apollo-server-express": "^2.4.8",
     "backpack-core": "^0.8.3",

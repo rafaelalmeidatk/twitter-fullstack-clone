@@ -1,18 +1,18 @@
-import { isInstance } from 'apollo-errors';
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import { createResolver } from 'apollo-resolvers';
-import { UnknownError, UnauthorizedError } from './errors';
+import { UnknownError } from './errors';
 
 export const baseResolver = createResolver(null, (root, args, context, err) => {
-  if (isInstance(err) || process.env.NODE_ENV !== 'production') {
+  if (err instanceof ApolloError || process.env.NODE_ENV !== 'production') {
     return err;
   }
 
-  return new UnknownError({ data: { name: err.name } });
+  return new UnknownError();
 });
 
 export const isAuthenticatedResolver = baseResolver.createResolver(
   (root, args, context) => {
     const { user } = context;
-    if (!user) throw new UnauthorizedError();
+    if (!user) throw new AuthenticationError();
   }
 );
