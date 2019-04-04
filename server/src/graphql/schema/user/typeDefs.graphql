@@ -1,6 +1,7 @@
 type User {
   id: ID!
-  username: String
+  username: String!
+  email: String!
   name: String
   bio: String
   avatarSourceUrl: String

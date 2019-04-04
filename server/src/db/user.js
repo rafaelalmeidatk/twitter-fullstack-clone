@@ -16,13 +16,12 @@ async function createUser({ name, username, password, email }) {
       email,
     });
   } catch (err) {
-    console.log('what?', err);
     if (err.code === POSTGRES_UNIQUE_VIOLATION) {
       if (err.constraint.includes('username'))
         throw new UniqueViolation('Username already in use', 'username');
 
       if (err.constraint.includes('email'))
-        throw new UniqueViolation('Username already in use', 'email');
+        throw new UniqueViolation('Email already in use', 'email');
     }
 
     throw err;
