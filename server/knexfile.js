@@ -6,6 +6,10 @@ const migrations = {
   directory: path.normalize(path.join(__dirname, 'src/db/migrations')),
 };
 
+const seeds = {
+  directory: path.normalize(path.join(__dirname, `src/db/seeds/${config.env}`)),
+};
+
 module.exports = {
   [config.env]: {
     client: 'pg',
@@ -16,5 +20,6 @@ module.exports = {
     },
     debug: config.databaseDebug,
     migrations,
+    seeds,
   },
 };

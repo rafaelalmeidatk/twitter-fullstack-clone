@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`registration should not register an user with the same email 1`] = `
+Object {
+  "data": Object {
+    "registerUser": Object {
+      "email": "test@email.com",
+      "name": "Rafael",
+      "username": "rafael",
+    },
+  },
+}
+`;
+
+exports[`registration should not register an user with the same email 2`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: This email is already in use],
+  ],
+}
+`;
+
 exports[`registration should not register an user with the same username 1`] = `
 Object {
   "data": Object {

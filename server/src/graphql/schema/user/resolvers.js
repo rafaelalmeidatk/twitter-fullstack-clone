@@ -4,7 +4,6 @@ import userDb from 'db/user';
 
 // Query
 const allUsers = async () => {
-  console.log('all users!');
   return [];
 };
 

@@ -8,13 +8,17 @@
     "build": "backpack build",
     "migrate": "knex-migrate",
     "reset-db": "knex-migrate down --to 0 && knex-migrate up",
-    "test": "jest"
+    "test": "jest",
+    "test:auth": "jest src/__tests__/auth.test.js"
   },
   "dependencies": {
     "apollo-resolvers": "^1.4.1",
     "apollo-server-express": "^2.4.8",
     "backpack-core": "^0.8.3",
+    "body-parser": "^1.18.3",
+    "connect-session-knex": "^1.4.0",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "graphql": "^14.2.0",
     "graphql-tools": "^4.0.4",
     "knex": "^0.16.3",
