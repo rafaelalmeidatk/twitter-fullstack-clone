@@ -16,7 +16,10 @@ const request = (query, { context, variables }) => {
 
 describe('registration', () => {
   beforeEach(() => {
-    return knex.migrate.rollback().then(() => knex.migrate.latest());
+    return knex.migrate
+      .rollback()
+      .then(() => knex.migrate.latest())
+      .then(() => knex.seed.run());
   });
 
   afterEach(() => {
@@ -32,10 +35,10 @@ describe('registration', () => {
       mutation {
         registerUser(
           input: {
-            username: "rafael"
+            username: "new_user"
             password: "aaa"
-            email: "test@email.com"
-            name: "Rafael"
+            email: "new_user@email.com"
+            name: "New User"
           }
         ) {
           username
@@ -54,10 +57,10 @@ describe('registration', () => {
       mutation {
         registerUser(
           input: {
-            username: "rafael"
+            username: "test_user"
             password: "aaa"
-            email: "test@email.com"
-            name: "Rafael"
+            email: "aaaaaa@email.com"
+            name: "Test User"
           }
         ) {
           username
@@ -69,9 +72,6 @@ describe('registration', () => {
 
     const result = await request(query, {});
     expect(result).toMatchSnapshot();
-
-    const resultTwo = await request(query, {});
-    expect(resultTwo).toMatchSnapshot();
   });
 
   it('should not register an user with the same email', async () => {
@@ -79,27 +79,10 @@ describe('registration', () => {
       mutation {
         registerUser(
           input: {
-            username: "rafael"
+            username: "test2"
             password: "aaa"
             email: "test@email.com"
-            name: "Rafael"
-          }
-        ) {
-          username
-          email
-          name
-        }
-      }
-    `;
-
-    const query2 = `
-      mutation {
-        registerUser(
-          input: {
-            username: "rafael2"
-            password: "aaa"
-            email: "test@email.com"
-            name: "Rafael"
+            name: "Test User"
           }
         ) {
           username
@@ -111,8 +94,5 @@ describe('registration', () => {
 
     const result = await request(query, {});
     expect(result).toMatchSnapshot();
-
-    const resultTwo = await request(query2, {});
-    expect(resultTwo).toMatchSnapshot();
   });
 });

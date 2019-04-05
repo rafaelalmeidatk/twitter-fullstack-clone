@@ -20,7 +20,11 @@ export default () => {
       });
     }
 
-    if (user.password !== password) {
+    const isPasswordValid = await userDb.verifyPassword(
+      password,
+      user.password
+    );
+    if (!isPasswordValid) {
       return res.status(401).json({
         error: 'Invalid password',
       });
