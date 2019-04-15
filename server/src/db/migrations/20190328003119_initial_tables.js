@@ -15,8 +15,24 @@ exports.up = async function(knex) {
     table.text('cover_source_url');
     table.timestamps(true, true);
   });
+
+  // Tweet table
+  await knex.schema.createTable('tweets', table => {
+    table
+      .uuid('id')
+      .notNullable()
+      .primary()
+      .defaultTo(knex.raw('uuid_generate_v4()'));
+    table.text('content');
+    table
+      .uuid('userId')
+      .references('id')
+      .inTable('users');
+    table.timestamps(true, true);
+  });
 };
 
 exports.down = async function(knex) {
+  await knex.schema.dropTableIfExists('tweets');
   await knex.schema.dropTableIfExists('users');
 };

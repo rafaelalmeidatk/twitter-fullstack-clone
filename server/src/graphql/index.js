@@ -19,7 +19,10 @@ const typeDefs = mergeTypes(typesArray);
  */
 
 // Seems like we can't import the resolvers with a blob on backpack?
-const resolversArray = [require('./schema/user/resolvers').default];
+const resolversArray = [
+  require('./schema/user/resolvers').default,
+  require('./schema/tweet/resolvers').default,
+];
 const resolvers = mergeResolvers(resolversArray);
 
 /*

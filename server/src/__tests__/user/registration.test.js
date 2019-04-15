@@ -1,33 +1,13 @@
-import { graphql } from 'graphql';
-import schema from '../../graphql';
+import knexCleaner from 'knex-cleaner';
+import { request } from '../utils';
 import knex from '../../db/knex';
 
-const request = (query, { context, variables }) => {
-  return graphql(
-    schema,
-    query,
-    undefined,
-    {
-      ...context,
-    },
-    variables
-  );
-};
-
 describe('registration', () => {
-  beforeEach(() => {
-    return knex.migrate
-      .rollback()
-      .then(() => knex.migrate.latest())
-      .then(() => knex.seed.run());
-  });
-
-  afterEach(() => {
-    return knex.migrate.rollback();
-  });
-
-  afterAll(() => {
-    return knex.destroy();
+  afterEach(async () => {
+    await knexCleaner.clean(knex, {
+      ignoreTables: ['knex_migrations', 'knex_migrations_lock'],
+    });
+    await knex.seed.run();
   });
 
   it('should register an user', async () => {

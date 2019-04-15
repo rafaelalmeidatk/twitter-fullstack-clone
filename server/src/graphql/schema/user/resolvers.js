@@ -1,4 +1,4 @@
-import { UnknownError, AlreadyInUseError } from '../../errors';
+import { AlreadyInUseError } from '../../errors';
 import { baseResolver } from '../../baseResolvers';
 import userDb from 'db/user';
 

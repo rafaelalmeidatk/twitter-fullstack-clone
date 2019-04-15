@@ -13,6 +13,11 @@ async function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
 
+async function findUserById(id) {
+  const users = await knex('users').where({ id });
+  return users && users[0];
+}
+
 async function findUserByUsername(username) {
   const users = await knex('users').where({ username });
   return users && users[0];
@@ -45,4 +50,5 @@ export default {
   verifyPassword,
   createUser,
   findUserByUsername,
+  findUserById,
 };

@@ -52,10 +52,10 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: null,
+  globalSetup: './src/__tests__/setup.js',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: null,
+  globalTeardown: './src/__tests__/teardown.js',
 
   // A set of global variables that need to be available in all test environments
   globals: {
@@ -143,10 +143,10 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
-  // ],
+  testMatch: [
+    '**/__tests__/**/*.test.js?(x)',
+    // '**/?(*.)+(spec|test).[tj]s?(x)',
+  ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should create a tweet 1`] = `
+Object {
+  "data": Object {
+    "createTweet": Object {
+      "content": "Hello Wold var",
+      "user": Object {
+        "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+        "username": "test_user",
+      },
+    },
+  },
+}
+`;

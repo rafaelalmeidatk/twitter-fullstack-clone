@@ -29,8 +29,8 @@ const start = (options = {}) => {
     app.use(
       session({
         cookie: {
-          httpOnly: true,
-          secure: true,
+          // httpOnly: true,
+          // secure: true,
         },
         secret: 'test',
         resave: false,
@@ -49,6 +49,10 @@ const start = (options = {}) => {
 
     const apolloServer = new ApolloServer({
       schema,
+      // TODO: extract userId from session
+      // context: ({ req }) => {
+      //   console.log('session userId', req.session.userId);
+      // },
       playground: !!__DEV__,
       debug: !!__DEV__,
     });

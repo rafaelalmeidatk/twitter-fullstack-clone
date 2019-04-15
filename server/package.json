@@ -8,8 +8,9 @@
     "build": "backpack build",
     "migrate": "knex-migrate",
     "reset-db": "knex-migrate down --to 0 && knex-migrate up",
-    "test": "jest",
-    "test:auth": "jest src/__tests__/auth.test.js"
+    "test": "jest --runInBand",
+    "test:auth": "jest src/__tests__/auth.test.js",
+    "test:tweet": "jest src/__tests__/tweet.test.js --watch"
   },
   "dependencies": {
     "apollo-resolvers": "^1.4.1",
@@ -23,6 +24,7 @@
     "graphql": "^14.2.0",
     "graphql-tools": "^4.0.4",
     "knex": "^0.16.3",
+    "knex-cleaner": "^1.1.4",
     "knex-migrate": "^1.7.2",
     "merge-graphql-schemas": "^1.5.8",
     "pg": "^7.9.0"

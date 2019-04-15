@@ -1,4 +1,5 @@
 import request from 'supertest';
+import knexCleaner from 'knex-cleaner';
 import appStarter from '../app';
 import knex from '../db/knex';
 
@@ -9,19 +10,11 @@ describe('auth', () => {
     app = await appStarter.start();
   });
 
-  beforeEach(() => {
-    return knex.migrate
-      .rollback()
-      .then(() => knex.migrate.latest())
-      .then(() => knex.seed.run());
-  });
-
-  afterEach(() => {
-    return knex.migrate.rollback();
-  });
-
-  afterAll(() => {
-    return knex.destroy();
+  afterEach(async () => {
+    await knexCleaner.clean(knex, {
+      ignoreTables: ['knex_migrations', 'knex_migrations_lock'],
+    });
+    await knex.seed.run();
   });
 
   it('should login with correct credentials', done => {

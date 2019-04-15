@@ -1,0 +1,20 @@
+type Tweet {
+  id: ID!
+  content: String!
+  user: User
+  createdAt: String!
+  likes: [User!]!
+  likesCount: Int
+}
+
+type Query {
+  allTweets: [Tweet!]!
+}
+
+input CreateTweetInput {
+  content: String!
+}
+
+type Mutation {
+  createTweet(input: CreateTweetInput!): Tweet
+}
