@@ -1,6 +1,6 @@
 import { AlreadyInUseError } from '../../errors';
 import { baseResolver } from '../../baseResolvers';
-import userDb from 'db/user';
+import { createUser, findUserByUsername } from 'db/actions/user';
 
 // Query
 const allUsers = async () => {
@@ -12,7 +12,7 @@ const registerUser = baseResolver.createResolver(async (_, { input }) => {
   const { name, username, password, email } = input;
 
   try {
-    await userDb.createUser({ name, username, password, email });
+    await createUser({ name, username, password, email });
   } catch (err) {
     if (err.name === 'UniqueViolation') {
       if (err.field === 'username')
@@ -28,7 +28,7 @@ const registerUser = baseResolver.createResolver(async (_, { input }) => {
     throw err;
   }
 
-  return await userDb.findUserByUsername(username);
+  return await findUserByUsername(username);
 });
 
 export default {

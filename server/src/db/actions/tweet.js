@@ -1,4 +1,4 @@
-import knex from './knex';
+import knex from '../knex';
 
 export async function findTweetById(id) {
   const tweets = await knex('tweets').where({ id });
@@ -6,7 +6,6 @@ export async function findTweetById(id) {
 }
 
 export async function createTweet({ userId, content }) {
-  console.log('us', userId);
   const data = await knex('tweets')
     .insert({
       content,

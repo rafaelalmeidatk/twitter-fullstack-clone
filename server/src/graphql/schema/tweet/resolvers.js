@@ -1,10 +1,10 @@
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
-import { createTweet as dbCreateTweet } from 'db/tweet';
-import userDb from 'db/user';
+import { createTweet as dbCreateTweet } from 'db/actions/tweet';
+import { findUserById } from 'db/actions/user';
 
 // Tweet
 const getUser = baseResolver.createResolver(async root => {
-  return await userDb.findUserById(root.userId);
+  return await findUserById(root.userId);
 });
 
 // Query

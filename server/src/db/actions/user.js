@@ -1,29 +1,29 @@
 import bcrypt from 'bcryptjs';
-import knex from './knex';
-import { POSTGRES_UNIQUE_VIOLATION } from './constants';
-import { UniqueViolation } from './errors';
+import knex from '../knex';
+import { POSTGRES_UNIQUE_VIOLATION } from '../constants';
+import { UniqueViolation } from '../errors';
 
-async function hashPassword(password) {
+export async function hashPassword(password) {
   return new Promise(resolve =>
     bcrypt.hash(password, 8, (err, hash) => resolve(hash))
   );
 }
 
-async function verifyPassword(password, hash) {
+export async function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
 
-async function findUserById(id) {
+export async function findUserById(id) {
   const users = await knex('users').where({ id });
   return users && users[0];
 }
 
-async function findUserByUsername(username) {
+export async function findUserByUsername(username) {
   const users = await knex('users').where({ username });
   return users && users[0];
 }
 
-async function createUser({ name, username, password, email }) {
+export async function createUser({ name, username, password, email }) {
   try {
     const hashedPassword = await hashPassword(password);
     await knex('users').insert({
@@ -44,11 +44,3 @@ async function createUser({ name, username, password, email }) {
     throw err;
   }
 }
-
-export default {
-  hashPassword,
-  verifyPassword,
-  createUser,
-  findUserByUsername,
-  findUserById,
-};

@@ -1,6 +1,6 @@
 import knexCleaner from 'knex-cleaner';
 import { request } from '../utils';
-import knex from '../../db/knex';
+import knex from 'db/knex';
 
 describe('registration', () => {
   afterEach(async () => {

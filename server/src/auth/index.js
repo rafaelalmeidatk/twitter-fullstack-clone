@@ -1,5 +1,5 @@
 import express from 'express';
-import userDb from 'db/user';
+import { findUserByUsername, verifyPassword } from 'db/actions/user';
 
 export default () => {
   const router = express.Router();
@@ -13,17 +13,14 @@ export default () => {
       });
     }
 
-    const user = await userDb.findUserByUsername(username);
+    const user = await findUserByUsername(username);
     if (!user) {
       return res.status(400).json({
         error: 'No user found',
       });
     }
 
-    const isPasswordValid = await userDb.verifyPassword(
-      password,
-      user.password
-    );
+    const isPasswordValid = await verifyPassword(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({
         error: 'Invalid password',

@@ -1,6 +1,6 @@
 import knexCleaner from 'knex-cleaner';
-import { request } from './utils';
-import knex from '../db/knex';
+import { request } from '../utils';
+import knex from 'db/knex';
 
 let user = null;
 

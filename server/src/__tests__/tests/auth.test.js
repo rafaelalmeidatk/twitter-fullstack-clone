@@ -1,7 +1,7 @@
 import request from 'supertest';
 import knexCleaner from 'knex-cleaner';
-import appStarter from '../app';
-import knex from '../db/knex';
+import appStarter from '../../app';
+import knex from 'db/knex';
 
 let app = null;
 
