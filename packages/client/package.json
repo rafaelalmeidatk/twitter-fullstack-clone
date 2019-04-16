@@ -9,10 +9,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "@kevinwolf/formal-web": "^0.1.0",
     "@zeit/next-css": "^1.0.1",
     "classnames": "^2.2.6",
     "next": "^8.0.3",
     "react": "^16.8.5",
-    "react-dom": "^16.8.5"
+    "react-dom": "^16.8.5",
+    "yup": "^0.27.0"
   }
 }

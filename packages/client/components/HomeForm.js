@@ -11,7 +11,7 @@ const { className, styles } = css.resolve`
 `;
 
 const HomeForm = () => {
-  const [phase, setPhase] = useState('login');
+  const [phase, setPhase] = useState('signup');
 
   const handleSignUpClick = () => {
     setPhase('signup');
