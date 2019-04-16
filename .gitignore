@@ -61,4 +61,4 @@ typings/
 .next
 
 # backpack build output
-server/build
+packages/server/build
