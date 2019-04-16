@@ -11,9 +11,13 @@
   "dependencies": {
     "@kevinwolf/formal-web": "^0.1.0",
     "@zeit/next-css": "^1.0.1",
+    "apollo-boost": "^0.3.1",
     "classnames": "^2.2.6",
+    "graphql": "^14.2.1",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "^8.0.3",
     "react": "^16.8.5",
+    "react-apollo-hooks": "^0.4.5",
     "react-dom": "^16.8.5",
     "yup": "^0.27.0"
   }
