@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import css from 'styled-jsx/css';
 import useFormal from '@kevinwolf/formal-web';
 import * as yup from 'yup';
+import gql from 'graphql-tag';
+import { useMutation } from 'react-apollo-hooks';
+
 import Button from './Button';
 import FormField from './FormField';
 
@@ -21,12 +24,75 @@ const schema = yup.object().shape({
   displayName: yup.string().required(),
 });
 
+const REGISTER_USER_QUERY = gql`
+  mutation RegisterUser($input: RegisterUserInput!) {
+    registerUser(input: $input) {
+      id
+      username
+      email
+      name
+    }
+  }
+`;
+
 const SignUpForm = ({ onBack }) => {
+  const [registerError, setRegisterError] = useState('null');
+  const registerUser = useMutation(REGISTER_USER_QUERY);
+
   const formal = useFormal(
-    {},
+    {
+      username: 'reactui',
+      password: 'test123',
+      email: 'test@dsada.com',
+      displayName: 'Display Name Oo',
+    },
     {
       schema,
-      onSubmit: values => console.log('got it!', values),
+      onSubmit: async values => {
+        const { username, password, email, displayName } = values;
+
+        setRegisterError(null);
+
+        registerUser({
+          variables: {
+            input: { username, password, email, name: displayName },
+          },
+        })
+          .then(res => {
+            if (res.data && res.data.registerUser) {
+              // Register successful, do login here...
+            }
+          })
+          .catch(err => {
+            if (err.graphQLErrors) {
+              const formErrors = {};
+
+              err.graphQLErrors.forEach(graphQlError => {
+                if (graphQlError.extensions.code === 'ALREADY_IN_USE') {
+                  const { field } = graphQlError.extensions.exception;
+                  if (field === 'username') {
+                    formErrors.username = 'This username is already in use';
+                  }
+                  if (field === 'email') {
+                    formErrors.email = 'This email is already in use';
+                  }
+                }
+              });
+
+              if (Object.entries(formErrors).length > 0) {
+                formal.setErrors(formErrors);
+              } else {
+                setRegisterError(
+                  'Oops, something unexpected happened, try again'
+                );
+              }
+            } else {
+              setRegisterError(
+                'Oops, something unexpected happened, try again'
+              );
+            }
+          });
+      },
     }
   );
 
@@ -58,6 +124,8 @@ const SignUpForm = ({ onBack }) => {
           placeholder="Display Name"
         />
 
+        {registerError && <div className="register-error">{registerError}</div>}
+
         <Button primary full className={className}>
           Sign Up
         </Button>
@@ -73,6 +141,10 @@ const SignUpForm = ({ onBack }) => {
           max-width: 350px;
         }
 
+        .signup-form form {
+          display: inline;
+        }
+
         h1 {
           margin-bottom: 16px;
           color: rgba(0, 0, 0, 0.85);
@@ -81,8 +153,9 @@ const SignUpForm = ({ onBack }) => {
           line-height: 1.1em;
         }
 
-        .signup-form form {
-          display: inline;
+        .register-error {
+          margin: 2px 0;
+          color: #ff3860;
         }
       `}</style>
     </div>
