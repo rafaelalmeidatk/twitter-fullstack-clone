@@ -40,6 +40,11 @@ const Button = ({
           background: #dcf1ff;
         }
 
+        .btn[disabled] {
+          cursor: not-allowed;
+          background: #cbd6dc;
+        }
+
         .btn:focus:not(:active) {
           box-shadow: 0 0 0 0.18em rgb(154, 210, 249);
         }
@@ -56,6 +61,10 @@ const Button = ({
 
         .btn.primary:active {
           background: #148dd8;
+        }
+
+        .btn.primary[disabled] {
+          background: #cbd6dc;
         }
 
         .btn.full {

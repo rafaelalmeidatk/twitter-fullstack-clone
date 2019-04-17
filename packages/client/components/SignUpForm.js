@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo-hooks';
 
+import { loginRequest, login } from '../lib/auth';
 import Button from './Button';
 import FormField from './FormField';
 
@@ -36,7 +37,7 @@ const REGISTER_USER_QUERY = gql`
 `;
 
 const SignUpForm = ({ onBack }) => {
-  const [registerError, setRegisterError] = useState('null');
+  const [registerError, setRegisterError] = useState(null);
   const registerUser = useMutation(REGISTER_USER_QUERY);
 
   const formal = useFormal(
@@ -50,17 +51,19 @@ const SignUpForm = ({ onBack }) => {
       schema,
       onSubmit: async values => {
         const { username, password, email, displayName } = values;
-
         setRegisterError(null);
 
-        registerUser({
+        return registerUser({
           variables: {
             input: { username, password, email, name: displayName },
           },
         })
           .then(res => {
             if (res.data && res.data.registerUser) {
-              // Register successful, do login here...
+              // Register successful, login the user
+              return loginRequest({ username, password }).then(res =>
+                login({ redirectUrl: '/test' })
+              );
             }
           })
           .catch(err => {
@@ -126,7 +129,12 @@ const SignUpForm = ({ onBack }) => {
 
         {registerError && <div className="register-error">{registerError}</div>}
 
-        <Button primary full className={className}>
+        <Button
+          primary
+          full
+          className={className}
+          {...formal.getSubmitButtonProps()}
+        >
           Sign Up
         </Button>
       </form>
@@ -154,7 +162,7 @@ const SignUpForm = ({ onBack }) => {
         }
 
         .register-error {
-          margin: 2px 0;
+          margin: 4px 0;
           color: #ff3860;
         }
       `}</style>

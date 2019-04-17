@@ -15,6 +15,8 @@
     "classnames": "^2.2.6",
     "graphql": "^14.2.1",
     "isomorphic-unfetch": "^3.0.0",
+    "ky": "^0.9.1",
+    "ky-universal": "^0.1.0",
     "next": "^8.0.3",
     "react": "^16.8.5",
     "react-apollo-hooks": "^0.4.5",
