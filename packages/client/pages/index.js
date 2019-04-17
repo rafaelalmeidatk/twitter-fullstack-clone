@@ -1,50 +1,20 @@
 import React from 'react';
-import HomeForm from '../components/HomeForm';
+import { withRouter } from 'next/router';
+import isRequestAuthenticated from '../lib/isRequestAuthenticated';
+import HomePage from '../components/HomePage';
+import MainPage from '../components/MainPage';
 
-export default () => (
-  <div className="home-container">
-    <div className="bird">
-      <div>
-        <p>Follow your interests.</p>
-        <p>Headhsa.</p>
-        <p>fkdosak.</p>
-      </div>
-    </div>
+const IndexPage = ({ isAuthenticated, router }) => {
+  return router.query.fromLogin || isAuthenticated ? (
+    <MainPage />
+  ) : (
+    <HomePage />
+  );
+};
 
-    <div className="form-container">
-      <HomeForm />
-    </div>
+IndexPage.getInitialProps = ({ req }) => {
+  const isAuthenticated = req && isRequestAuthenticated(req);
+  return { isAuthenticated };
+};
 
-    <style jsx>{`
-      .home-container {
-        display: flex;
-        width: 100vw;
-        height: 100vh;
-      }
-
-      .home-container > div {
-        width: 50%;
-        height: 100%;
-      }
-
-      .bird {
-        background-color: #1da1f2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        font-size: 1.8em;
-      }
-
-      .bird p {
-        margin: 20px 0;
-      }
-
-      .form-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    `}</style>
-  </div>
-);
+export default withRouter(IndexPage);

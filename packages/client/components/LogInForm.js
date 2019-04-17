@@ -34,7 +34,13 @@ const LogInForm = ({ onBack }) => {
         setLoginError(null);
 
         return loginRequest({ username, password })
-          .then(res => login({ redirectUrl: '/test' }))
+          .then(res => {
+            // The login function will redirect the user right
+            // away then formal will try to update the form state
+            // when the component is already unmonted. Delaying the
+            // redirect solves this problem
+            setTimeout(() => login({ redirectUrl: '/' }), 1);
+          })
           .catch(err => {
             if (err instanceof HTTPError) {
               if (err.response.status === 400) {
@@ -71,6 +77,7 @@ const LogInForm = ({ onBack }) => {
           placeholder="Password"
           type="password"
         />
+
         {loginError && <div className="login-error">{loginError}</div>}
 
         <Button

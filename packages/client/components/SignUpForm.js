@@ -61,9 +61,13 @@ const SignUpForm = ({ onBack }) => {
           .then(res => {
             if (res.data && res.data.registerUser) {
               // Register successful, login the user
-              return loginRequest({ username, password }).then(res =>
-                login({ redirectUrl: '/' })
-              );
+              return loginRequest({ username, password }).then(res => {
+                // The login function will redirect the user right
+                // away then formal will try to update the form state
+                // when the component is already unmonted. Delaying the
+                // redirect solves this problem
+                setTimeout(() => login({ redirectUrl: '/' }), 1);
+              });
             }
             setRegisterError('Oops, something unexpected happened, try again');
           })

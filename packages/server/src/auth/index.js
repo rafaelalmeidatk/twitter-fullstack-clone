@@ -33,5 +33,12 @@ export default () => {
     res.json({ message: 'Login successfully!' });
   });
 
+  // Temporary route to test the session
+  router.get('/auth/check', async (req, res) => {
+    const userId = req.session.userId;
+    console.log('== AUTH CHECK USER ID ==', req.session.userId);
+    res.json({ check: !!userId });
+  });
+
   return router;
 };

@@ -18,5 +18,8 @@ export const login = ({ apolloClient, redirectUrl }) => {
   apolloClient && apolloClient.resetStore();
 
   // Redirect the user
-  redirectUrl && Router.push(redirectUrl);
+  redirectUrl &&
+    Router.push(redirectUrl + '?fromLogin=true', redirectUrl, {
+      shallow: true,
+    });
 };
