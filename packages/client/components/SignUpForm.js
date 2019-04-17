@@ -42,10 +42,10 @@ const SignUpForm = ({ onBack }) => {
 
   const formal = useFormal(
     {
-      username: 'reactui',
-      password: 'test123',
-      email: 'test@dsada.com',
-      displayName: 'Display Name Oo',
+      username: '',
+      password: '',
+      email: '',
+      displayName: '',
     },
     {
       schema,
@@ -62,9 +62,10 @@ const SignUpForm = ({ onBack }) => {
             if (res.data && res.data.registerUser) {
               // Register successful, login the user
               return loginRequest({ username, password }).then(res =>
-                login({ redirectUrl: '/test' })
+                login({ redirectUrl: '/' })
               );
             }
+            setRegisterError('Oops, something unexpected happened, try again');
           })
           .catch(err => {
             if (err.graphQLErrors) {
