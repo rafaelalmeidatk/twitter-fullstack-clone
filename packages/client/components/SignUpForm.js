@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import css from 'styled-jsx/css';
 import useFormal from '@kevinwolf/formal-web';
 import * as yup from 'yup';
-import gql from 'graphql-tag';
+import { gql } from 'apollo-boost';
 import { useMutation } from 'react-apollo-hooks';
 
 import colors from '../lib/colors';

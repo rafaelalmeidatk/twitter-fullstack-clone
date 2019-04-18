@@ -10,6 +10,7 @@ type User {
 
 type Query {
   allUsers: [User!]!
+  me: User!
 }
 
 input RegisterUserInput {

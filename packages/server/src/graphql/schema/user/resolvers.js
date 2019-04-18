@@ -1,11 +1,17 @@
 import { AlreadyInUseError } from '../../errors';
-import { baseResolver } from '../../baseResolvers';
+import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
 import { createUser, findUserByUsername } from 'db/actions/user';
 
 // Query
 const allUsers = async () => {
   return [];
 };
+
+const me = isAuthenticatedResolver.createResolver(
+  async (root, data, { user }) => {
+    return user;
+  }
+);
 
 // Mutation
 const registerUser = baseResolver.createResolver(async (_, { input }) => {
@@ -34,6 +40,7 @@ const registerUser = baseResolver.createResolver(async (_, { input }) => {
 export default {
   Query: {
     allUsers,
+    me,
   },
   Mutation: {
     registerUser,

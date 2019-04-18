@@ -12,7 +12,7 @@ const base = {
     min: 2,
     max: 10,
   },
-  databaseDebug: true,
+  databaseDebug: false,
 
   port: process.env.PORT || '4100',
   env,
