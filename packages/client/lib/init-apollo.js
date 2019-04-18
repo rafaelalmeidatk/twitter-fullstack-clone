@@ -14,8 +14,11 @@ function create(initialState, { headers }) {
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: new HttpLink({
       uri: 'http://localhost:4100/graphql',
+      // Include the credentials on the requests so the user
+      // can fetch queries that require authentication
+      credentials: 'include',
       // Use the headers from the request, this allows Apollo to
-      // fetch resolvers that require authentication even when running
+      // fetch resolvers that require authentication when running
       // on the server
       headers,
     }),
