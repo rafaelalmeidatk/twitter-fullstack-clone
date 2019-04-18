@@ -1,10 +1,17 @@
 import React from 'react';
 import cx from 'classnames';
+import colors from '../lib/colors';
+import Icon from './Icon';
 
-const NavButton = ({ text, selected }) => (
+const NavButton = ({ text, icon, iconSelected, selected }) => (
   <div className={cx('nav-button', { selected })}>
     <div className="btn-content">
-      <div className="icon" />
+      <div className="icon">
+        <Icon
+          name={selected && iconSelected ? iconSelected : icon}
+          size="1.4em"
+        />
+      </div>
       {text}
     </div>
     <div className="border" />
@@ -15,6 +22,10 @@ const NavButton = ({ text, selected }) => (
         display: flex;
         flex-direction: column;
         position: relative;
+      }
+
+      .nav-button,
+      .nav-button .icon :global(i) {
         transition: color 0.2s ease;
       }
 
@@ -23,13 +34,15 @@ const NavButton = ({ text, selected }) => (
         bottom: 0;
         height: 0px;
         width: 100%;
-        background-color: #1da1f2;
+        background-color: ${colors.twitterBlue};
         transition: height 0.2s ease;
       }
 
       .nav-button.selected,
-      .nav-button:hover {
-        color: #1da1f2;
+      .nav-button:hover,
+      .nav-button.selected .icon :global(i),
+      .nav-button:hover .icon :global(i) {
+        color: ${colors.twitterBlue};
       }
 
       .nav-button.selected .border,
@@ -52,7 +65,6 @@ const NavButton = ({ text, selected }) => (
         width: 23px;
         height: 23px;
         margin-right: 6px;
-        background: tomato;
       }
     `}</style>
   </div>
@@ -62,11 +74,16 @@ const Navbar = () => (
   <div className="app-navbar">
     <div className="container">
       <div className="bird">
-        <i className="Icon Icon--bird" />
+        <Icon name="bird" color={colors.twitterBlue} size="1.28em" />
       </div>
       <div className="left">
-        <NavButton text="Home" selected={true} />
-        <NavButton text="Github" />
+        <NavButton
+          text="Home"
+          icon="home"
+          iconSelected="homeFilled"
+          selected={true}
+        />
+        <NavButton text="Project on Github" icon="promoteMode" />
       </div>
       <div className="right">right</div>
     </div>
@@ -91,6 +108,10 @@ const Navbar = () => (
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+      }
+      .bird i {
+        color: ${colors.twitterBlue};
+        font-size: 1.28em;
       }
 
       .left {

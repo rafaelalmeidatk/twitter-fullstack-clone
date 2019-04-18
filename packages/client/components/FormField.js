@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import colors from '../lib/colors';
 
 const FormField = ({ id, label, type, error, ...props }) => {
   return (
@@ -21,7 +22,7 @@ const FormField = ({ id, label, type, error, ...props }) => {
           margin: 6px 0;
         }
         .error {
-          color: #ff3860;
+          color: ${colors.error};
         }
       `}</style>
     </div>

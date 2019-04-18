@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import gql from 'graphql-tag';
 import { useMutation } from 'react-apollo-hooks';
 
+import colors from '../lib/colors';
 import { loginRequest, login } from '../lib/auth';
 import Button from './Button';
 import FormField from './FormField';
@@ -168,7 +169,7 @@ const SignUpForm = ({ onBack }) => {
 
         .register-error {
           margin: 4px 0;
-          color: #ff3860;
+          color: ${colors.error};
         }
       `}</style>
     </div>

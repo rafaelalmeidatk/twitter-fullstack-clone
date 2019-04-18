@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import colors from '../lib/colors';
 
 const Button = ({
   primary,
@@ -18,9 +19,9 @@ const Button = ({
       {children}
       <style jsx>{`
         .btn {
-          color: #1da1f2;
+          color: ${colors.twitterBlue};
           background: #fff;
-          border: 1px solid #1da1f2;
+          border: 1px solid ${colors.twitterBlue};
           border-radius: 50px;
           cursor: pointer;
           outline: none;
@@ -33,16 +34,16 @@ const Button = ({
         }
 
         .btn:hover {
-          background: #e9f5fd;
+          background: ${colors.buttonNegativeHover};
         }
 
         .btn:active {
-          background: #dcf1ff;
+          background: ${colors.buttonNegativeActive};
         }
 
         .btn[disabled] {
           cursor: not-allowed;
-          background: #cbd6dc;
+          background: ${colors.buttonDisabled};
         }
 
         .btn:focus:not(:active) {
@@ -51,20 +52,20 @@ const Button = ({
 
         .btn.primary {
           color: #fff;
-          background: #1da1f2;
+          background: ${colors.twitterBlue};
           border: none;
         }
 
         .btn.primary:hover {
-          background: #1899e8;
+          background: ${colors.buttonPrimaryHover};
         }
 
         .btn.primary:active {
-          background: #148dd8;
+          background: ${colors.buttonPrimaryActive};
         }
 
         .btn.primary[disabled] {
-          background: #cbd6dc;
+          background: ${colors.buttonDisabled};
         }
 
         .btn.full {

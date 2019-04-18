@@ -1,4 +1,5 @@
 import React from 'react';
+import colors from '../lib/colors';
 import HomeForm from './HomeForm';
 
 const HomePage = () => (
@@ -28,7 +29,7 @@ const HomePage = () => (
       }
 
       .bird {
-        background-color: #1da1f2;
+        background-color: ${colors.twitterBlue};
         display: flex;
         justify-content: center;
         align-items: center;
