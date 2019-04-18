@@ -13,4 +13,6 @@ export default {
   boxBorder: '#e6ecf0',
   newTweetBg: '#e8f4fb',
   inputBlueBorder: '#a3d6f5',
+  retweet: '#1ebe69',
+  like: '#e0245e',
 };

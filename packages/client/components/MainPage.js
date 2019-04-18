@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import UserCard from './UserCard';
 import NewTweet from './NewTweet';
+import Feed from './Feed';
 
 const MainPage = () => (
   <div className="main">
@@ -14,6 +15,7 @@ const MainPage = () => (
 
       <div className="content">
         <NewTweet />
+        <Feed />
       </div>
 
       <div className="main-right">right!</div>
