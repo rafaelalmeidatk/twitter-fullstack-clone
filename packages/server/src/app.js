@@ -6,6 +6,7 @@ import session from 'express-session';
 import connectSessionKnex from 'connect-session-knex';
 
 import knex from './db/knex';
+import { findUserById } from './db/actions/user';
 import auth from './auth';
 import schema from './graphql';
 
@@ -51,14 +52,14 @@ const start = (options = {}) => {
 
     const apolloServer = new ApolloServer({
       schema,
-      // TODO: extract userId from session
-      // context: ({ req }) => {
-      //   console.log('session userId', req.session.userId);
-      // },
+      context: async ({ req: { session } }) => ({
+        // Extract userId from request and find it from DB
+        user: session.userId && (await findUserById(session.userId)),
+      }),
       playground: !!__DEV__,
       debug: !!__DEV__,
     });
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({ app, cors: false });
 
     //--------------------
     // Turn on
