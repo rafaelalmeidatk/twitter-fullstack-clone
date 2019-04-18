@@ -57,7 +57,7 @@ const Stats = ({ tweets, following, followers }) => (
   </div>
 );
 
-const UserCard = ({ userId }) => {
+const UserCard = () => {
   const { data, loading } = useQuery(GET_USER_PROFILE_QUERY);
 
   const name = loading || !data.me ? '...' : data.me.name;
@@ -83,6 +83,7 @@ const UserCard = ({ userId }) => {
       <style jsx>{`
         .user-card {
           background: #fff;
+          border: 1px solid ${colors.boxBorder};
         }
 
         .cover {

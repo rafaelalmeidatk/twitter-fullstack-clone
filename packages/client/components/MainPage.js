@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import UserCard from './UserCard';
+import NewTweet from './NewTweet';
 
 const MainPage = () => (
   <div className="main">
@@ -11,7 +12,9 @@ const MainPage = () => (
         <UserCard />
       </div>
 
-      <div className="content">hello!</div>
+      <div className="content">
+        <NewTweet />
+      </div>
 
       <div className="main-right">right!</div>
     </div>
@@ -25,6 +28,7 @@ const MainPage = () => (
       .main-left,
       .main-right {
         width: 290px;
+        padding: 0 8px;
       }
 
       .container {
@@ -34,6 +38,16 @@ const MainPage = () => (
 
       .content {
         flex: 1 1 auto;
+      }
+
+      @media (max-width: 1280px) {
+        .main-right {
+          display: none;
+        }
+
+        .content {
+          padding-right: 8px;
+        }
       }
     `}</style>
   </div>

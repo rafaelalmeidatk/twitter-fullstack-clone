@@ -8,4 +8,9 @@ export default {
   buttonNegativeHover: '#e9f5fd',
   buttonNegativeActive: '#dcf1ff',
   buttonDisabled: '#cbd6dc',
+
+  // misc
+  boxBorder: '#e6ecf0',
+  newTweetBg: '#e8f4fb',
+  inputBlueBorder: '#a3d6f5',
 };
