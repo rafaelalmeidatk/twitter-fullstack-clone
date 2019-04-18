@@ -1,5 +1,6 @@
 import React from 'react';
 import colors from '../lib/colors';
+import Avatar from './Avatar';
 import Icon from './Icon';
 
 const TweetFooter = () => (
@@ -68,7 +69,7 @@ const TweetFooter = () => (
 const Tweet = ({ name, username, content }) => (
   <div className="tweet">
     <div className="left">
-      <div className="avatar" />
+      <Avatar size="medium" />
     </div>
 
     <div className="body">
@@ -88,13 +89,6 @@ const Tweet = ({ name, username, content }) => (
         border-left: 1px solid ${colors.boxBorder};
         border-right: 1px solid ${colors.boxBorder};
         border-bottom: 1px solid ${colors.boxBorder};
-      }
-
-      .avatar {
-        width: 48px;
-        height: 48px;
-        background: tomato;
-        border-radius: 50%;
       }
 
       .body {

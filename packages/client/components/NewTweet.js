@@ -1,25 +1,19 @@
 import React from 'react';
 import colors from '../lib/colors';
+import Avatar from './Avatar';
 
 const NewTweet = () => (
   <div className="new-tweet">
-    <div className="avatar" />
+    <Avatar size="small" />
     <form>
       <textarea className="input" placeholder="What's hapenning?" />
     </form>
-    <style>{`
+    <style jsx>{`
       .new-tweet {
         padding: 10px 12px 10px 18px;
         display: flex;
         background-color: ${colors.newTweetBg};
-        border: 1px solid ${colors.boxBorder}
-      }
-
-      .avatar {
-        width: 32px;
-        height: 32px;
-        background: tomato;
-        border-radius: 50%;
+        border: 1px solid ${colors.boxBorder};
       }
 
       form {
@@ -42,7 +36,7 @@ const NewTweet = () => (
       }
 
       .input::placeholder {
-        color: ${colors.twitterBlue}
+        color: ${colors.twitterBlue};
       }
     `}</style>
   </div>

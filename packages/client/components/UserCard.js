@@ -2,6 +2,7 @@ import React from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import colors from '../lib/colors';
+import Avatar from './Avatar';
 
 const GET_USER_PROFILE_QUERY = gql`
   query getUserProfile {
@@ -68,7 +69,7 @@ const UserCard = () => {
       <div className="cover" />
       <div className="content">
         <div className="header">
-          <div className="avatar">.</div>
+          <Avatar size="big" withBorder />
           <div className="header-meta">
             <div className="name">{name}</div>
             <div className="username">@{username}</div>
@@ -100,13 +101,8 @@ const UserCard = () => {
           display: flex;
         }
 
-        .avatar {
+        .user-card :global(.avatar) {
           margin-top: -25px;
-          width: 72px;
-          height: 72px;
-          background: pink;
-          border-radius: 50%;
-          border: 2px solid #fff;
         }
 
         .header-meta {
