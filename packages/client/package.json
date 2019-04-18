@@ -13,6 +13,7 @@
     "@zeit/next-css": "^1.0.1",
     "apollo-boost": "^0.3.1",
     "classnames": "^2.2.6",
+    "file-loader": "^3.0.1",
     "graphql": "^14.2.1",
     "isomorphic-unfetch": "^3.0.0",
     "ky": "^0.9.1",

@@ -21,6 +21,7 @@ const MainPage = () => (
         min-height: 100vh;
         background: #e6ecf0;
       }
+
       .main-left,
       .main-right {
         width: 290px;

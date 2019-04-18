@@ -61,7 +61,9 @@ const NavButton = ({ text, selected }) => (
 const Navbar = () => (
   <div className="app-navbar">
     <div className="container">
-      <div className="bird">Twitter</div>
+      <div className="bird">
+        <i className="Icon Icon--bird" />
+      </div>
       <div className="left">
         <NavButton text="Home" selected={true} />
         <NavButton text="Github" />
