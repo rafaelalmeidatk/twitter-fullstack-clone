@@ -13,6 +13,6 @@ export const baseResolver = createResolver(null, (root, args, context, err) => {
 export const isAuthenticatedResolver = baseResolver.createResolver(
   (root, args, context) => {
     const { user } = context;
-    if (!user) throw new AuthenticationError();
+    if (!user) throw new AuthenticationError('You need to login to do this!');
   }
 );

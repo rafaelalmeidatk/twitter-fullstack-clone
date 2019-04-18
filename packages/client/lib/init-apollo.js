@@ -8,27 +8,31 @@ if (!process.browser) {
   global.fetch = fetch;
 }
 
-function create(initialState) {
+function create(initialState, { headers }) {
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: new HttpLink({
       uri: 'http://localhost:4100/graphql',
+      // Use the headers from the request, this allows Apollo to
+      // fetch resolvers that require authentication even when running
+      // on the server
+      headers,
     }),
     cache: new InMemoryCache().restore(initialState || {}),
   });
 }
 
-export default function initApollo(initialState) {
+export default function initApollo(initialState, options = {}) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (!process.browser) {
-    return create(initialState);
+    return create(initialState, options);
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = create(initialState);
+    apolloClient = create(initialState, options);
   }
 
   return apolloClient;
