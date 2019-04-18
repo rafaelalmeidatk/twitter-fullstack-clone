@@ -1,6 +1,12 @@
 import { AlreadyInUseError } from '../../errors';
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
 import { createUser, findUserByUsername } from 'db/actions/user';
+import { getTweetsFromUser } from 'db/actions/tweet';
+
+// User
+const userTweets = baseResolver.createResolver(async root => {
+  return await getTweetsFromUser(root.id);
+});
 
 // Query
 const allUsers = async () => {
@@ -38,6 +44,9 @@ const registerUser = baseResolver.createResolver(async (_, { input }) => {
 });
 
 export default {
+  User: {
+    tweets: userTweets,
+  },
   Query: {
     allUsers,
     me,

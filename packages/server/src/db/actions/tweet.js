@@ -14,3 +14,10 @@ export async function createTweet({ userId, content }) {
     .returning('*');
   return data[0];
 }
+
+export async function getTweetsFromUser(userId) {
+  const data = await knex('tweets')
+    .where({ userId })
+    .orderBy('created_at', 'desc');
+  return data;
+}

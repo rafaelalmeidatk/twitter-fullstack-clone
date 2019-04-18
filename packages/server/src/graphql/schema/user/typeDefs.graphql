@@ -6,6 +6,7 @@ type User {
   bio: String
   avatarSourceUrl: String
   coverSourceUrl: String
+  tweets: [Tweet!]!
 }
 
 type Query {

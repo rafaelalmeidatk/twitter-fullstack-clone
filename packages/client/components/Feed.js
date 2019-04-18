@@ -1,40 +1,40 @@
 import React from 'react';
+import { gql } from 'apollo-boost';
+import { useQuery } from 'react-apollo-hooks';
 import Tweet from './Tweet';
 
+const GET_USER_FEED_QUERY = gql`
+  query getUserFeed {
+    me {
+      id
+      tweets {
+        id
+        content
+        user {
+          id
+          name
+          username
+        }
+      }
+    }
+  }
+`;
+
 const Feed = () => {
-  const tweets = [
-    {
-      id: 321,
-      content:
-        'Nulla vehicula nunc ut nibh elementum, nec accumsan tortor sodales.',
-      author: {
-        id: 321321,
-        name: 'Rafael Almeida',
-        username: 'rafaelalmeidatk',
-      },
-      createdAt: 1555569044659,
-    },
-    {
-      id: 444,
-      content:
-        'Nulla vehicula nunc ut nibh elementum, nec accumsan tortor sodales.',
-      author: {
-        id: 321321,
-        name: 'Rafael Almeida',
-        username: 'rafaelalmeidatk',
-      },
-      createdAt: 1555569044659,
-    },
-  ];
+  const { data, loading, errors } = useQuery(GET_USER_FEED_QUERY);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="feed">
-      {tweets.map(tweet => (
+      {data.me.tweets.map(tweet => (
         <Tweet
           key={tweet.id}
           content={tweet.content}
-          name={tweet.author.name}
-          username={tweet.author.username}
+          name={tweet.user.name}
+          username={tweet.user.username}
         />
       ))}
     </div>
