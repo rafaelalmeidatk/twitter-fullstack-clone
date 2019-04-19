@@ -74,7 +74,7 @@ const Details = ({ name, username }) => (
   </div>
 );
 
-const ProfilePage = () => {
+const ProfilePage = ({ username }) => {
   const { data, loading } = useQuery(GET_PROFILE_QUERY);
   if (loading) return <div>Loading...</div>;
 
@@ -133,5 +133,9 @@ const ProfilePage = () => {
     </div>
   );
 };
+
+ProfilePage.getInitialProps = ({ query }) => ({
+  username: query.username,
+});
 
 export default ProfilePage;
