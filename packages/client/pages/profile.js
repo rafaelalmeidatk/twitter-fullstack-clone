@@ -6,9 +6,9 @@ import ProfileHeader from '../components/ProfileHeader';
 import ProfileTweets from '../components/ProfileTweets';
 import colors from '../lib/colors';
 
-const GET_PROFILE_QUERY = gql`
-  query getProfile {
-    me {
+const GET_USER_QUERY = gql`
+  query getUser($username: String!) {
+    user(input: { username: $username }) {
       id
       name
       username
@@ -75,10 +75,13 @@ const Details = ({ name, username }) => (
 );
 
 const ProfilePage = ({ username }) => {
-  const { data, loading } = useQuery(GET_PROFILE_QUERY);
+  const { data, loading } = useQuery(GET_USER_QUERY, {
+    variables: { username },
+  });
+
   if (loading) return <div>Loading...</div>;
 
-  const { me: user } = data;
+  const { user } = data;
 
   return (
     <div className="main">
