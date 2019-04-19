@@ -1,6 +1,7 @@
+import { UserInputError } from 'apollo-server-express';
 import { AlreadyInUseError } from '../../errors';
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
-import { createUser, findUserByUsername } from 'db/actions/user';
+import { createUser, findUserById, findUserByUsername } from 'db/actions/user';
 import { getTweetsFromUser } from 'db/actions/tweet';
 
 // User
@@ -12,6 +13,20 @@ const userTweets = baseResolver.createResolver(async root => {
 const allUsers = async () => {
   return [];
 };
+
+const getUser = baseResolver.createResolver(async (root, { input }) => {
+  const { id, username } = input;
+
+  if ((!id && !username) || (id && username)) {
+    throw new UserInputError(
+      'You need to provide the ID or the username, but not both'
+    );
+  }
+
+  if (id) return await findUserById(id);
+  if (username) return await findUserByUsername(username);
+  return null;
+});
 
 const me = isAuthenticatedResolver.createResolver(
   async (root, data, { user }) => {
@@ -49,6 +64,7 @@ export default {
   },
   Query: {
     allUsers,
+    user: getUser,
     me,
   },
   Mutation: {

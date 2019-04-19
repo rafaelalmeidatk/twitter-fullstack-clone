@@ -9,8 +9,14 @@ type User {
   tweets: [Tweet!]!
 }
 
+input UserInput {
+  id: ID
+  username: String
+}
+
 type Query {
   allUsers: [User!]!
+  user(input: UserInput!): User
   me: User!
 }
 
