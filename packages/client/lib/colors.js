@@ -1,5 +1,7 @@
 export default {
   twitterBlue: '#1da1f2',
+  blueGray: '#657786',
+  blueGrayStrong: '#66757f',
   error: '#ff3860',
 
   // buttons

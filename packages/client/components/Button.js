@@ -4,6 +4,7 @@ import colors from '../lib/colors';
 
 const Button = ({
   primary,
+  gray,
   full,
   narrow,
   simple,
@@ -13,7 +14,7 @@ const Button = ({
 }) => {
   return (
     <button
-      className={cx('btn', className, { primary, full, narrow, simple })}
+      className={cx('btn', className, { primary, gray, full, narrow, simple })}
       {...props}
     >
       {children}
@@ -28,7 +29,7 @@ const Button = ({
 
           font-size: 0.9em;
           font-weight: bold;
-          padding: 12px;
+          padding: 12px 16px;
 
           transition: background 0.2s ease;
         }
@@ -48,6 +49,11 @@ const Button = ({
 
         .btn:focus:not(:active) {
           box-shadow: 0 0 0 0.18em rgb(154, 210, 249);
+        }
+
+        .btn.gray {
+          color: ${colors.blueGrayStrong};
+          border-color: ${colors.blueGrayStrong};
         }
 
         .btn.primary {

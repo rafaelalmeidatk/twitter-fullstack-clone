@@ -25,9 +25,18 @@ const Avatar = ({ url, size, withBorder }) => (
         height: 72px;
       }
 
+      .avatar.very-big {
+        width: 200px;
+        height: 200px;
+      }
+
       .avatar.with-border {
         border: 2px solid #fff;
         background: #fff;
+      }
+
+      .avatar.with-border.very-big {
+        border: 4px solid #fff;
       }
 
       img {
