@@ -117,7 +117,6 @@ const ProfileHeader = () => {
         }
 
         .container {
-          margin: 0;
           display: flex;
         }
 
@@ -149,6 +148,12 @@ const ProfileHeader = () => {
         .profile-header :global(.action-btn) {
           display: flex;
           align-items: center;
+        }
+
+        @media (max-width: 1087px) {
+          .container {
+            margin: 0;
+          }
         }
 
         @media (max-width: 1280px) {
