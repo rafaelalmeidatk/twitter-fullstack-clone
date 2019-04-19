@@ -95,6 +95,7 @@ const ProfileHeader = () => {
               followers={420}
               likes={14}
             />
+            {actionButton}
           </div>
 
           <div className="main-right">{actionButton}</div>
@@ -109,7 +110,6 @@ const ProfileHeader = () => {
         }
 
         .header-bar {
-          padding: 0 32px;
           height: 60px;
           display: flex;
           background: #fff;
@@ -117,6 +117,7 @@ const ProfileHeader = () => {
         }
 
         .container {
+          padding: 0 32px;
           display: flex;
         }
 
@@ -138,6 +139,17 @@ const ProfileHeader = () => {
         .stats {
           flex: 1 1 auto;
           display: flex;
+          justify-content: space-between;
+        }
+
+        .stats :global(.action-btn),
+        .main-right :global(.action-btn) {
+          display: flex;
+          align-items: center;
+        }
+
+        .stats :global(.action-btn) {
+          display: none;
         }
 
         .main-right {
@@ -145,20 +157,19 @@ const ProfileHeader = () => {
           justify-content: flex-end;
         }
 
-        .profile-header :global(.action-btn) {
-          display: flex;
-          align-items: center;
-        }
-
         @media (max-width: 1087px) {
           .container {
-            margin: 0;
+            width: 100%;
           }
         }
 
         @media (max-width: 1280px) {
           .main-right {
             display: none;
+          }
+
+          .stats :global(.action-btn) {
+            display: flex;
           }
 
           .stats {
