@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import Navbar from '../components/Navbar';
 import ProfileHeader from '../components/ProfileHeader';
-import ProfileTweets from '../components/ProfileTweets';
+import TweetsList from '../components/TweetsList';
 import colors from '../lib/colors';
 
 const GET_USER_QUERY = gql`
@@ -12,6 +12,10 @@ const GET_USER_QUERY = gql`
       id
       name
       username
+      tweets {
+        id
+        content
+      }
     }
   }
 `;
@@ -82,6 +86,7 @@ const ProfilePage = ({ username }) => {
   if (loading) return <div>Loading...</div>;
 
   const { user } = data;
+  const userWithoutTweets = { ...user, tweets: null };
 
   return (
     <div className="main">
@@ -94,7 +99,7 @@ const ProfilePage = ({ username }) => {
         </div>
 
         <div className="content">
-          <ProfileTweets />
+          <TweetsList tweets={user.tweets} author={userWithoutTweets} />
         </div>
 
         <div className="main-right">right!</div>
