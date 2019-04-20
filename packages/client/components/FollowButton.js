@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-apollo-hooks';
+import { useQuery, useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
 import Button from './Button';
 import colors from '../lib/colors';
+
+const FETCH_USER_FOLLOWERS_QUERY = gql`
+  query FetchUserFollowers($username: String) {
+    user(input: { username: $username }) {
+      id
+      followersCount
+    }
+  }
+`;
 
 const FOLLOW_USER_MUTATION = gql`
   mutation FollowUser($input: FollowUserInput!, $targetUsername: String!) {
@@ -28,7 +37,7 @@ const UNFOLLOW_USER_MUTATION = gql`
   }
 `;
 
-const FollowButton = ({ targetUser }) => {
+const FollowButton = ({ targetUser, onFollowersStatusChange }) => {
   const [loading, setLoading] = useState(false);
 
   const follow = useMutation(FOLLOW_USER_MUTATION, {
@@ -42,6 +51,7 @@ const FollowButton = ({ targetUser }) => {
     setLoading(true);
     try {
       await follow();
+      onFollowersStatusChange();
     } catch (err) {
       setLoading(false);
     }
@@ -54,7 +64,7 @@ const FollowButton = ({ targetUser }) => {
   );
 };
 
-const UnfollowButton = ({ targetUser }) => {
+const UnfollowButton = ({ targetUser, onFollowersStatusChange }) => {
   const [loading, setLoading] = useState(false);
   const unfollow = useMutation(UNFOLLOW_USER_MUTATION, {
     variables: {
@@ -67,6 +77,7 @@ const UnfollowButton = ({ targetUser }) => {
     setLoading(true);
     try {
       await unfollow();
+      onFollowersStatusChange();
     } catch (err) {
       setLoading(false);
     }
@@ -123,10 +134,29 @@ const UnfollowButton = ({ targetUser }) => {
 };
 
 const FollowButtonBase = ({ targetUser, currentUser }) => {
+  const refetchUserFollowers = useQuery(FETCH_USER_FOLLOWERS_QUERY, {
+    skip: true,
+    variables: { username: targetUser.username },
+  });
+
+  const handleFollowingStatusChange = async () => {
+    try {
+      await refetchUserFollowers.refetch();
+    } catch (err) {
+      console.error('Error when trying to refetch the followers', err);
+    }
+  };
+
   return currentUser.isFollowingUser ? (
-    <UnfollowButton targetUser={targetUser} />
+    <UnfollowButton
+      targetUser={targetUser}
+      onFollowersStatusChange={handleFollowingStatusChange}
+    />
   ) : (
-    <FollowButton targetUser={targetUser} />
+    <FollowButton
+      targetUser={targetUser}
+      onFollowersStatusChange={handleFollowingStatusChange}
+    />
   );
 };
 
