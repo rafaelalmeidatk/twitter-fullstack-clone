@@ -14,7 +14,7 @@ const ProfileHeader = ({ user, currentUser }) => {
       </div>
     ) : (
       <div className="action-btn">
-        <FollowButton />
+        <FollowButton targetUser={user} currentUser={currentUser} />
       </div>
     );
 

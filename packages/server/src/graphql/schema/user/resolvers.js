@@ -3,15 +3,20 @@ import { AlreadyInUseError } from '../../errors';
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
 import {
   createUser,
+  followUser,
+  unfollowUser,
   findUserById,
   findUserByUsername,
   getUserTweetsCount,
   getUserFollowersCount,
   getUserFollowingCount,
+  followsUser,
 } from 'db/actions/user';
 import { getTweetsFromUser } from 'db/actions/tweet';
 
+// ------------------------------
 // User
+
 const userTweets = baseResolver.createResolver(async root => {
   return await getTweetsFromUser(root.id);
 });
@@ -28,7 +33,15 @@ const userFollowingCount = baseResolver.createResolver(async root => {
   return await getUserFollowingCount(root);
 });
 
+const isFollowingUser = baseResolver.createResolver(async (root, args) => {
+  const { username } = args;
+
+  return await followsUser(root, username);
+});
+
+// ------------------------------
 // Query
+
 const allUsers = async () => {
   return [];
 };
@@ -53,7 +66,9 @@ const me = isAuthenticatedResolver.createResolver(
   }
 );
 
+// ------------------------------
 // Mutation
+
 const registerUser = baseResolver.createResolver(async (_, { input }) => {
   const { name, username, password, email } = input;
 
@@ -77,12 +92,33 @@ const registerUser = baseResolver.createResolver(async (_, { input }) => {
   return await findUserByUsername(username);
 });
 
+const followUserMutation = isAuthenticatedResolver.createResolver(
+  async (root, { input }, { user }) => {
+    const { targetId } = input;
+
+    await followUser(user.id, targetId);
+    return { user: await findUserById(user.id) };
+  }
+);
+
+const unfollowUserMutation = isAuthenticatedResolver.createResolver(
+  async (root, { input }, { user }) => {
+    const { targetId } = input;
+
+    await unfollowUser(user.id, targetId);
+    return { user: await findUserById(user.id) };
+  }
+);
+
+// ------------------------------
+
 export default {
   User: {
     tweets: userTweets,
     tweetsCount: userTweetsCount,
     followersCount: userFollowersCount,
     followingCount: userFollowingCount,
+    isFollowingUser,
   },
   Query: {
     allUsers,
@@ -91,5 +127,7 @@ export default {
   },
   Mutation: {
     registerUser,
+    followUser: followUserMutation,
+    unfollowUser: unfollowUserMutation,
   },
 };

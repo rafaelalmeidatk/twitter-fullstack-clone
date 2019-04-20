@@ -10,6 +10,8 @@ type User {
   tweetsCount: Int!
   followersCount: Int!
   followingCount: Int!
+
+  isFollowingUser(username: String): Boolean
 }
 
 input UserInput {
@@ -23,6 +25,12 @@ type Query {
   me: User!
 }
 
+type Mutation {
+  registerUser(input: RegisterUserInput!): User!
+  followUser(input: FollowUserInput!): FollowUserPayload!
+  unfollowUser(input: UnfollowUserInput!): UnfollowUserPayload!
+}
+
 input RegisterUserInput {
   username: String!
   password: String!
@@ -30,6 +38,18 @@ input RegisterUserInput {
   name: String!
 }
 
-type Mutation {
-  registerUser(input: RegisterUserInput!): User!
+input FollowUserInput {
+  targetId: ID!
+}
+
+type FollowUserPayload {
+  user: User
+}
+
+input UnfollowUserInput {
+  targetId: ID!
+}
+
+type UnfollowUserPayload {
+  user: User
 }

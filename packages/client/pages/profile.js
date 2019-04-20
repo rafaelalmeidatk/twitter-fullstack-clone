@@ -22,6 +22,7 @@ const GET_USER_QUERY = gql`
     }
     me {
       id
+      isFollowingUser(username: $username)
     }
   }
 `;

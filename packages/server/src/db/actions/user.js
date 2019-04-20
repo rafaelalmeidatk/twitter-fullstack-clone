@@ -13,15 +13,21 @@ export async function verifyPassword(password, hash) {
   return bcrypt.compare(password, hash);
 }
 
-export async function findUserById(id) {
-  const users = await knex('users').where({ id });
+export async function findUserById(id, columns = ['*']) {
+  const users = await knex('users')
+    .select(columns)
+    .where({ id });
   return users && users[0];
 }
 
-export async function findUserByUsername(username) {
-  const users = await knex('users').where({ username });
+export async function findUserByUsername(username, columns = ['*']) {
+  const users = await knex('users')
+    .select(columns)
+    .where({ username });
   return users && users[0];
 }
+
+// Creation
 
 export async function createUser({ name, username, password, email }) {
   try {
@@ -43,6 +49,35 @@ export async function createUser({ name, username, password, email }) {
 
     throw err;
   }
+}
+
+// Interation
+
+export async function followUser(userId, targetId) {
+  return await knex('follows')
+    .insert({ userId, followingId: targetId })
+    .returning('id');
+}
+
+export async function unfollowUser(userId, targetId) {
+  return await knex('follows')
+    .del()
+    .where({ userId, followingId: targetId });
+}
+
+// Data gathering
+
+export async function followsUser(user, targetUsername) {
+  const target = await findUserByUsername(targetUsername, 'id');
+
+  const entries = await knex('follows')
+    .select('id')
+    .where({
+      userId: user.id,
+      followingId: target.id,
+    });
+
+  return entries.length > 0;
 }
 
 export async function getUserTweetsCount(user) {
