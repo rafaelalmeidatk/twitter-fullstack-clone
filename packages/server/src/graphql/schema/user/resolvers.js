@@ -1,12 +1,31 @@
 import { UserInputError } from 'apollo-server-express';
 import { AlreadyInUseError } from '../../errors';
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
-import { createUser, findUserById, findUserByUsername } from 'db/actions/user';
+import {
+  createUser,
+  findUserById,
+  findUserByUsername,
+  getUserTweetsCount,
+  getUserFollowersCount,
+  getUserFollowingCount,
+} from 'db/actions/user';
 import { getTweetsFromUser } from 'db/actions/tweet';
 
 // User
 const userTweets = baseResolver.createResolver(async root => {
   return await getTweetsFromUser(root.id);
+});
+
+const userTweetsCount = baseResolver.createResolver(async root => {
+  return await getUserTweetsCount(root);
+});
+
+const userFollowersCount = baseResolver.createResolver(async root => {
+  return await getUserFollowersCount(root);
+});
+
+const userFollowingCount = baseResolver.createResolver(async root => {
+  return await getUserFollowingCount(root);
 });
 
 // Query
@@ -61,6 +80,9 @@ const registerUser = baseResolver.createResolver(async (_, { input }) => {
 export default {
   User: {
     tweets: userTweets,
+    tweetsCount: userTweetsCount,
+    followersCount: userFollowersCount,
+    followingCount: userFollowingCount,
   },
   Query: {
     allUsers,

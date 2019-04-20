@@ -30,9 +30,27 @@ exports.up = async function(knex) {
       .inTable('users');
     table.timestamps(true, true);
   });
+
+  // Followers table
+  await knex.schema.createTable('follows', table => {
+    table
+      .uuid('id')
+      .notNullable()
+      .primary()
+      .defaultTo(knex.raw('uuid_generate_v4()'));
+    table
+      .uuid('userId')
+      .references('id')
+      .inTable('users');
+    table
+      .uuid('followingId')
+      .references('id')
+      .inTable('users');
+  });
 };
 
 exports.down = async function(knex) {
+  await knex.schema.dropTableIfExists('follows');
   await knex.schema.dropTableIfExists('tweets');
   await knex.schema.dropTableIfExists('users');
 };

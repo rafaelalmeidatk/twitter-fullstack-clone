@@ -7,6 +7,9 @@ type User {
   avatarSourceUrl: String
   coverSourceUrl: String
   tweets: [Tweet!]!
+  tweetsCount: Int!
+  followersCount: Int!
+  followingCount: Int!
 }
 
 input UserInput {

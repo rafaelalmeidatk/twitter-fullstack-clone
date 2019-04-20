@@ -44,3 +44,24 @@ export async function createUser({ name, username, password, email }) {
     throw err;
   }
 }
+
+export async function getUserTweetsCount(user) {
+  const entries = await knex('tweets')
+    .count('id')
+    .where({ userId: user.id });
+  return Number(entries[0].count);
+}
+
+export async function getUserFollowersCount(user) {
+  const entries = await knex('follows')
+    .count('id')
+    .where({ followingId: user.id });
+  return Number(entries[0].count);
+}
+
+export async function getUserFollowingCount(user) {
+  const entries = await knex('follows')
+    .count('id')
+    .where({ userId: user.id });
+  return Number(entries[0].count);
+}

@@ -16,6 +16,9 @@ const GET_USER_QUERY = gql`
         id
         content
       }
+      tweetsCount
+      followersCount
+      followingCount
     }
     me {
       id

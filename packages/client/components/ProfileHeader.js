@@ -29,9 +29,9 @@ const ProfileHeader = ({ user, currentUser }) => {
 
           <div className="stats">
             <ProfileHeaderStats
-              tweets={32}
-              following={503}
-              followers={420}
+              tweets={user.tweetsCount}
+              following={user.followingCount}
+              followers={user.followersCount}
               likes={14}
             />
             {actionButton}
