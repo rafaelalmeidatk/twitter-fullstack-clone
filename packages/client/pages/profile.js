@@ -17,6 +17,9 @@ const GET_USER_QUERY = gql`
         content
       }
     }
+    me {
+      id
+    }
   }
 `;
 
@@ -85,13 +88,13 @@ const ProfilePage = ({ username }) => {
 
   if (loading) return <div>Loading...</div>;
 
-  const { user } = data;
+  const { user, me } = data;
   const userWithoutTweets = { ...user, tweets: null };
 
   return (
     <div className="main">
       <Navbar />
-      <ProfileHeader />
+      <ProfileHeader user={user} currentUser={me} />
 
       <div className="container">
         <div className="main-left">

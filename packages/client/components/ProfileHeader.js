@@ -1,83 +1,22 @@
 import React from 'react';
 import Avatar from './Avatar';
-import UnderlineButton from './UnderlineButton';
+import ProfileHeaderStats from './ProfileHeaderStats';
 import Button from './Button';
-import colors from '../lib/colors';
+import FollowButton from './FollowButton';
 
-const ProfileStats = ({ tweets, following, followers, likes }) => (
-  <div className="stats-container">
-    <UnderlineButton selected>
-      <a>
-        <div className="label">Tweets</div>
-        <div className="value selected">{tweets}</div>
-      </a>
-    </UnderlineButton>
-    <UnderlineButton>
-      <a>
-        <div className="label">Following</div>
-        <div className="value">{following}</div>
-      </a>
-    </UnderlineButton>
-    <UnderlineButton>
-      <a>
-        <div className="label">Followers</div>
-        <div className="value">{followers}</div>
-      </a>
-    </UnderlineButton>
-    <UnderlineButton>
-      <a>
-        <div className="label">Likes</div>
-        <div className="value">{likes}</div>
-      </a>
-    </UnderlineButton>
-
-    <style jsx>{`
-      .stats-container {
-        height: 100%;
-        display: flex;
-      }
-
-      .stats-container a {
-        padding: 15px 8px 6px;
-        display: block;
-        flex: 1 1 auto;
-        text-align: center;
-      }
-
-      .label {
-        margin-bottom: 0;
-        font-size: 1.01em;
-        transition: color 0.2s ease;
-        color: ${colors.blueGray};
-        line-height: 1em;
-      }
-
-      .value {
-        font-size: 1.3em;
-        font-weight: bold;
-        line-height: 1.3em;
-        color: ${colors.blueGrayStrong};
-      }
-
-      .value.selected {
-        color: ${colors.twitterBlue};
-      }
-
-      .stats-container a:hover > .value {
-        color: ${colors.twitterBlue};
-      }
-    `}</style>
-  </div>
-);
-
-const ProfileHeader = () => {
-  const actionButton = (
-    <div className="action-btn">
-      <Button gray narrow>
-        Edit Profile
-      </Button>
-    </div>
-  );
+const ProfileHeader = ({ user, currentUser }) => {
+  const actionButton =
+    currentUser && user.id === currentUser.id ? (
+      <div className="action-btn">
+        <Button gray narrow>
+          Edit Profile
+        </Button>
+      </div>
+    ) : (
+      <div className="action-btn">
+        <FollowButton />
+      </div>
+    );
 
   return (
     <div className="profile-header">
@@ -89,7 +28,7 @@ const ProfileHeader = () => {
           </div>
 
           <div className="stats">
-            <ProfileStats
+            <ProfileHeaderStats
               tweets={32}
               following={503}
               followers={420}
