@@ -36,7 +36,7 @@ const ProfileHeaderStats = ({ tweets, following, followers, likes }) => (
       }
 
       .stats-container a {
-        padding: 15px 8px 6px;
+        padding: 15px 2px 6px;
         display: block;
         flex: 1 1 auto;
         text-align: center;
@@ -44,16 +44,16 @@ const ProfileHeaderStats = ({ tweets, following, followers, likes }) => (
 
       .label {
         margin-bottom: 0;
-        font-size: 1.01em;
+        font-size: 0.95em;
         transition: color 0.2s ease;
         color: ${colors.blueGray};
         line-height: 1em;
       }
 
       .value {
-        font-size: 1.3em;
+        font-size: 1.4em;
         font-weight: bold;
-        line-height: 1.3em;
+        line-height: 1.35em;
         color: ${colors.blueGrayStrong};
       }
 

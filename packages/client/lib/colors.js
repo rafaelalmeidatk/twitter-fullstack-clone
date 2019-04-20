@@ -9,6 +9,7 @@ export default {
   buttonPrimaryActive: '#148dd8',
   buttonNegativeHover: '#e9f5fd',
   buttonNegativeActive: '#dcf1ff',
+  buttonDanger: '#e0245e',
   buttonDisabled: '#cbd6dc',
 
   // misc

@@ -44,7 +44,7 @@ const Button = ({
 
         .btn[disabled] {
           cursor: not-allowed;
-          background: ${colors.buttonDisabled};
+          opacity: 0.5;
         }
 
         .btn:focus:not(:active) {
@@ -72,6 +72,7 @@ const Button = ({
 
         .btn.primary[disabled] {
           background: ${colors.buttonDisabled};
+          opacity: 0.9;
         }
 
         .btn.full {
