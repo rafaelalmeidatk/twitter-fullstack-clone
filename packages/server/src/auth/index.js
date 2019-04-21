@@ -1,7 +1,7 @@
 import express from 'express';
 import { findUserByUsername, verifyPassword } from 'db/actions/user';
 
-export default () => {
+export default ({ cookieSettings }) => {
   const router = express.Router();
 
   router.post('/auth/login', async (req, res) => {
@@ -31,6 +31,24 @@ export default () => {
     await new Promise(res => req.session.regenerate(res));
     req.session.userId = user.id;
     res.json({ message: 'Login successfully!' });
+  });
+
+  router.post('/auth/logout', async (req, res) => {
+    req.session.destroy(err => {
+      if (err) {
+        return res.status(500).json({
+          error: 'Failed to logout',
+        });
+      }
+
+      res.clearCookie('connect.sid', {
+        httpOnly: cookieSettings.httpOnly,
+        secure: cookieSettings.secure,
+      });
+      res.json({
+        message: 'You are now logged out',
+      });
+    });
   });
 
   // Temporary route to test the session

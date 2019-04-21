@@ -25,16 +25,21 @@ const start = (options = {}) => {
     app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
     //--------------------
+    // Cookies settings
+
+    const cookieSettings = {
+      httpOnly: false,
+      secure: false,
+    };
+
+    //--------------------
     // Sessions
 
     const KnexSessionStore = connectSessionKnex(session);
     const store = new KnexSessionStore({ knex });
     app.use(
       session({
-        cookie: {
-          // httpOnly: true,
-          // secure: true,
-        },
+        cookie: cookieSettings,
         secret: 'test',
         resave: false,
         saveUninitialized: false,
@@ -45,7 +50,7 @@ const start = (options = {}) => {
     //--------------------
     // Auth
 
-    app.use(auth());
+    app.use(auth({ cookieSettings }));
 
     //--------------------
     // GraphQL

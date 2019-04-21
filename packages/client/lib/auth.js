@@ -23,3 +23,15 @@ export const login = ({ apolloClient, redirectUrl }) => {
       shallow: true,
     });
 };
+
+export const logout = async ({ forceRedirect } = {}) => {
+  // Make the request to destroy the session and
+  // remove the session cookie
+  await ky.post('http://localhost:4100/auth/logout', {
+    credentials: 'include',
+  });
+
+  // Redirect with "history.go" to force a refresh
+  // so the app can see the new cookies
+  forceRedirect && history.go('/');
+};
