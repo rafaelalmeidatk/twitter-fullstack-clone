@@ -1,45 +1,194 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { gql } from 'apollo-boost';
+import { useMutation } from 'react-apollo-hooks';
 import colors from '../lib/colors';
+import AutoResizeTextarea from './AutoResizeTextarea';
 import Avatar from './Avatar';
+import Button from './Button';
+import NewTweetToolbar from './NewTweetToolbar';
 
-const NewTweet = () => (
-  <div className="new-tweet">
-    <Avatar size="small" />
+const CREATE_TWEET_QUERY = gql`
+  mutation CreateTweet($input: CreateTweetInput!) {
+    createTweet(input: $input) {
+      id
+      content
+      user {
+        id
+        name
+        username
+      }
+    }
+  }
+`;
+
+// TODO: change the query when the feed is done
+const GET_USER_FEED_QUERY = gql`
+  query getUserFeed {
+    me {
+      id
+      tweets {
+        id
+        content
+        user {
+          id
+          name
+          username
+        }
+      }
+    }
+  }
+`;
+
+const NewTweetForm = ({ onCancel }) => {
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(false);
+  const createTweet = useMutation(CREATE_TWEET_QUERY);
+
+  const handleContentChange = e => {
+    const { value } = e.target;
+    setContent(value);
+  };
+
+  const handleCreateTweet = async () => {
+    setLoading(true);
+
+    createTweet({
+      variables: { input: { content } },
+      update: (proxy, { data: { createTweet } }) => {
+        try {
+          const data = proxy.readQuery({ query: GET_USER_FEED_QUERY });
+          const newData = {
+            ...data,
+            me: {
+              ...data.me,
+              tweets: [createTweet, ...data.me.tweets],
+            },
+          };
+          proxy.writeQuery({ query: GET_USER_FEED_QUERY, data: newData });
+        } catch (err) {
+          console.error('[UPDATE CACHE]', err);
+        }
+      },
+    })
+      .then(() => {
+        setLoading(false);
+        setContent('');
+      })
+      .catch(err => {
+        console.error('[NEW TWEET]', err);
+      });
+  };
+
+  const handleBlur = () => {
+    if (!content) onCancel();
+  };
+
+  return (
     <form>
-      <textarea className="input" placeholder="What's hapenning?" />
+      <AutoResizeTextarea
+        autoFocus
+        className="input"
+        placeholder="What's hapenning?"
+        rows={2}
+        value={content}
+        onBlur={handleBlur}
+        onChange={handleContentChange}
+      />
+
+      <NewTweetToolbar
+        tweetButton={
+          <Button narrow primary onClick={handleCreateTweet} disabled={loading}>
+            Tweet
+          </Button>
+        }
+      />
+
+      <style jsx>{`
+        form {
+          margin-left: 8px;
+          flex: 1 1 auto;
+        }
+
+        form :global(.input) {
+          padding: 6px 8px;
+          width: 100%;
+          min-height: 80px;
+          box-shadow: none;
+          font-size: 0.9em;
+          resize: none;
+          border: 1px solid ${colors.inputBlueBorder};
+          border-radius: 8px;
+          overflow: auto;
+        }
+
+        form :global(.input):focus {
+          box-shadow: 0 0 0 1px ${colors.inputBlueBorder};
+        }
+
+        :global(.input)::placeholder {
+          color: rgba(0, 0, 0, 0.3);
+        }
+      `}</style>
     </form>
-    <style jsx>{`
-      .new-tweet {
-        padding: 10px 12px 10px 18px;
-        display: flex;
-        background-color: ${colors.newTweetBg};
-        border: 1px solid ${colors.boxBorder};
-      }
+  );
+};
 
-      form {
-        margin-left: 8px;
-        flex: 1 1 auto;
-      }
+const NewTweet = () => {
+  const [open, setOpen] = useState(true);
 
-      .input {
-        padding: 6px 8px;
-        width: 100%;
-        height: 36px;
-        border: 1px solid ${colors.inputBlueBorder};
-        box-shadow: none;
-        font-size: 0.9em;
-        resize: none;
-      }
+  return (
+    <div className="new-tweet">
+      <Avatar size="small" />
+      {open ? (
+        <NewTweetForm
+          onCancel={() => {
+            setOpen(false);
+          }}
+        />
+      ) : (
+        <form>
+          <textarea
+            className="input"
+            placeholder="What's hapenning?"
+            onFocus={() => setOpen(true)}
+            onBlur={() => setOpen(false)}
+          />
+        </form>
+      )}
 
-      .input:hover {
-        border: 1px solid ${colors.inputBlueBorder};
-      }
+      <style jsx>{`
+        .new-tweet {
+          padding: 10px 12px 10px 18px;
+          display: flex;
+          background-color: ${colors.newTweetBg};
+          border: 1px solid ${colors.boxBorder};
+        }
 
-      .input::placeholder {
-        color: ${colors.twitterBlue};
-      }
-    `}</style>
-  </div>
-);
+        form {
+          margin-left: 8px;
+          flex: 1 1 auto;
+        }
+
+        .input {
+          padding: 6px 8px;
+          width: 100%;
+          height: 36px;
+          border: 1px solid ${colors.inputBlueBorder};
+          box-shadow: none;
+          font-size: 0.9em;
+          resize: none;
+        }
+
+        .input:hover {
+          border: 1px solid ${colors.inputBlueBorder};
+        }
+
+        .input::placeholder {
+          color: ${colors.twitterBlue};
+        }
+      `}</style>
+    </div>
+  );
+};
 
 export default NewTweet;

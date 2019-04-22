@@ -80,8 +80,9 @@ const Button = ({
         }
 
         .btn.narrow {
-          padding-top: 8px;
-          padding-bottom: 8px;
+          height: 34px;
+          padding-top: 0;
+          padding-bottom: 0;
         }
 
         .btn.simple {
