@@ -25,7 +25,7 @@ const errorLink = onError(({ graphQLErrors, forward, operation }) => {
       // Use is not authenticated, so we run the logout function
       // (to clear any session cookies) and redirect him back to the
       // initial page
-      await logout({ forceRedirect: true });
+      await logout({ withRedirect: true });
     }
 
     const subscriber = {

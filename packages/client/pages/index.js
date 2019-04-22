@@ -1,20 +1,16 @@
 import React from 'react';
-import { withRouter } from 'next/router';
-import isRequestAuthenticated from '../lib/isRequestAuthenticated';
+import getLoggedInUser from '../lib/getLoggedInUser';
 import HomePage from '../components/HomePage';
 import MainPage from '../components/MainPage';
 
-const IndexPage = ({ isAuthenticated, router }) => {
-  return router.query.fromLogin || isAuthenticated ? (
-    <MainPage />
-  ) : (
-    <HomePage />
-  );
+const IndexPage = ({ loggedInUser }) => {
+  return loggedInUser ? <MainPage /> : <HomePage />;
 };
 
-IndexPage.getInitialProps = ({ req }) => {
-  const isAuthenticated = req && isRequestAuthenticated(req);
-  return { isAuthenticated };
+IndexPage.getInitialProps = async context => {
+  // Get the user from the server
+  const loggedInUser = await getLoggedInUser(context.apolloClient);
+  return { loggedInUser };
 };
 
-export default withRouter(IndexPage);
+export default IndexPage;

@@ -11,18 +11,32 @@ export default App => {
       const {
         Component,
         router,
-        ctx: { req },
+        ctx: { req, res },
       } = ctx;
-      const reqHeaders = req.headers;
+      const reqHeaders = req && req.headers;
+
+      // Init apollo forwarding the headers from the client, this allows
+      // Apollo to send the cookies from the headers to the API server,
+      // making authenticated calls possible in the server phase of SSR
+      const apollo = initApollo(null, reqHeaders && { headers: reqHeaders });
+
+      // Inject Apollo Client into context for the execution of queries inside
+      // getInitialProps
+      ctx.ctx.apolloClient = apollo;
 
       let appProps = {};
       if (App.getInitialProps) {
         appProps = await App.getInitialProps(ctx);
       }
 
+      if (res && res.finished) {
+        // When redirecting, the response is finished.
+        // There is no need to run the queries
+        return {};
+      }
+
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
-      const apollo = initApollo(null, reqHeaders && { headers: reqHeaders });
       if (!process.browser) {
         try {
           // Run all GraphQL queries
@@ -41,10 +55,10 @@ export default App => {
           // Prevent Apollo Client GraphQL errors from crashing SSR.
           // Handle them in components via the data.error prop:
           // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-          console.error('Error while running `getDataFromTree`', error);
+          console.error('Error while running `getMarkupFromTree`', error);
         }
 
-        // getDataFromTree does not call componentWillUnmount
+        // getMarkupFromTree does not call componentWillUnmount
         // head side effect therefore need to be cleared manually
         Head.rewind();
       }

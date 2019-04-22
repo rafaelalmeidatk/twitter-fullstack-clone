@@ -28,7 +28,7 @@ const start = (options = {}) => {
     // Cookies settings
 
     const cookieSettings = {
-      httpOnly: false,
+      httpOnly: true,
       secure: false,
     };
 
