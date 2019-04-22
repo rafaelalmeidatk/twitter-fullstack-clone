@@ -27,6 +27,7 @@ export async function findUserByUsername(username, columns = ['*']) {
   return users && users[0];
 }
 
+// ------------------------------
 // Creation
 
 export async function createUser({ name, username, password, email }) {
@@ -51,6 +52,7 @@ export async function createUser({ name, username, password, email }) {
   }
 }
 
+// ------------------------------
 // Interation
 
 export async function followUser(userId, targetId) {
@@ -65,6 +67,7 @@ export async function unfollowUser(userId, targetId) {
     .where({ userId, followingId: targetId });
 }
 
+// ------------------------------
 // Data gathering
 
 export async function followsUser(user, targetUsername) {
@@ -78,6 +81,13 @@ export async function followsUser(user, targetUsername) {
     });
 
   return entries.length > 0;
+}
+
+export async function getUserFollowingIds(user) {
+  const rows = await knex('follows')
+    .select('followingId')
+    .where({ userId: user.id });
+  return rows.map(row => row.followingId);
 }
 
 export async function getUserTweetsCount(user) {

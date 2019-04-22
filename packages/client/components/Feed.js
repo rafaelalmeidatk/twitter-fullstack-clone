@@ -5,16 +5,13 @@ import Tweet from './Tweet';
 
 const GET_USER_FEED_QUERY = gql`
   query getUserFeed {
-    me {
+    feed {
       id
-      tweets {
+      content
+      user {
         id
-        content
-        user {
-          id
-          name
-          username
-        }
+        name
+        username
       }
     }
   }
@@ -29,7 +26,7 @@ const Feed = () => {
 
   return (
     <div className="feed">
-      {data.me.tweets.map(tweet => (
+      {data.feed.map(tweet => (
         <Tweet
           key={tweet.id}
           content={tweet.content}

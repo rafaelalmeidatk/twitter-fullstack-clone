@@ -22,6 +22,7 @@ const typeDefs = mergeTypes(typesArray);
 const resolversArray = [
   require('./schema/user/resolvers').default,
   require('./schema/tweet/resolvers').default,
+  require('./schema/feed/resolvers').default,
 ];
 const resolvers = mergeResolvers(resolversArray);
 
