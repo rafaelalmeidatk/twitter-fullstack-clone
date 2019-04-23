@@ -6,7 +6,7 @@ import Feed from './Feed';
 
 const MainPage = () => (
   <div className="main">
-    <Navbar />
+    <Navbar currentPage="home" />
 
     <div className="container">
       <div className="main-left">

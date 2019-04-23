@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import colors from '../lib/colors';
@@ -10,6 +11,9 @@ const GET_USER_PROFILE_QUERY = gql`
       id
       name
       username
+      tweetsCount
+      followersCount
+      followingCount
     }
   }
 `;
@@ -71,13 +75,35 @@ const UserCard = () => {
         <div className="header">
           <Avatar size="big" withBorder />
           <div className="header-meta">
-            <div className="name">{name}</div>
-            <div className="username">@{username}</div>
+            <div>
+              <Link
+                href={`/profile?username=${username}`}
+                as={`/profile/${username}`}
+                prefetch
+              >
+                <a className="name">{name}</a>
+              </Link>
+            </div>
+            <div>
+              <Link
+                href={`/profile?username=${username}`}
+                as={`/profile/${username}`}
+                prefetch
+              >
+                <a className="username">@{username}</a>
+              </Link>
+            </div>
           </div>
         </div>
 
         <div className="stats">
-          <Stats tweets={32} following={9} followers={12} />
+          {data.me && (
+            <Stats
+              tweets={data.me.tweetsCount}
+              following={data.me.followingCount}
+              followers={data.me.followersCount}
+            />
+          )}
         </div>
       </div>
 
@@ -109,6 +135,14 @@ const UserCard = () => {
           margin: 0.5rem 0 0 0.6rem;
         }
 
+        .header-meta div {
+          line-height: 1.3em;
+        }
+
+        .header-meta a:hover {
+          text-decoration: underline;
+        }
+
         .name {
           color: rgba(0, 0, 0, 0.85);
           font-size: 1.2em;
@@ -117,6 +151,7 @@ const UserCard = () => {
         }
 
         .username {
+          line-height: 1em;
           font-size: 0.9em;
           color: rgba(0, 0, 0, 0.7);
         }

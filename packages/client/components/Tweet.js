@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import colors from '../lib/colors';
 import Avatar from './Avatar';
 import Icon from './Icon';
@@ -74,8 +75,16 @@ const Tweet = ({ name, username, content }) => (
 
     <div className="body">
       <div className="meta">
-        <span className="name">{name}</span>
-        <span className="username">@{username}</span>
+        <Link
+          href={`/profile?username=${username}`}
+          as={`/profile/${username}`}
+          prefetch
+        >
+          <a>
+            <span className="name">{name}</span>
+            <span className="username">@{username}</span>
+          </a>
+        </Link>
       </div>
       <div className="text-content">{content}</div>
 
@@ -97,6 +106,11 @@ const Tweet = ({ name, username, content }) => (
 
       .meta {
         line-height: 1em;
+      }
+
+      .meta a:hover .name {
+        text-decoration: underline;
+        color: ${colors.twitterBlue};
       }
 
       .name {

@@ -1,10 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 import cx from 'classnames';
 import colors from '../lib/colors';
 import Icon from './Icon';
 
-const NavButton = ({ text, icon, iconSelected, selected }) => (
-  <div className={cx('nav-button', { selected })}>
+const NavButton = ({ text, icon, iconSelected, selected, ...props }) => (
+  <a className={cx('nav-button', { selected })} {...props}>
     <div className="btn-content">
       <div className="icon">
         <Icon
@@ -22,6 +23,7 @@ const NavButton = ({ text, icon, iconSelected, selected }) => (
         display: flex;
         flex-direction: column;
         position: relative;
+        color: #4a4a4a;
       }
 
       .nav-button,
@@ -67,23 +69,27 @@ const NavButton = ({ text, icon, iconSelected, selected }) => (
         margin-right: 6px;
       }
     `}</style>
-  </div>
+  </a>
 );
 
-const Navbar = () => (
+const Navbar = ({ currentPage }) => (
   <div className="app-navbar">
     <div className="container">
       <div className="bird">
         <Icon name="bird" color={colors.twitterBlue} size="1.28em" />
       </div>
       <div className="left">
-        <NavButton
-          text="Home"
-          icon="home"
-          iconSelected="homeFilled"
-          selected={true}
-        />
-        <NavButton text="Project on Github" icon="promoteMode" />
+        <Link href="/">
+          <NavButton
+            text="Home"
+            icon="home"
+            iconSelected="homeFilled"
+            selected={currentPage === 'home'}
+          />
+        </Link>
+        <a href="https://github.com/rafaelalmeidatk">
+          <NavButton text="Project on Github" icon="promoteMode" />
+        </a>
       </div>
       <div className="right">right</div>
     </div>
