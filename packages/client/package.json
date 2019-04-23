@@ -23,6 +23,7 @@
     "react": "^16.8.5",
     "react-apollo-hooks": "^0.4.5",
     "react-dom": "^16.8.5",
+    "react-infinite-scroller": "^1.2.4",
     "yup": "^0.27.0"
   },
   "devDependencies": {

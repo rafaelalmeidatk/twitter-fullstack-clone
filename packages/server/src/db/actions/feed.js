@@ -1,12 +1,65 @@
 import knex from '../knex';
 import { getUserFollowingIds } from './user';
 
-export async function getFeedForUser(user) {
+const decodeCursor = cursor => {
+  const content = new Buffer(cursor, 'base64').toString('binary');
+  const [after, order] = content.split(';');
+  return { after: new Date(after), order };
+};
+
+const encodeCursor = ({ after, order }) => {
+  const input = [new Date(after).toISOString(), order].join(';');
+  return Buffer.from(input).toString('base64');
+};
+
+export async function getFeedForUser(user, { first, after }) {
+  // Get all the IDs from the users that the user is following
   const followingIds = await getUserFollowingIds(user);
   const allIds = [user.id, ...followingIds];
+  const defaultOrder = 'desc'; // Sort from newest to oldest
 
-  return await knex('tweets')
+  first = Math.min(first || 10, 100); // Default to 10 entries, max of 100
+  const cursorData = after ? decodeCursor(after) : {};
+  const order = cursorData.order || defaultOrder;
+
+  const rows = await knex('tweets')
     .select('*')
     .whereIn('userId', allIds)
-    .orderBy('created_at', 'desc');
+    .andWhere(function() {
+      if (cursorData.after) {
+        this.where('created_at', '<', cursorData.after);
+      }
+    })
+    .orderBy('created_at', order)
+    .limit(first);
+
+  return {
+    edges: rows.map(row => ({
+      cursor: encodeCursor({ after: row.created_at, order }),
+      node: row,
+    })),
+    pageInfo: {
+      async hasNextPage() {
+        if (rows.length < first) {
+          return false;
+        }
+
+        // Check if there is one more tweet after the last sent,
+        // if so, we still have pages
+        const lastRow = rows[rows.length - 1];
+        const nextTweet = await knex('tweets')
+          .first('id')
+          .whereIn('userId', allIds)
+          .andWhere('created_at', '<', lastRow.created_at)
+          .orderBy('created_at', order)
+          .limit(1);
+
+        return !!nextTweet;
+      },
+      async hasPreviousPage() {
+        console.log('ops');
+        return false;
+      },
+    },
+  };
 }

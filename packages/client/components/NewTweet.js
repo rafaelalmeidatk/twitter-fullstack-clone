@@ -21,19 +21,23 @@ const CREATE_TWEET_QUERY = gql`
   }
 `;
 
-// TODO: change the query when the feed is done
 const GET_USER_FEED_QUERY = gql`
-  query getUserFeed {
-    me {
-      id
-      tweets {
-        id
-        content
-        user {
+  query getUserFeed($first: Int!, $after: String) {
+    feed(first: $first, after: $after) {
+      edges {
+        node {
           id
-          name
-          username
+          content
+          user {
+            id
+            name
+            username
+          }
         }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
       }
     }
   }
@@ -56,15 +60,30 @@ const NewTweetForm = ({ onCancel }) => {
       variables: { input: { content } },
       update: (proxy, { data: { createTweet } }) => {
         try {
-          const data = proxy.readQuery({ query: GET_USER_FEED_QUERY });
+          const data = proxy.readQuery({
+            query: GET_USER_FEED_QUERY,
+            variables: { first: 10, after: null },
+          });
+
+          const newTweetEdge = {
+            cursor: null, // we can't compute the cursor on front-end
+            node: createTweet,
+            __typename: 'FeedEdge',
+          };
+
           const newData = {
             ...data,
-            me: {
-              ...data.me,
-              tweets: [createTweet, ...data.me.tweets],
+            feed: {
+              ...data.feed,
+              edges: [newTweetEdge, ...data.feed.edges],
             },
           };
-          proxy.writeQuery({ query: GET_USER_FEED_QUERY, data: newData });
+
+          proxy.writeQuery({
+            query: GET_USER_FEED_QUERY,
+            variables: { first: 10, after: null },
+            data: newData,
+          });
         } catch (err) {
           console.error('[UPDATE CACHE]', err);
         }
@@ -134,7 +153,7 @@ const NewTweetForm = ({ onCancel }) => {
 };
 
 const NewTweet = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="new-tweet">
