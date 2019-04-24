@@ -3,6 +3,7 @@ export default {
   blueGray: '#657786',
   blueGrayStrong: '#66757f',
   error: '#ff3860',
+  heading: 'rgba(0, 0, 0, 0.85)',
 
   // buttons
   buttonPrimaryHover: '#1899e8',

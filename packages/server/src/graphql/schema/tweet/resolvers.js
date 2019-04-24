@@ -1,5 +1,12 @@
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
-import { findTweetById, createTweet, retweet, like } from 'db/actions/tweet';
+import {
+  findTweetById,
+  createTweet,
+  retweet,
+  like,
+  getUserHasRetweeted,
+  getUserHasLiked,
+} from 'db/actions/tweet';
 import { findUserById } from 'db/actions/user';
 
 // ------------------------------
@@ -17,6 +24,24 @@ const getTweet = baseResolver.createResolver(async root => {
   if (!root.tweetId) return null;
 
   return await findTweetById(root.tweetId);
+});
+
+const getRetweeted = baseResolver.createResolver(
+  async (root, args, { user }) => {
+    if (!user) {
+      return false;
+    }
+
+    return await getUserHasRetweeted({ userId: user.id, tweetId: root.id });
+  }
+);
+
+const getLiked = baseResolver.createResolver(async (root, args, { user }) => {
+  if (!user) {
+    return false;
+  }
+
+  return await getUserHasLiked({ userId: user.id, tweetId: root.id });
 });
 
 // ------------------------------
@@ -59,6 +84,8 @@ const likeMutation = isAuthenticatedResolver.createResolver(
 export default {
   Tweet: {
     user: getUser,
+    retweeted: getRetweeted,
+    liked: getLiked,
   },
   Retweet: {
     tweet: getTweet,

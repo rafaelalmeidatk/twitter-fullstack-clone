@@ -106,6 +106,7 @@ const ProfilePage = ({ username }) => {
         </div>
 
         <div className="content">
+          <div className="content-heading">Tweets</div>
           <TweetsList tweets={user.tweets} author={userWithoutTweets} />
         </div>
 
@@ -133,6 +134,16 @@ const ProfilePage = ({ username }) => {
         .content {
           flex: 1 1 auto;
           border-top: 1px solid ${colors.boxBorder};
+        }
+
+        .content-heading {
+          padding: 12px 15px;
+          background: #fff;
+          font-size: 1.2em;
+          font-weight: 700;
+          line-height: 1.2em;
+          color: ${colors.heading};
+          border-bottom: 1px solid ${colors.boxBorder};
         }
 
         @media (max-width: 1280px) {

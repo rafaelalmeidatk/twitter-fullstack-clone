@@ -5,6 +5,11 @@ type Tweet {
   createdAt: String!
   likes: [User!]!
   likesCount: Int
+
+  # If the authenticated user retweeted the tweet
+  retweeted: Boolean!
+  # If the authenticated user liked the tweet
+  liked: Boolean!
 }
 
 type Retweet {

@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import Link from 'next/link';
 import { useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
@@ -6,18 +7,18 @@ import colors from '../lib/colors';
 import Avatar from './Avatar';
 import Icon from './Icon';
 
-const TweetFooter = ({ onRetweet, onLike }) => (
+const TweetFooter = ({ retweeted, liked, onRetweet, onLike }) => (
   <div className="tweet-footer">
     <div className="reply">
       <Icon name="reply" />
       <span>15</span>
     </div>
-    <div className="retweet" onClick={onRetweet}>
+    <div className={cx('retweet', { active: retweeted })} onClick={onRetweet}>
       <Icon name="retweet" />
       <span>15</span>
     </div>
-    <div className="like" onClick={onLike}>
-      <Icon name="heart" />
+    <div className={cx('like', { active: liked })} onClick={onLike}>
+      <Icon name={liked ? 'heartBadge' : 'heart'} />
       <span>15</span>
     </div>
 
@@ -56,12 +57,16 @@ const TweetFooter = ({ onRetweet, onLike }) => (
         color: ${colors.twitterBlue};
       }
 
+      .tweet-footer > div.retweet.active,
       .tweet-footer > div.retweet:hover,
+      .tweet-footer > div.retweet.active :global(i),
       .tweet-footer > div.retweet:hover :global(i) {
         color: ${colors.retweet};
       }
 
+      .tweet-footer > div.like.active,
       .tweet-footer > div.like:hover,
+      .tweet-footer > div.like.active :global(i),
       .tweet-footer > div.like:hover :global(i) {
         color: ${colors.like};
       }
@@ -104,7 +109,7 @@ const CONTEXT_ACTION_TEXT = {
   LIKE: 'Liked',
 };
 
-const Tweet = ({ id, name, username, content, context }) => {
+const Tweet = ({ id, name, username, content, retweeted, liked, context }) => {
   const variables = { input: { tweetId: id } };
   const retweet = useMutation(RETWEET_QUERY, { variables });
   const like = useMutation(LIKE_QUERY, { variables });
@@ -150,7 +155,12 @@ const Tweet = ({ id, name, username, content, context }) => {
           </div>
           <div className="text-content">{content}</div>
 
-          <TweetFooter onRetweet={handleRetweet} onLike={handleLike} />
+          <TweetFooter
+            retweeted={retweeted}
+            liked={liked}
+            onRetweet={handleRetweet}
+            onLike={handleLike}
+          />
         </div>
       </div>
       <style jsx>{`

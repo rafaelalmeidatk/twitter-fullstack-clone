@@ -77,6 +77,8 @@ const Feed = () => {
                 content={tweet.content}
                 name={tweet.user.name}
                 username={tweet.user.username}
+                retweeted={tweet.retweeted}
+                liked={tweet.liked}
               />
             );
           }
@@ -90,6 +92,8 @@ const Feed = () => {
                 content={retweet.tweet.content}
                 name={retweet.tweet.user.name}
                 username={retweet.tweet.user.username}
+                retweeted={retweet.tweet.retweeted}
+                liked={retweet.tweet.liked}
                 context={{ user: retweet.user, action: 'RETWEET' }}
               />
             );
@@ -104,6 +108,8 @@ const Feed = () => {
                 content={like.tweet.content}
                 name={like.tweet.user.name}
                 username={like.tweet.user.username}
+                retweeted={like.tweet.retweeted}
+                liked={like.tweet.liked}
                 context={{ user: like.user, action: 'LIKE' }}
               />
             );

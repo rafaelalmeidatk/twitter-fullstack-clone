@@ -3,6 +3,18 @@ import { gql } from 'apollo-boost';
 export const DEFAULT_VARIABLES = { first: 10, after: null };
 
 export default gql`
+  fragment TweetData on Tweet {
+    id
+    content
+    retweeted
+    liked
+    user {
+      id
+      name
+      username
+    }
+  }
+
   query getUserFeed($first: Int!, $after: String) {
     feed(first: $first, after: $after) {
       edges {
@@ -10,24 +22,12 @@ export default gql`
         node {
           __typename
           tweet {
-            id
-            content
-            user {
-              id
-              name
-              username
-            }
+            ...TweetData
           }
           retweet {
             id
             tweet {
-              id
-              content
-              user {
-                id
-                name
-                username
-              }
+              ...TweetData
             }
             user {
               id
@@ -37,13 +37,7 @@ export default gql`
           like {
             id
             tweet {
-              id
-              content
-              user {
-                id
-                name
-                username
-              }
+              ...TweetData
             }
             user {
               id
