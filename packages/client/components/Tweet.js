@@ -1,16 +1,18 @@
 import React from 'react';
 import Link from 'next/link';
+import { useMutation } from 'react-apollo-hooks';
+import { gql } from 'apollo-boost';
 import colors from '../lib/colors';
 import Avatar from './Avatar';
 import Icon from './Icon';
 
-const TweetFooter = () => (
+const TweetFooter = ({ onRetweet }) => (
   <div className="tweet-footer">
     <div className="reply">
       <Icon name="reply" />
       <span>15</span>
     </div>
-    <div className="retweet">
+    <div className="retweet" onClick={onRetweet}>
       <Icon name="retweet" />
       <span>15</span>
     </div>
@@ -67,71 +69,124 @@ const TweetFooter = () => (
   </div>
 );
 
-const Tweet = ({ name, username, content }) => (
-  <div className="tweet">
-    <div className="left">
-      <Avatar size="medium" />
-    </div>
+const RETWEET_QUERY = gql`
+  mutation RetweetQuery($input: RetweetInput!) {
+    retweet(input: $input) {
+      retweet {
+        tweet {
+          id
+          content
+        }
+      }
+    }
+  }
+`;
 
-    <div className="body">
-      <div className="meta">
-        <Link
-          href={`/profile?username=${username}`}
-          as={`/profile/${username}`}
-          prefetch
-        >
-          <a>
-            <span className="name">{name}</span>
-            <span className="username">@{username}</span>
-          </a>
-        </Link>
+const Tweet = ({ id, name, username, content, context }) => {
+  const retweet = useMutation(RETWEET_QUERY, {
+    variables: {
+      input: { tweetId: id },
+    },
+  });
+
+  const handleRetweet = async () => {
+    await retweet();
+    // TODO: add message of success
+  };
+
+  return (
+    <div className="tweet">
+      {context && (
+        <div className="context">
+          <Icon name="retweeted" size="14px" />
+          <span>{context.user.name} Retweeted</span>
+        </div>
+      )}
+
+      <div className="tweet-content">
+        <div className="left">
+          <Avatar size="medium" />
+        </div>
+
+        <div className="body">
+          <div className="meta">
+            <Link
+              href={`/profile?username=${username}`}
+              as={`/profile/${username}`}
+              prefetch
+            >
+              <a>
+                <span className="name">{name}</span>
+                <span className="username">@{username}</span>
+              </a>
+            </Link>
+          </div>
+          <div className="text-content">{content}</div>
+
+          <TweetFooter onRetweet={handleRetweet} />
+        </div>
       </div>
-      <div className="text-content">{content}</div>
+      <style jsx>{`
+        .tweet {
+          padding: 9px 12px;
+          background: #fff;
+          border-left: 1px solid ${colors.boxBorder};
+          border-right: 1px solid ${colors.boxBorder};
+          border-bottom: 1px solid ${colors.boxBorder};
+        }
 
-      <TweetFooter />
+        .context {
+          padding: 0 0 9px 56px;
+          display: flex;
+          align-items: center;
+          font-size: 0.8em;
+          line-height: 0.8em;
+          color: ${colors.blueGray};
+        }
+
+        .context :global(i) {
+          margin-left: -24px;
+          margin-right: 6px;
+          color: ${colors.blueGray};
+        }
+
+        .tweet-content {
+          display: flex;
+        }
+
+        .body {
+          padding-left: 8px;
+        }
+
+        .meta {
+          line-height: 1em;
+        }
+
+        .meta a:hover .name {
+          text-decoration: underline;
+          color: ${colors.twitterBlue};
+        }
+
+        .name {
+          font-weight: bold;
+          font-size: 0.9em;
+          color: rgba(0, 0, 0, 0.85);
+        }
+
+        .username {
+          margin-left: 5px;
+          color: rgba(0, 0, 0, 0.6);
+          font-size: 0.9em;
+        }
+
+        .text-content {
+          margin: 2px 0 8px;
+          font-size: 0.9em;
+          color: rgba(0, 0, 0, 0.85);
+        }
+      `}</style>
     </div>
-    <style jsx>{`
-      .tweet {
-        padding: 9px 12px;
-        display: flex;
-        background: #fff;
-        border-left: 1px solid ${colors.boxBorder};
-        border-right: 1px solid ${colors.boxBorder};
-        border-bottom: 1px solid ${colors.boxBorder};
-      }
-
-      .body {
-        padding-left: 8px;
-      }
-
-      .meta {
-        line-height: 1em;
-      }
-
-      .meta a:hover .name {
-        text-decoration: underline;
-        color: ${colors.twitterBlue};
-      }
-
-      .name {
-        font-weight: bold;
-        font-size: 0.9em;
-        color: rgba(0, 0, 0, 0.85);
-      }
-
-      .username {
-        margin-left: 5px;
-        color: rgba(0, 0, 0, 0.6);
-        font-size: 0.9em;
-      }
-
-      .text-content {
-        margin: 2px 0 8px;
-        font-size: 0.9em;
-        color: rgba(0, 0, 0, 0.85);
-      }
-    `}</style>
-  </div>
-);
+  );
+};
 
 export default Tweet;

@@ -87,9 +87,11 @@ const Navbar = ({ currentPage }) => (
             selected={currentPage === 'home'}
           />
         </Link>
-        <a href="https://github.com/rafaelalmeidatk">
-          <NavButton text="Project on Github" icon="promoteMode" />
-        </a>
+        <NavButton
+          text="Project on Github"
+          icon="promoteMode"
+          href="https://github.com/rafaelalmeidatk"
+        />
       </div>
       <div className="right">right</div>
     </div>

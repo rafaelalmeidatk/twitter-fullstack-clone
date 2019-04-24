@@ -7,14 +7,30 @@ type Tweet {
   likesCount: Int
 }
 
+type Retweet {
+  id: ID!
+  tweet: Tweet
+  user: User
+}
+
 type Query {
   allTweets: [Tweet!]!
+}
+
+type Mutation {
+  # TODO: change the return to include a payload instead of the value directly
+  createTweet(input: CreateTweetInput!): Tweet
+  retweet(input: RetweetInput!): RetweetPayload!
 }
 
 input CreateTweetInput {
   content: String!
 }
 
-type Mutation {
-  createTweet(input: CreateTweetInput!): Tweet
+input RetweetInput {
+  tweetId: ID!
+}
+
+type RetweetPayload {
+  retweet: Retweet!
 }

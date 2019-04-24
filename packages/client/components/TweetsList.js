@@ -5,6 +5,7 @@ const TweetsList = ({ tweets, author }) => (
   <div>
     {tweets.map(tweet => (
       <Tweet
+        id={tweet.id}
         key={tweet.id}
         content={tweet.content}
         name={author ? author.name : tweet.user.name}

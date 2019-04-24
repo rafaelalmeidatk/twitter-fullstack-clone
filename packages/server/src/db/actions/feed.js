@@ -23,8 +23,34 @@ export async function getFeedForUser(user, { first, after }) {
   const order = cursorData.order || defaultOrder;
 
   const rows = await knex('tweets')
-    .select('*')
+    .select(
+      knex.raw(`
+        "tweets"."id" as "tweetId",
+        "tweets"."content" as "tweetContent",
+        "tweets"."userId" as "tweetUserId",
+        "tweets"."created_at" as "created_at",
+        NULL as "retweetId",
+        NULL as "retweetUserId",
+        'tweet' as kind
+      `)
+    )
     .whereIn('userId', allIds)
+    .unionAll(function() {
+      this.select(
+        knex.raw(`
+          "tweets"."id" as "tweetId",
+          "tweets"."content" as "tweetContent",
+          "tweets"."userId" as "tweetUserId",
+          "retweets"."created_at" as "created_at",
+          "retweets"."id" as "retweetId",
+          "retweets"."userId" as "retweetUserId",
+          'retweet' as kind
+        `)
+      )
+        .from('retweets')
+        .whereIn('retweets.userId', allIds)
+        .leftJoin('tweets', 'retweets.tweetId', 'tweets.id');
+    })
     .andWhere(function() {
       if (cursorData.after) {
         this.where('created_at', '<', cursorData.after);
@@ -34,10 +60,43 @@ export async function getFeedForUser(user, { first, after }) {
     .limit(first);
 
   return {
-    edges: rows.map(row => ({
-      cursor: encodeCursor({ after: row.created_at, order }),
-      node: row,
-    })),
+    edges: rows.map(row => {
+      let node = null;
+
+      if (row.kind === 'tweet') {
+        node = {
+          tweet: {
+            id: row.tweetId,
+            content: row.tweetContent,
+            userId: row.tweetUserId,
+            createdAt: row.created_at,
+            kind: row.kind,
+          },
+        };
+      }
+
+      if (row.kind === 'retweet') {
+        node = {
+          retweet: {
+            id: row.retweetId,
+            userId: row.retweetUserId,
+            kind: row.kind,
+            tweet: {
+              id: row.tweetId,
+              content: row.tweetContent,
+              userId: row.tweetUserId,
+              createdAt: row.created_at,
+              kind: row.kind,
+            },
+          },
+        };
+      }
+
+      return {
+        cursor: encodeCursor({ after: row.created_at, order }),
+        node,
+      };
+    }),
     pageInfo: {
       async hasNextPage() {
         if (rows.length < first) {
@@ -47,6 +106,9 @@ export async function getFeedForUser(user, { first, after }) {
         // Check if there is one more tweet after the last sent,
         // if so, we still have pages
         const lastRow = rows[rows.length - 1];
+
+        // TODO: redo this for new format,
+        // preferably after adding the "like" feature
         const nextTweet = await knex('tweets')
           .first('id')
           .whereIn('userId', allIds)
@@ -55,10 +117,6 @@ export async function getFeedForUser(user, { first, after }) {
           .limit(1);
 
         return !!nextTweet;
-      },
-      async hasPreviousPage() {
-        console.log('ops');
-        return false;
       },
     },
   };

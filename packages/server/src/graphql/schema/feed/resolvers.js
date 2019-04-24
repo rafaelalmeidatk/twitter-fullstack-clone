@@ -13,6 +13,10 @@ const getFeedQuery = isAuthenticatedResolver.createResolver(
 // ------------------------------
 
 export default {
+  FeedNode: {
+    tweet: root => root.tweet,
+    retweet: root => root.retweet,
+  },
   Query: {
     feed: getFeedQuery,
   },

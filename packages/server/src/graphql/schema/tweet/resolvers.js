@@ -1,12 +1,17 @@
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
-import { createTweet as dbCreateTweet } from 'db/actions/tweet';
+import { createTweet, retweet } from 'db/actions/tweet';
 import { findUserById } from 'db/actions/user';
 
 // ------------------------------
-// Tweet
+// Tweet & Retweet
 
 const getUser = baseResolver.createResolver(async root => {
   return await findUserById(root.userId);
+});
+
+const getTweet = baseResolver.createResolver(async root => {
+  // The tweet is nested inside the retweet
+  return root.tweet;
 });
 
 // ------------------------------
@@ -19,12 +24,19 @@ const allTweets = async () => {
 // ------------------------------
 // Mutation
 
-const createTweet = isAuthenticatedResolver.createResolver(
-  async (_, { input }, context) => {
+const createTweetMutation = isAuthenticatedResolver.createResolver(
+  async (_, { input }, { user }) => {
     const { content } = input;
-    const { user } = context;
+    return await createTweet({ content, userId: user.id });
+  }
+);
 
-    return await dbCreateTweet({ content, userId: user.id });
+const retweetMutation = isAuthenticatedResolver.createResolver(
+  async (_, { input }, { user }) => {
+    const { tweetId } = input;
+
+    const createdRetweet = await retweet({ userId: user.id, tweetId });
+    return { retweet: createdRetweet };
   }
 );
 
@@ -34,10 +46,15 @@ export default {
   Tweet: {
     user: getUser,
   },
+  Retweet: {
+    tweet: getTweet,
+    user: getUser,
+  },
   Query: {
     allTweets,
   },
   Mutation: {
-    createTweet,
+    createTweet: createTweetMutation,
+    retweet: retweetMutation,
   },
 };

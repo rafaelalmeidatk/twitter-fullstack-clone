@@ -6,18 +6,28 @@ export async function findTweetById(id) {
 }
 
 export async function createTweet({ userId, content }) {
-  const data = await knex('tweets')
+  const rows = await knex('tweets')
     .insert({
       content,
       userId,
     })
     .returning('*');
-  return data[0];
+  return rows[0];
+}
+
+export async function retweet({ userId, tweetId }) {
+  const rows = await knex('retweets')
+    .insert({
+      userId,
+      tweetId,
+    })
+    .returning('*');
+  return rows[0];
 }
 
 export async function getTweetsFromUser(userId) {
-  const data = await knex('tweets')
+  const rows = await knex('tweets')
     .where({ userId })
     .orderBy('created_at', 'desc');
-  return data;
+  return rows;
 }

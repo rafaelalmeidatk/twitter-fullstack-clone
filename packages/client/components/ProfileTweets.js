@@ -32,6 +32,7 @@ const ProfileTweets = () => {
       {data.me.tweets.map(tweet => (
         <Tweet
           key={tweet.id}
+          id={tweet.id}
           content={tweet.content}
           name={tweet.user.name}
           username={tweet.user.username}

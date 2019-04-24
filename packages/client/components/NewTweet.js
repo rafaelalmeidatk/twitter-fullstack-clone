@@ -26,12 +26,31 @@ const GET_USER_FEED_QUERY = gql`
     feed(first: $first, after: $after) {
       edges {
         node {
-          id
-          content
-          user {
+          __typename
+          tweet {
             id
-            name
-            username
+            content
+            user {
+              id
+              name
+              username
+            }
+          }
+          retweet {
+            id
+            tweet {
+              id
+              content
+              user {
+                id
+                name
+                username
+              }
+            }
+            user {
+              id
+              name
+            }
           }
         }
         cursor
@@ -67,7 +86,11 @@ const NewTweetForm = ({ onCancel }) => {
 
           const newTweetEdge = {
             cursor: null, // we can't compute the cursor on front-end
-            node: createTweet,
+            node: {
+              __typename: 'FeedNode',
+              tweet: createTweet,
+              retweet: null,
+            },
             __typename: 'FeedEdge',
           };
 
