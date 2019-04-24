@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should fetch the feed of the current user 1`] = `
+Object {
+  "data": Object {
+    "feed": Object {
+      "edges": Array [
+        Object {
+          "cursor": "MjAxOS0wNC0yNFQwMjo1MDowNC4yMzhaO2Rlc2M=",
+          "node": Object {
+            "__typename": "FeedNode",
+            "like": Object {
+              "id": "cff2eee6-f27c-4991-a4cc-08996393615b",
+              "tweet": Object {
+                "content": "Hello World from User Two!",
+                "id": "e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca",
+                "user": Object {
+                  "id": "4173dd82-7c8f-4bfa-9c8e-0158082fe07c",
+                  "name": "Test User Two",
+                  "username": "test_user_two",
+                },
+              },
+              "user": Object {
+                "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+                "name": "Test User One",
+              },
+            },
+            "retweet": null,
+            "tweet": null,
+          },
+        },
+        Object {
+          "cursor": "MjAxOS0wNC0yNFQwMjo1MDowMy4yMzhaO2Rlc2M=",
+          "node": Object {
+            "__typename": "FeedNode",
+            "like": null,
+            "retweet": Object {
+              "id": "b73c02bf-d378-4dc6-bfcd-0037d20949f4",
+              "tweet": Object {
+                "content": "Hello World from User Two!",
+                "id": "e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca",
+                "user": Object {
+                  "id": "4173dd82-7c8f-4bfa-9c8e-0158082fe07c",
+                  "name": "Test User Two",
+                  "username": "test_user_two",
+                },
+              },
+              "user": Object {
+                "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+                "name": "Test User One",
+              },
+            },
+            "tweet": null,
+          },
+        },
+        Object {
+          "cursor": "MjAxOS0wNC0yNFQwMjo1MDowMS4yMzhaO2Rlc2M=",
+          "node": Object {
+            "__typename": "FeedNode",
+            "like": null,
+            "retweet": null,
+            "tweet": Object {
+              "content": "Hello World from User One!",
+              "id": "53c1c783-bebf-4f62-bd46-766c827e7d62",
+              "user": Object {
+                "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+                "name": "Test User One",
+                "username": "test_user",
+              },
+            },
+          },
+        },
+      ],
+      "pageInfo": Object {
+        "hasNextPage": false,
+      },
+    },
+  },
+}
+`;

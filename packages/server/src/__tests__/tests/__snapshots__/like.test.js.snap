@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should like a tweet 1`] = `
+Object {
+  "data": Object {
+    "like": Object {
+      "like": Object {
+        "tweet": Object {
+          "content": "Hello World from User Two!",
+          "id": "e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca",
+          "user": Object {
+            "id": "4173dd82-7c8f-4bfa-9c8e-0158082fe07c",
+            "username": "test_user_two",
+          },
+        },
+        "user": Object {
+          "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+          "username": "test_user",
+        },
+      },
+    },
+  },
+}
+`;
