@@ -16,6 +16,7 @@ export default {
   FeedNode: {
     tweet: root => root.tweet,
     retweet: root => root.retweet,
+    like: root => root.like,
   },
   Query: {
     feed: getFeedQuery,

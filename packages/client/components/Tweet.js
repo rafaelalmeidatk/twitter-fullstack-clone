@@ -6,7 +6,7 @@ import colors from '../lib/colors';
 import Avatar from './Avatar';
 import Icon from './Icon';
 
-const TweetFooter = ({ onRetweet }) => (
+const TweetFooter = ({ onRetweet, onLike }) => (
   <div className="tweet-footer">
     <div className="reply">
       <Icon name="reply" />
@@ -16,7 +16,7 @@ const TweetFooter = ({ onRetweet }) => (
       <Icon name="retweet" />
       <span>15</span>
     </div>
-    <div className="like">
+    <div className="like" onClick={onLike}>
       <Icon name="heart" />
       <span>15</span>
     </div>
@@ -82,15 +82,40 @@ const RETWEET_QUERY = gql`
   }
 `;
 
+const LIKE_QUERY = gql`
+  mutation LikeQuery($input: LikeInput!) {
+    like(input: $input) {
+      like {
+        tweet {
+          id
+          content
+        }
+      }
+    }
+  }
+`;
+
+const CONTEXT_ACTION_ICONS = {
+  RETWEET: 'retweeted',
+  LIKE: 'heartBadge',
+};
+const CONTEXT_ACTION_TEXT = {
+  RETWEET: 'Retweeted',
+  LIKE: 'Liked',
+};
+
 const Tweet = ({ id, name, username, content, context }) => {
-  const retweet = useMutation(RETWEET_QUERY, {
-    variables: {
-      input: { tweetId: id },
-    },
-  });
+  const variables = { input: { tweetId: id } };
+  const retweet = useMutation(RETWEET_QUERY, { variables });
+  const like = useMutation(LIKE_QUERY, { variables });
 
   const handleRetweet = async () => {
     await retweet();
+    // TODO: add message of success
+  };
+
+  const handleLike = async () => {
+    await like();
     // TODO: add message of success
   };
 
@@ -98,8 +123,10 @@ const Tweet = ({ id, name, username, content, context }) => {
     <div className="tweet">
       {context && (
         <div className="context">
-          <Icon name="retweeted" size="14px" />
-          <span>{context.user.name} Retweeted</span>
+          <Icon name={CONTEXT_ACTION_ICONS[context.action]} size="14px" />
+          <span>
+            {context.user.name} {CONTEXT_ACTION_TEXT[context.action]}
+          </span>
         </div>
       )}
 
@@ -123,7 +150,7 @@ const Tweet = ({ id, name, username, content, context }) => {
           </div>
           <div className="text-content">{content}</div>
 
-          <TweetFooter onRetweet={handleRetweet} />
+          <TweetFooter onRetweet={handleRetweet} onLike={handleLike} />
         </div>
       </div>
       <style jsx>{`

@@ -25,6 +25,16 @@ export async function retweet({ userId, tweetId }) {
   return rows[0];
 }
 
+export async function like({ userId, tweetId }) {
+  const rows = await knex('likes')
+    .insert({
+      userId,
+      tweetId,
+    })
+    .returning('*');
+  return rows[0];
+}
+
 export async function getTweetsFromUser(userId) {
   const rows = await knex('tweets')
     .where({ userId })

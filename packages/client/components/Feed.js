@@ -1,49 +1,8 @@
 import React from 'react';
-import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import InfiniteScroll from 'react-infinite-scroller';
 import Tweet from './Tweet';
-
-const GET_USER_FEED_QUERY = gql`
-  query getUserFeed($first: Int!, $after: String) {
-    feed(first: $first, after: $after) {
-      edges {
-        node {
-          __typename
-          tweet {
-            id
-            content
-            user {
-              id
-              name
-              username
-            }
-          }
-          retweet {
-            id
-            tweet {
-              id
-              content
-              user {
-                id
-                name
-                username
-              }
-            }
-            user {
-              id
-              name
-            }
-          }
-        }
-        cursor
-      }
-      pageInfo {
-        hasNextPage
-      }
-    }
-  }
-`;
+import GET_USER_FEED_QUERY, { DEFAULT_VARIABLES } from '../queries/getUserFeed';
 
 const LoadingMessage = ({ initial }) => (
   <div className="feed-loader">
@@ -61,10 +20,7 @@ const LoadingMessage = ({ initial }) => (
 
 const Feed = () => {
   const { data, loading, fetchMore, errors } = useQuery(GET_USER_FEED_QUERY, {
-    variables: {
-      first: 10,
-      after: null,
-    },
+    variables: DEFAULT_VARIABLES,
   });
 
   if (loading) {
@@ -134,7 +90,21 @@ const Feed = () => {
                 content={retweet.tweet.content}
                 name={retweet.tweet.user.name}
                 username={retweet.tweet.user.username}
-                context={{ user: retweet.user }}
+                context={{ user: retweet.user, action: 'RETWEET' }}
+              />
+            );
+          }
+
+          if (node.like) {
+            const { like } = node;
+            return (
+              <Tweet
+                key={like.id}
+                id={like.tweet.id}
+                content={like.tweet.content}
+                name={like.tweet.user.name}
+                username={like.tweet.user.username}
+                context={{ user: like.user, action: 'LIKE' }}
               />
             );
           }

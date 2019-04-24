@@ -5,10 +5,11 @@ type Query {
 # Here we should use a union but then I would have
 # to use the IntrospectionFragmentMatcher and it
 # will take a lot of work so for this "simple"
-# project, no thanks, perhaps later
+# project, no thanks, maybe later
 type FeedNode {
   tweet: Tweet
   retweet: Retweet
+  like: Like
 }
 
 type FeedConnection {

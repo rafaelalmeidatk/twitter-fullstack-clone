@@ -6,6 +6,7 @@ import AutoResizeTextarea from './AutoResizeTextarea';
 import Avatar from './Avatar';
 import Button from './Button';
 import NewTweetToolbar from './NewTweetToolbar';
+import GET_USER_FEED_QUERY, { DEFAULT_VARIABLES } from '../queries/getUserFeed';
 
 const CREATE_TWEET_QUERY = gql`
   mutation CreateTweet($input: CreateTweetInput!) {
@@ -16,47 +17,6 @@ const CREATE_TWEET_QUERY = gql`
         id
         name
         username
-      }
-    }
-  }
-`;
-
-const GET_USER_FEED_QUERY = gql`
-  query getUserFeed($first: Int!, $after: String) {
-    feed(first: $first, after: $after) {
-      edges {
-        node {
-          __typename
-          tweet {
-            id
-            content
-            user {
-              id
-              name
-              username
-            }
-          }
-          retweet {
-            id
-            tweet {
-              id
-              content
-              user {
-                id
-                name
-                username
-              }
-            }
-            user {
-              id
-              name
-            }
-          }
-        }
-        cursor
-      }
-      pageInfo {
-        hasNextPage
       }
     }
   }
@@ -81,7 +41,7 @@ const NewTweetForm = ({ onCancel }) => {
         try {
           const data = proxy.readQuery({
             query: GET_USER_FEED_QUERY,
-            variables: { first: 10, after: null },
+            variables: DEFAULT_VARIABLES,
           });
 
           const newTweetEdge = {
@@ -90,6 +50,7 @@ const NewTweetForm = ({ onCancel }) => {
               __typename: 'FeedNode',
               tweet: createTweet,
               retweet: null,
+              like: null,
             },
             __typename: 'FeedEdge',
           };
@@ -104,7 +65,7 @@ const NewTweetForm = ({ onCancel }) => {
 
           proxy.writeQuery({
             query: GET_USER_FEED_QUERY,
-            variables: { first: 10, after: null },
+            variables: DEFAULT_VARIABLES,
             data: newData,
           });
         } catch (err) {

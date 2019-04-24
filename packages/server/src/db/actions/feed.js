@@ -29,8 +29,10 @@ export async function getFeedForUser(user, { first, after }) {
         "tweets"."content" as "tweetContent",
         "tweets"."userId" as "tweetUserId",
         "tweets"."created_at" as "created_at",
-        NULL as "retweetId",
-        NULL as "retweetUserId",
+        NULL::uuid as "retweetId",
+        NULL::uuid as "retweetUserId",
+        NULL::uuid as "likeId",
+        NULL::uuid as "likeUserId",
         'tweet' as kind
       `)
     )
@@ -44,12 +46,32 @@ export async function getFeedForUser(user, { first, after }) {
           "retweets"."created_at" as "created_at",
           "retweets"."id" as "retweetId",
           "retweets"."userId" as "retweetUserId",
+          NULL::uuid as "likeId",
+          NULL::uuid as "likeUserId",
           'retweet' as kind
         `)
       )
         .from('retweets')
         .whereIn('retweets.userId', allIds)
         .leftJoin('tweets', 'retweets.tweetId', 'tweets.id');
+    })
+    .unionAll(function() {
+      this.select(
+        knex.raw(`
+          "tweets"."id" as "tweetId",
+          "tweets"."content" as "tweetContent",
+          "tweets"."userId" as "tweetUserId",
+          "likes"."created_at" as "created_at",
+          NULL::uuid as "retweetId",
+          NULL::uuid as "retweetUserId",
+          "likes"."id" as "likeId",
+          "likes"."userId" as "likeUserId",
+          'like' as kind
+        `)
+      )
+        .from('likes')
+        .whereIn('likes.userId', allIds)
+        .leftJoin('tweets', 'likes.tweetId', 'tweets.id');
     })
     .andWhere(function() {
       if (cursorData.after) {
@@ -80,6 +102,23 @@ export async function getFeedForUser(user, { first, after }) {
           retweet: {
             id: row.retweetId,
             userId: row.retweetUserId,
+            kind: row.kind,
+            tweet: {
+              id: row.tweetId,
+              content: row.tweetContent,
+              userId: row.tweetUserId,
+              createdAt: row.created_at,
+              kind: row.kind,
+            },
+          },
+        };
+      }
+
+      if (row.kind === 'like') {
+        node = {
+          like: {
+            id: row.likeId,
+            userId: row.likeUserId,
             kind: row.kind,
             tweet: {
               id: row.tweetId,
