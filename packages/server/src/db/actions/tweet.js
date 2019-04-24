@@ -21,23 +21,45 @@ export async function createTweet({ userId, content }) {
 // ------------------------------
 // Interation
 
-export async function retweet({ userId, tweetId }) {
+export async function toggleRetweet({ userId, tweetId }) {
+  const deleteResult = await knex('retweets')
+    .del()
+    .where({ userId, tweetId })
+    .returning('*');
+
+  if (deleteResult[0]) {
+    return deleteResult[0];
+  }
+
+  // The retweet didn't exist so we create now
   const rows = await knex('retweets')
     .insert({
       userId,
       tweetId,
     })
     .returning('*');
+
   return rows[0];
 }
 
-export async function like({ userId, tweetId }) {
+export async function toggleLike({ userId, tweetId }) {
+  const deleteResult = await knex('likes')
+    .del()
+    .where({ userId, tweetId })
+    .returning('*');
+
+  if (deleteResult[0]) {
+    return deleteResult[0];
+  }
+
+  // The likes didn't exist so we create now
   const rows = await knex('likes')
     .insert({
       userId,
       tweetId,
     })
     .returning('*');
+
   return rows[0];
 }
 

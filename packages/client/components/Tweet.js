@@ -104,23 +104,35 @@ const CONTEXT_ACTION_ICONS = {
   RETWEET: 'retweeted',
   LIKE: 'heartBadge',
 };
+
 const CONTEXT_ACTION_TEXT = {
   RETWEET: 'Retweeted',
-  LIKE: 'Liked',
+  LIKE: 'liked',
 };
 
-const Tweet = ({ id, name, username, content, retweeted, liked, context }) => {
+const Tweet = ({
+  id,
+  name,
+  username,
+  content,
+  retweeted,
+  liked,
+  refetch,
+  context,
+}) => {
   const variables = { input: { tweetId: id } };
   const retweet = useMutation(RETWEET_QUERY, { variables });
   const like = useMutation(LIKE_QUERY, { variables });
 
   const handleRetweet = async () => {
     await retweet();
+    refetch && refetch();
     // TODO: add message of success
   };
 
   const handleLike = async () => {
     await like();
+    refetch && refetch();
     // TODO: add message of success
   };
 

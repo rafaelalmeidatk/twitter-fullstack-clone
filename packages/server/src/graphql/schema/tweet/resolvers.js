@@ -2,8 +2,8 @@ import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
 import {
   findTweetById,
   createTweet,
-  retweet,
-  like,
+  toggleRetweet,
+  toggleLike,
   getUserHasRetweeted,
   getUserHasLiked,
 } from 'db/actions/tweet';
@@ -65,7 +65,7 @@ const retweetMutation = isAuthenticatedResolver.createResolver(
   async (_, { input }, { user }) => {
     const { tweetId } = input;
 
-    const createdRetweet = await retweet({ userId: user.id, tweetId });
+    const createdRetweet = await toggleRetweet({ userId: user.id, tweetId });
     return { retweet: createdRetweet };
   }
 );
@@ -74,7 +74,7 @@ const likeMutation = isAuthenticatedResolver.createResolver(
   async (_, { input }, { user }) => {
     const { tweetId } = input;
 
-    const createdLike = await like({ userId: user.id, tweetId });
+    const createdLike = await toggleLike({ userId: user.id, tweetId });
     return { like: createdLike };
   }
 );

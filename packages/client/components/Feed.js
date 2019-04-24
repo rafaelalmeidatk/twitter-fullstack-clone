@@ -19,9 +19,12 @@ const LoadingMessage = ({ initial }) => (
 );
 
 const Feed = () => {
-  const { data, loading, fetchMore, errors } = useQuery(GET_USER_FEED_QUERY, {
-    variables: DEFAULT_VARIABLES,
-  });
+  const { data, loading, fetchMore, refetch, errors } = useQuery(
+    GET_USER_FEED_QUERY,
+    {
+      variables: DEFAULT_VARIABLES,
+    }
+  );
 
   if (loading) {
     return <LoadingMessage key="initial-feed-loader" initial />;
@@ -79,6 +82,7 @@ const Feed = () => {
                 username={tweet.user.username}
                 retweeted={tweet.retweeted}
                 liked={tweet.liked}
+                refetch={refetch}
               />
             );
           }
@@ -94,6 +98,7 @@ const Feed = () => {
                 username={retweet.tweet.user.username}
                 retweeted={retweet.tweet.retweeted}
                 liked={retweet.tweet.liked}
+                refetch={refetch}
                 context={{ user: retweet.user, action: 'RETWEET' }}
               />
             );
@@ -110,6 +115,7 @@ const Feed = () => {
                 username={like.tweet.user.username}
                 retweeted={like.tweet.retweeted}
                 liked={like.tweet.liked}
+                refetch={refetch}
                 context={{ user: like.user, action: 'LIKE' }}
               />
             );
