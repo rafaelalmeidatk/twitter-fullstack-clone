@@ -31,7 +31,7 @@ export async function toggleRetweet({ userId, tweetId }) {
     return deleteResult[0];
   }
 
-  // The retweet didn't exist so we create now
+  // The retweet didn't exist so we create it now
   const rows = await knex('tweets')
     .insert({
       userId,
@@ -52,7 +52,7 @@ export async function toggleLike({ userId, tweetId }) {
     return deleteResult[0];
   }
 
-  // The likes didn't exist so we create now
+  // The like didn't exist so we create it now
   const rows = await knex('tweets')
     .insert({
       userId,
@@ -66,15 +66,55 @@ export async function toggleLike({ userId, tweetId }) {
 // ------------------------------
 // Data gathering
 
-export async function getTweetsFromUser(userId) {
-  const rows = await knex('tweets')
+export async function getTweetsFromUser(userId, { first, after, order }) {
+  order = order || 'desc'; // The default is to sort from newest to oldest
+  first = Math.min(first || 10, 100); // Default to 10 entries, max of 100
+
+  const selectQuery = knex('tweets')
+    .select(
+      'id',
+      'content',
+      'userId',
+      'retweetForTweetId',
+      'likeForTweetId',
+      'created_at'
+    )
     .where({
       userId,
-      // the user's profile doesn't include the likes
-      likeForTweetId: null,
+      likeForTweetId: null, // We don't show likes in user's profile
+    });
+
+  const rows = await selectQuery
+    .andWhere(function() {
+      if (after) {
+        this.where('tweets.created_at', '<', after);
+      }
     })
-    .orderBy('created_at', 'desc');
-  return rows;
+    .orderBy('created_at', order)
+    .limit(first);
+
+  return {
+    tweets: rows,
+    async hasNextPage() {
+      if (rows.length < first) {
+        return false;
+      }
+
+      // Check if there is one more tweet after the last sent,
+      // if so, we still have pages
+      const lastRow = rows[rows.length - 1];
+      const afterRows = await selectQuery
+        .andWhere(function() {
+          if (lastRow.created_at) {
+            this.where('tweets.created_at', '<', lastRow.created_at);
+          }
+        })
+        .orderBy('created_at', order)
+        .limit(1);
+
+      return afterRows && !!afterRows[0];
+    },
+  };
 }
 
 export async function getUserHasRetweeted({ userId, tweetId }) {

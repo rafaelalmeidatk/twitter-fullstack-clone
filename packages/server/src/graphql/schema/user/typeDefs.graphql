@@ -6,14 +6,25 @@ type User {
   bio: String
   avatarSourceUrl: String
   coverSourceUrl: String
-  tweets: [Tweet!]!
   tweetsCount: Int!
   followersCount: Int!
   followingCount: Int!
 
+  profileTweets(first: Int, after: String): ProfileTweetsConnection!
   isFollowingUser(username: String): Boolean
 }
 
+type ProfileTweetsConnection {
+  edges: [ProfileTweetsEdge]
+  pageInfo: PageInfo!
+}
+
+type ProfileTweetsEdge {
+  cursor: String!
+  node: ContextTweet!
+}
+
+# TODO: remove input pattern from queries
 input UserInput {
   id: ID
   username: String

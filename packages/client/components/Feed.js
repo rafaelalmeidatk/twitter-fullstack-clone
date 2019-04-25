@@ -9,9 +9,7 @@ const Feed = () => {
   const loadMoreEntries = (data, fetchMore) => {
     const lastCursor = data.feed.edges[data.feed.edges.length - 1].cursor;
     return fetchMore({
-      variables: {
-        after: lastCursor,
-      },
+      variables: { after: lastCursor },
       updateQuery: (previousResult, { fetchMoreResult }) => {
         const newEdges = fetchMoreResult.feed.edges;
         const pageInfo = fetchMoreResult.feed.pageInfo;

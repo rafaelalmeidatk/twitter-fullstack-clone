@@ -1,6 +1,7 @@
 import { UserInputError } from 'apollo-server-express';
 import { AlreadyInUseError } from '../../errors';
 import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
+import { decodeCursor, buildEdgesForTweetsPagination } from '../../utils';
 import {
   createUser,
   followUser,
@@ -16,10 +17,6 @@ import { getTweetsFromUser } from 'db/actions/tweet';
 
 // ------------------------------
 // User
-
-const userTweets = baseResolver.createResolver(async root => {
-  return await getTweetsFromUser(root.id);
-});
 
 const userTweetsCount = baseResolver.createResolver(async root => {
   return await getUserTweetsCount(root);
@@ -38,6 +35,25 @@ const isFollowingUser = baseResolver.createResolver(async (root, args) => {
 
   return await followsUser(root, username);
 });
+
+const getProfileTweets = baseResolver.createResolver(
+  async (root, { first, after }) => {
+    const cursorData = after ? decodeCursor(after) : {};
+
+    const { tweets, hasNextPage } = await getTweetsFromUser(root.id, {
+      first,
+      after: cursorData.after,
+      order: cursorData.order,
+    });
+
+    return {
+      edges: buildEdgesForTweetsPagination(tweets, cursorData.order),
+      pageInfo: {
+        hasNextPage,
+      },
+    };
+  }
+);
 
 // ------------------------------
 // Query
@@ -114,11 +130,11 @@ const unfollowUserMutation = isAuthenticatedResolver.createResolver(
 
 export default {
   User: {
-    tweets: userTweets,
     tweetsCount: userTweetsCount,
     followersCount: userFollowersCount,
     followingCount: userFollowingCount,
     isFollowingUser,
+    profileTweets: getProfileTweets,
   },
   Query: {
     allUsers,

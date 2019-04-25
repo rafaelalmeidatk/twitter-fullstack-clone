@@ -13,12 +13,6 @@ const GET_USER_QUERY = gql`
       id
       name
       username
-      tweets {
-        id
-        content
-        retweeted
-        liked
-      }
       tweetsCount
       followersCount
       followingCount
