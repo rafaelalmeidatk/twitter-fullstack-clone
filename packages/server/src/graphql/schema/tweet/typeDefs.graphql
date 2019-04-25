@@ -1,6 +1,6 @@
 type Tweet {
   id: ID!
-  content: String!
+  content: String
   user: User
   createdAt: String!
   likes: [User!]!
@@ -12,16 +12,24 @@ type Tweet {
   liked: Boolean!
 }
 
-type Retweet {
-  id: ID!
-  tweet: Tweet
-  user: User
+# The Context Tweet is utilized as a wrapper of retweets and
+# likes, which are actions that are presented in the timeline
+# with their original tweet
+type ContextTweet {
+  type: ContextTweetType!
+  # The original tweet, if it is not a retweet or like
+  # then it is just the tweet itself
+  originalTweet: Tweet!
+  # The context tweet (for retweets and likes)
+  contextTweet: Tweet
+  # The user that created the context (e.g. author of the retweet)
+  contextUser: User
 }
 
-type Like {
-  id: ID!
-  tweet: Tweet
-  user: User
+enum ContextTweetType {
+  TWEET
+  RETWEET
+  LIKE
 }
 
 type Query {
@@ -44,7 +52,7 @@ input RetweetInput {
 }
 
 type RetweetPayload {
-  retweet: Retweet!
+  context: ContextTweet!
 }
 
 input LikeInput {
@@ -52,5 +60,5 @@ input LikeInput {
 }
 
 type LikePayload {
-  like: Like!
+  context: ContextTweet!
 }

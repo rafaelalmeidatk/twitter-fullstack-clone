@@ -68,7 +68,11 @@ export async function toggleLike({ userId, tweetId }) {
 
 export async function getTweetsFromUser(userId) {
   const rows = await knex('tweets')
-    .where({ userId })
+    .where({
+      userId,
+      // the user's profile doesn't include the likes
+      likeForTweetId: null,
+    })
     .orderBy('created_at', 'desc');
   return rows;
 }

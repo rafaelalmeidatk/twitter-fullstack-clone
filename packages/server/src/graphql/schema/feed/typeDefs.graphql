@@ -2,23 +2,6 @@ type Query {
   feed(first: Int, after: String): FeedConnection
 }
 
-enum FeedNodeType {
-  TWEET
-  RETWEET
-  LIKE
-}
-
-type FeedNode {
-  type: FeedNodeType!
-  # The original tweet, if it is not a retweet or like
-  # then it is the tweet itself
-  originalTweet: Tweet!
-  # The context tweet (for retweets and likes)
-  contextTweet: Tweet
-  # The user that created the context
-  contextUser: User
-}
-
 type FeedConnection {
   edges: [FeedEdge]
   pageInfo: PageInfo!
@@ -26,5 +9,5 @@ type FeedConnection {
 
 type FeedEdge {
   cursor: String!
-  node: FeedNode!
+  node: ContextTweet!
 }

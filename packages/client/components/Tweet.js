@@ -77,10 +77,14 @@ const TweetFooter = ({ retweeted, liked, onRetweet, onLike }) => (
 const RETWEET_QUERY = gql`
   mutation RetweetQuery($input: RetweetInput!) {
     retweet(input: $input) {
-      retweet {
-        tweet {
+      context {
+        originalTweet {
           id
           content
+          retweeted
+        }
+        contextTweet {
+          id
         }
       }
     }
@@ -90,10 +94,11 @@ const RETWEET_QUERY = gql`
 const LIKE_QUERY = gql`
   mutation LikeQuery($input: LikeInput!) {
     like(input: $input) {
-      like {
-        tweet {
+      context {
+        originalTweet {
           id
           content
+          liked
         }
       }
     }
@@ -125,8 +130,9 @@ const Tweet = ({
   const like = useMutation(LIKE_QUERY, { variables });
 
   const handleRetweet = async () => {
-    await retweet();
-    refetch && refetch();
+    const r = await retweet();
+    console.log(' r', r);
+    // refetch && refetch();
     // TODO: add message of success
   };
 

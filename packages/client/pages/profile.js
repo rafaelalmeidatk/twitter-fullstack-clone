@@ -4,7 +4,7 @@ import { useQuery } from 'react-apollo-hooks';
 import Navbar from '../components/Navbar';
 import ProfileHeader from '../components/ProfileHeader';
 import ProfileDetails from '../components/ProfileDetails';
-import Tweet from '../components/Tweet';
+import ProfileTweets from '../components/ProfileTweets';
 import colors from '../lib/colors';
 
 const GET_USER_QUERY = gql`
@@ -16,6 +16,8 @@ const GET_USER_QUERY = gql`
       tweets {
         id
         content
+        retweeted
+        liked
       }
       tweetsCount
       followersCount
@@ -49,15 +51,7 @@ const ProfilePage = ({ username }) => {
 
         <div className="content">
           <div className="content-heading">Tweets</div>
-          {user.tweets.map(tweet => (
-            <Tweet
-              id={tweet.id}
-              key={tweet.id}
-              content={tweet.content}
-              name={user.name}
-              username={user.username}
-            />
-          ))}
+          <ProfileTweets user={user} />
         </div>
 
         <div className="main-right">right!</div>

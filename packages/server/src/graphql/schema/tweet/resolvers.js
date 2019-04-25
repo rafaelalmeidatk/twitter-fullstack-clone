@@ -16,11 +16,6 @@ const getUser = baseResolver.createResolver(async root => {
   return await findUserById(root.userId);
 });
 
-const getTweet = baseResolver.createResolver(async root => {
-  const id = root.retweetForTweetId || root.likeForTweetId;
-  return await findTweetById(id);
-});
-
 const getRetweeted = baseResolver.createResolver(
   async (root, args, { user }) => {
     if (!user) {
@@ -37,6 +32,35 @@ const getLiked = baseResolver.createResolver(async (root, args, { user }) => {
   }
 
   return await getUserHasLiked({ userId: user.id, tweetId: root.id });
+});
+
+// ------------------------------
+// Context Tweet
+
+const getOriginalTweet = baseResolver.createResolver(async root => {
+  if (root.type === 'TWEET') {
+    return root;
+  }
+
+  const id = root.retweetForTweetId || root.likeForTweetId;
+  return await findTweetById(id);
+});
+
+const getContextTweet = baseResolver.createResolver(async root => {
+  if (root.type === 'TWEET') {
+    return null;
+  }
+
+  // The context tweet is the root object itself
+  return root;
+});
+
+const getContextUser = baseResolver.createResolver(async root => {
+  if (root.type === 'TWEET') {
+    return null;
+  }
+
+  return await findUserById(root.userId);
 });
 
 // ------------------------------
@@ -61,7 +85,13 @@ const retweetMutation = isAuthenticatedResolver.createResolver(
     const { tweetId } = input;
 
     const createdRetweet = await toggleRetweet({ userId: user.id, tweetId });
-    return { retweet: createdRetweet };
+
+    return {
+      context: {
+        type: 'RETWEET',
+        ...createdRetweet,
+      },
+    };
   }
 );
 
@@ -70,7 +100,12 @@ const likeMutation = isAuthenticatedResolver.createResolver(
     const { tweetId } = input;
 
     const createdLike = await toggleLike({ userId: user.id, tweetId });
-    return { like: createdLike };
+    return {
+      context: {
+        type: 'LIKE',
+        ...createdLike,
+      },
+    };
   }
 );
 
@@ -82,13 +117,10 @@ export default {
     retweeted: getRetweeted,
     liked: getLiked,
   },
-  Retweet: {
-    tweet: getTweet,
-    user: getUser,
-  },
-  Like: {
-    tweet: getTweet,
-    user: getUser,
+  ContextTweet: {
+    originalTweet: getOriginalTweet,
+    contextTweet: getContextTweet,
+    contextUser: getContextUser,
   },
   Query: {
     allTweets,
