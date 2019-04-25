@@ -3,8 +3,8 @@ type Tweet {
   content: String
   user: User
   createdAt: String!
-  likes: [User!]!
-  likesCount: Int
+  retweetCount: Int
+  likeCount: Int
 
   # If the authenticated user retweeted the tweet
   retweeted: Boolean!

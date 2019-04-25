@@ -14,6 +14,8 @@ export default gql`
             originalTweet {
               id
               content
+              retweetCount
+              likeCount
               retweeted
               liked
               user {

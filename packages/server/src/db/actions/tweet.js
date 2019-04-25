@@ -117,6 +117,20 @@ export async function getTweetsFromUser(userId, { first, after, order }) {
   };
 }
 
+export async function getRetweetCount(tweetId) {
+  const rows = await knex('tweets')
+    .count('id')
+    .where({ retweetForTweetId: tweetId });
+  return rows[0].count;
+}
+
+export async function getLikeCount(tweetId) {
+  const rows = await knex('tweets')
+    .count('id')
+    .where({ likeForTweetId: tweetId });
+  return rows[0].count;
+}
+
 export async function getUserHasRetweeted({ userId, tweetId }) {
   const row = await knex('tweets')
     .first('id')

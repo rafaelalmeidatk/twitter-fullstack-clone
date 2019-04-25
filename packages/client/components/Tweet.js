@@ -7,7 +7,14 @@ import colors from '../lib/colors';
 import Avatar from './Avatar';
 import Icon from './Icon';
 
-const TweetFooter = ({ retweeted, liked, onRetweet, onLike }) => (
+const TweetFooter = ({
+  retweetCount,
+  likeCount,
+  retweeted,
+  liked,
+  onRetweet,
+  onLike,
+}) => (
   <div className="tweet-footer">
     <div className="reply">
       <Icon name="reply" />
@@ -15,11 +22,11 @@ const TweetFooter = ({ retweeted, liked, onRetweet, onLike }) => (
     </div>
     <div className={cx('retweet', { active: retweeted })} onClick={onRetweet}>
       <Icon name="retweet" />
-      <span>15</span>
+      <span>{retweetCount || ''}</span>
     </div>
     <div className={cx('like', { active: liked })} onClick={onLike}>
       <Icon name={liked ? 'heartBadge' : 'heart'} />
-      <span>15</span>
+      <span>{likeCount || ''}</span>
     </div>
 
     <style jsx>{`
@@ -120,6 +127,8 @@ const Tweet = ({
   name,
   username,
   content,
+  retweetCount,
+  likeCount,
   retweeted,
   liked,
   refetch,
@@ -174,6 +183,8 @@ const Tweet = ({
           <div className="text-content">{content}</div>
 
           <TweetFooter
+            retweetCount={retweetCount}
+            likeCount={likeCount}
             retweeted={retweeted}
             liked={liked}
             onRetweet={handleRetweet}

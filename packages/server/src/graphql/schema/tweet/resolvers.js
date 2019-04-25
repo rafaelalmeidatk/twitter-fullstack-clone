@@ -4,16 +4,26 @@ import {
   createTweet,
   toggleRetweet,
   toggleLike,
+  getRetweetCount,
+  getLikeCount,
   getUserHasRetweeted,
   getUserHasLiked,
 } from 'db/actions/tweet';
 import { findUserById } from 'db/actions/user';
 
 // ------------------------------
-// Tweet & Retweet
+// Tweet
 
 const getUser = baseResolver.createResolver(async root => {
   return await findUserById(root.userId);
+});
+
+const retweetCount = baseResolver.createResolver(async root => {
+  return await getRetweetCount(root.id);
+});
+
+const likeCount = baseResolver.createResolver(async root => {
+  return await getLikeCount(root.id);
 });
 
 const getRetweeted = baseResolver.createResolver(
@@ -114,6 +124,8 @@ const likeMutation = isAuthenticatedResolver.createResolver(
 export default {
   Tweet: {
     user: getUser,
+    retweetCount,
+    likeCount,
     retweeted: getRetweeted,
     liked: getLiked,
   },
