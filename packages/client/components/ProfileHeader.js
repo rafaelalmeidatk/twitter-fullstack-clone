@@ -8,7 +8,7 @@ const ProfileHeader = ({ user, currentUser }) => {
   const actionButton =
     currentUser && user.id === currentUser.id ? (
       <div className="action-btn">
-        <Button gray narrow>
+        <Button gray narrow disabled>
           Edit Profile
         </Button>
       </div>

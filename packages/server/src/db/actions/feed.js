@@ -12,6 +12,77 @@ const encodeCursor = ({ after, order }) => {
   return Buffer.from(input).toString('base64');
 };
 
+const buildQuery = ({ idCollection, order, after, first }) => {
+  return knex('tweets')
+    .select(
+      knex.raw(`
+      "tweets"."id" as "tweetId",
+      "tweets"."content" as "tweetContent",
+      "tweets"."userId" as "tweetUserId",
+      "tweets"."created_at" as "created_at",
+      NULL::uuid as "retweetId",
+      NULL::uuid as "retweetUserId",
+      NULL::uuid as "likeId",
+      NULL::uuid as "likeUserId",
+      'tweet' as kind
+    `)
+    )
+    .whereIn('userId', idCollection)
+    .andWhere(function() {
+      if (after) {
+        this.where('tweets.created_at', '<', after);
+      }
+    })
+    .unionAll(function() {
+      this.select(
+        knex.raw(`
+        "tweets"."id" as "tweetId",
+        "tweets"."content" as "tweetContent",
+        "tweets"."userId" as "tweetUserId",
+        "retweets"."created_at" as "created_at",
+        "retweets"."id" as "retweetId",
+        "retweets"."userId" as "retweetUserId",
+        NULL::uuid as "likeId",
+        NULL::uuid as "likeUserId",
+        'retweet' as kind
+      `)
+      )
+        .from('retweets')
+        .whereIn('retweets.userId', idCollection)
+        .andWhere(function() {
+          if (after) {
+            this.where('retweets.created_at', '<', after);
+          }
+        })
+        .leftJoin('tweets', 'retweets.tweetId', 'tweets.id');
+    })
+    .unionAll(function() {
+      this.select(
+        knex.raw(`
+        "tweets"."id" as "tweetId",
+        "tweets"."content" as "tweetContent",
+        "tweets"."userId" as "tweetUserId",
+        "likes"."created_at" as "created_at",
+        NULL::uuid as "retweetId",
+        NULL::uuid as "retweetUserId",
+        "likes"."id" as "likeId",
+        "likes"."userId" as "likeUserId",
+        'like' as kind
+      `)
+      )
+        .from('likes')
+        .whereIn('likes.userId', idCollection)
+        .andWhere(function() {
+          if (after) {
+            this.where('likes.created_at', '<', after);
+          }
+        })
+        .leftJoin('tweets', 'likes.tweetId', 'tweets.id');
+    })
+    .orderBy('created_at', order)
+    .limit(first);
+};
+
 export async function getFeedForUser(user, { first, after }) {
   // Get all the IDs from the users that the user is following
   const followingIds = await getUserFollowingIds(user);
@@ -22,64 +93,15 @@ export async function getFeedForUser(user, { first, after }) {
   const cursorData = after ? decodeCursor(after) : {};
   const order = cursorData.order || defaultOrder;
 
-  const rows = await knex('tweets')
-    .select(
-      knex.raw(`
-        "tweets"."id" as "tweetId",
-        "tweets"."content" as "tweetContent",
-        "tweets"."userId" as "tweetUserId",
-        "tweets"."created_at" as "created_at",
-        NULL::uuid as "retweetId",
-        NULL::uuid as "retweetUserId",
-        NULL::uuid as "likeId",
-        NULL::uuid as "likeUserId",
-        'tweet' as kind
-      `)
-    )
-    .whereIn('userId', allIds)
-    .unionAll(function() {
-      this.select(
-        knex.raw(`
-          "tweets"."id" as "tweetId",
-          "tweets"."content" as "tweetContent",
-          "tweets"."userId" as "tweetUserId",
-          "retweets"."created_at" as "created_at",
-          "retweets"."id" as "retweetId",
-          "retweets"."userId" as "retweetUserId",
-          NULL::uuid as "likeId",
-          NULL::uuid as "likeUserId",
-          'retweet' as kind
-        `)
-      )
-        .from('retweets')
-        .whereIn('retweets.userId', allIds)
-        .leftJoin('tweets', 'retweets.tweetId', 'tweets.id');
-    })
-    .unionAll(function() {
-      this.select(
-        knex.raw(`
-          "tweets"."id" as "tweetId",
-          "tweets"."content" as "tweetContent",
-          "tweets"."userId" as "tweetUserId",
-          "likes"."created_at" as "created_at",
-          NULL::uuid as "retweetId",
-          NULL::uuid as "retweetUserId",
-          "likes"."id" as "likeId",
-          "likes"."userId" as "likeUserId",
-          'like' as kind
-        `)
-      )
-        .from('likes')
-        .whereIn('likes.userId', allIds)
-        .leftJoin('tweets', 'likes.tweetId', 'tweets.id');
-    })
-    .andWhere(function() {
-      if (cursorData.after) {
-        this.where('created_at', '<', cursorData.after);
-      }
-    })
-    .orderBy('created_at', order)
-    .limit(first);
+  const query = buildQuery({
+    idCollection: allIds,
+    order,
+    after: cursorData.after,
+    first,
+  });
+  const rows = await query;
+
+  // console.log('rows', rows);
 
   return {
     edges: rows.map(row => {
@@ -146,16 +168,15 @@ export async function getFeedForUser(user, { first, after }) {
         // if so, we still have pages
         const lastRow = rows[rows.length - 1];
 
-        // TODO: redo this for new format,
-        // preferably after adding the "like" feature
-        const nextTweet = await knex('tweets')
-          .first('id')
-          .whereIn('userId', allIds)
-          .andWhere('created_at', '<', lastRow.created_at)
-          .orderBy('created_at', order)
-          .limit(1);
+        const query = buildQuery({
+          idCollection: allIds,
+          order,
+          after: lastRow.created_at,
+          first: 1,
+        });
 
-        return !!nextTweet;
+        const afterRows = await query;
+        return afterRows && !!afterRows[0];
       },
     },
   };

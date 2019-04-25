@@ -63,63 +63,42 @@ const Feed = () => {
   return (
     <div className="feed">
       <InfiniteScroll
-        key="infinite-scroll-loader"
         hasMore={data.feed.pageInfo.hasNextPage}
         loader={loader}
         loadMore={loadMoreEntries}
       >
         {data.feed.edges.map(edge => {
           const { node } = edge;
+          let tweet, id, context;
 
           if (node.tweet) {
-            const { tweet } = node;
-            return (
-              <Tweet
-                key={tweet.id}
-                id={tweet.id}
-                content={tweet.content}
-                name={tweet.user.name}
-                username={tweet.user.username}
-                retweeted={tweet.retweeted}
-                liked={tweet.liked}
-                refetch={refetch}
-              />
-            );
+            id = node.tweet.id;
+            tweet = node.tweet;
           }
-
           if (node.retweet) {
-            const { retweet } = node;
-            return (
-              <Tweet
-                key={retweet.id}
-                id={retweet.tweet.id}
-                content={retweet.tweet.content}
-                name={retweet.tweet.user.name}
-                username={retweet.tweet.user.username}
-                retweeted={retweet.tweet.retweeted}
-                liked={retweet.tweet.liked}
-                refetch={refetch}
-                context={{ user: retweet.user, action: 'RETWEET' }}
-              />
-            );
+            id = node.retweet.id;
+            tweet = node.retweet.tweet;
+            context = { user: node.retweet.user, action: 'RETWEET' };
+          }
+          if (node.like) {
+            id = node.like.id;
+            tweet = node.like.tweet;
+            context = { user: node.like.user, action: 'LIKE' };
           }
 
-          if (node.like) {
-            const { like } = node;
-            return (
-              <Tweet
-                key={like.id}
-                id={like.tweet.id}
-                content={like.tweet.content}
-                name={like.tweet.user.name}
-                username={like.tweet.user.username}
-                retweeted={like.tweet.retweeted}
-                liked={like.tweet.liked}
-                refetch={refetch}
-                context={{ user: like.user, action: 'LIKE' }}
-              />
-            );
-          }
+          return (
+            <Tweet
+              key={id}
+              id={tweet.id}
+              content={tweet.content}
+              name={tweet.user.name}
+              username={tweet.user.username}
+              retweeted={tweet.retweeted}
+              liked={tweet.liked}
+              refetch={refetch}
+              context={context}
+            />
+          );
         })}
       </InfiniteScroll>
     </div>

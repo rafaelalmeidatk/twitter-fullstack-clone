@@ -13,6 +13,8 @@ const CREATE_TWEET_QUERY = gql`
     createTweet(input: $input) {
       id
       content
+      retweeted
+      liked
       user {
         id
         name
