@@ -18,18 +18,17 @@ it('should like a tweet', async () => {
   const query = `
     mutation LikeQuery($input: LikeInput!) {
       like(input: $input) {
-        like {
-          tweet {
+        context {
+          originalTweet {
             id
             content
-            user {
-              id
-              username
-            }
           }
-          user {
+          contextTweet {
             id
-            username
+          }
+          contextUser {
+            id
+            name
           }
         }
       }

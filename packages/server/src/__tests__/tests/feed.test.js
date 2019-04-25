@@ -21,47 +21,24 @@ it('should fetch the feed of the current user', async () => {
         edges {
           cursor
           node {
-            __typename
-            tweet {
+            type
+            originalTweet {
               id
               content
+              retweeted
+              liked
               user {
                 id
                 name
                 username
               }
             }
-            retweet {
+            contextTweet {
               id
-              tweet {
-                id
-                content
-                user {
-                  id
-                  name
-                  username
-                }
-              }
-              user {
-                id
-                name
-              }
             }
-            like {
+            contextUser {
               id
-              tweet {
-                id
-                content
-                user {
-                  id
-                  name
-                  username
-                }
-              }
-              user {
-                id
-                name
-              }
+              name
             }
           }
         }

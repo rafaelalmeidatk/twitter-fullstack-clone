@@ -18,18 +18,18 @@ it('should retweet a tweet', async () => {
   const query = `
     mutation RetweetQuery($input: RetweetInput!) {
       retweet(input: $input) {
-        retweet {
-          tweet {
+        context {
+          originalTweet {
             id
             content
-            user {
-              id
-              username
-            }
+            retweeted
           }
-          user {
+          contextTweet {
             id
-            username
+          }
+          contextUser {
+            id
+            name
           }
         }
       }
