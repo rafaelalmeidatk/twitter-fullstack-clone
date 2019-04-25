@@ -15,69 +15,18 @@ const encodeCursor = ({ after, order }) => {
 const buildQuery = ({ idCollection, order, after, first }) => {
   return knex('tweets')
     .select(
-      knex.raw(`
-      "tweets"."id" as "tweetId",
-      "tweets"."content" as "tweetContent",
-      "tweets"."userId" as "tweetUserId",
-      "tweets"."created_at" as "created_at",
-      NULL::uuid as "retweetId",
-      NULL::uuid as "retweetUserId",
-      NULL::uuid as "likeId",
-      NULL::uuid as "likeUserId",
-      'tweet' as kind
-    `)
+      'id',
+      'content',
+      'userId',
+      'retweetForTweetId',
+      'likeForTweetId',
+      'created_at'
     )
     .whereIn('userId', idCollection)
     .andWhere(function() {
       if (after) {
         this.where('tweets.created_at', '<', after);
       }
-    })
-    .unionAll(function() {
-      this.select(
-        knex.raw(`
-        "tweets"."id" as "tweetId",
-        "tweets"."content" as "tweetContent",
-        "tweets"."userId" as "tweetUserId",
-        "retweets"."created_at" as "created_at",
-        "retweets"."id" as "retweetId",
-        "retweets"."userId" as "retweetUserId",
-        NULL::uuid as "likeId",
-        NULL::uuid as "likeUserId",
-        'retweet' as kind
-      `)
-      )
-        .from('retweets')
-        .whereIn('retweets.userId', idCollection)
-        .andWhere(function() {
-          if (after) {
-            this.where('retweets.created_at', '<', after);
-          }
-        })
-        .leftJoin('tweets', 'retweets.tweetId', 'tweets.id');
-    })
-    .unionAll(function() {
-      this.select(
-        knex.raw(`
-        "tweets"."id" as "tweetId",
-        "tweets"."content" as "tweetContent",
-        "tweets"."userId" as "tweetUserId",
-        "likes"."created_at" as "created_at",
-        NULL::uuid as "retweetId",
-        NULL::uuid as "retweetUserId",
-        "likes"."id" as "likeId",
-        "likes"."userId" as "likeUserId",
-        'like' as kind
-      `)
-      )
-        .from('likes')
-        .whereIn('likes.userId', idCollection)
-        .andWhere(function() {
-          if (after) {
-            this.where('likes.created_at', '<', after);
-          }
-        })
-        .leftJoin('tweets', 'likes.tweetId', 'tweets.id');
     })
     .orderBy('created_at', order)
     .limit(first);
@@ -101,57 +50,15 @@ export async function getFeedForUser(user, { first, after }) {
   });
   const rows = await query;
 
-  // console.log('rows', rows);
-
   return {
     edges: rows.map(row => {
-      let node = null;
+      const type = row.retweetForTweetId
+        ? 'RETWEET'
+        : row.likeForTweetId
+        ? 'LIKE'
+        : 'TWEET';
 
-      if (row.kind === 'tweet') {
-        node = {
-          tweet: {
-            id: row.tweetId,
-            content: row.tweetContent,
-            userId: row.tweetUserId,
-            createdAt: row.created_at,
-            kind: row.kind,
-          },
-        };
-      }
-
-      if (row.kind === 'retweet') {
-        node = {
-          retweet: {
-            id: row.retweetId,
-            userId: row.retweetUserId,
-            kind: row.kind,
-            tweet: {
-              id: row.tweetId,
-              content: row.tweetContent,
-              userId: row.tweetUserId,
-              createdAt: row.created_at,
-              kind: row.kind,
-            },
-          },
-        };
-      }
-
-      if (row.kind === 'like') {
-        node = {
-          like: {
-            id: row.likeId,
-            userId: row.likeUserId,
-            kind: row.kind,
-            tweet: {
-              id: row.tweetId,
-              content: row.tweetContent,
-              userId: row.tweetUserId,
-              createdAt: row.created_at,
-              kind: row.kind,
-            },
-          },
-        };
-      }
+      const node = { ...row, type };
 
       return {
         cursor: encodeCursor({ after: row.created_at, order }),

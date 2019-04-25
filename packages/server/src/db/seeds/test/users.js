@@ -49,22 +49,22 @@ exports.seed = function(knex, Promise) {
       ]);
 
       // Retweets
-      await knex('retweets').insert([
+      await knex('tweets').insert([
         {
           id: 'b73c02bf-d378-4dc6-bfcd-0037d20949f4',
           userId: TEST_USER_ONE_ID,
-          tweetId: 'e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca',
           created_at: '2019-04-23 23:50:03.238712-03',
+          retweetForTweetId: 'e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca',
         },
       ]);
 
       // Likes
-      await knex('likes').insert([
+      await knex('tweets').insert([
         {
           id: 'cff2eee6-f27c-4991-a4cc-08996393615b',
           userId: TEST_USER_ONE_ID,
-          tweetId: 'e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca',
           created_at: '2019-04-23 23:50:04.238712-03',
+          likeForTweetId: 'e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca',
         },
       ]);
     });

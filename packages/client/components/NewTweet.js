@@ -49,10 +49,14 @@ const NewTweetForm = ({ onCancel }) => {
           const newTweetEdge = {
             cursor: null, // we can't compute the cursor on front-end
             node: {
+              type: 'TWEET',
+              originalTweet: {
+                ...createTweet,
+                __typename: 'Tweet',
+              },
+              contextTweet: null,
+              contextUser: null,
               __typename: 'FeedNode',
-              tweet: createTweet,
-              retweet: null,
-              like: null,
             },
             __typename: 'FeedEdge',
           };

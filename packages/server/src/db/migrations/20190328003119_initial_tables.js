@@ -28,40 +28,12 @@ exports.up = async function(knex) {
       .uuid('userId')
       .references('id')
       .inTable('users');
-    table.timestamps(true, true);
-  });
-
-  // Retweet table
-  await knex.schema.createTable('retweets', table => {
     table
-      .uuid('id')
-      .notNullable()
-      .primary()
-      .defaultTo(knex.raw('uuid_generate_v4()'));
-    table
-      .uuid('userId')
-      .references('id')
-      .inTable('users');
-    table
-      .uuid('tweetId')
+      .uuid('retweetForTweetId')
       .references('id')
       .inTable('tweets');
-    table.timestamps(true, true);
-  });
-
-  // Like table
-  await knex.schema.createTable('likes', table => {
     table
-      .uuid('id')
-      .notNullable()
-      .primary()
-      .defaultTo(knex.raw('uuid_generate_v4()'));
-    table
-      .uuid('userId')
-      .references('id')
-      .inTable('users');
-    table
-      .uuid('tweetId')
+      .uuid('likeForTweetId')
       .references('id')
       .inTable('tweets');
     table.timestamps(true, true);
@@ -87,8 +59,6 @@ exports.up = async function(knex) {
 
 exports.down = async function(knex) {
   await knex.schema.dropTableIfExists('follows');
-  await knex.schema.dropTableIfExists('likes');
-  await knex.schema.dropTableIfExists('retweets');
   await knex.schema.dropTableIfExists('tweets');
   await knex.schema.dropTableIfExists('users');
 };

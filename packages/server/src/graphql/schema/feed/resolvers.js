@@ -1,5 +1,7 @@
-import { isAuthenticatedResolver } from '../../baseResolvers';
+import { isAuthenticatedResolver, baseResolver } from '../../baseResolvers';
 import { getFeedForUser } from 'db/actions/feed';
+import { findTweetById } from 'db/actions/tweet';
+import { findUserById } from 'db/actions/user';
 
 // ------------------------------
 // Query
@@ -10,13 +12,40 @@ const getFeedQuery = isAuthenticatedResolver.createResolver(
   }
 );
 
+const getOriginalTweet = baseResolver.createResolver(async root => {
+  if (root.type === 'TWEET') {
+    return root;
+  }
+
+  const id = root.retweetForTweetId || root.likeForTweetId;
+  return await findTweetById(id);
+});
+
+const getContextTweet = baseResolver.createResolver(async root => {
+  if (root.type === 'TWEET') {
+    return null;
+  }
+
+  // The context tweet is the root object itself
+  return root;
+});
+
+const getContextUser = baseResolver.createResolver(async root => {
+  if (root.type === 'TWEET') {
+    return null;
+  }
+
+  return await findUserById(root.userId);
+});
+
 // ------------------------------
 
 export default {
   FeedNode: {
-    tweet: root => root.tweet,
-    retweet: root => root.retweet,
-    like: root => root.like,
+    originalTweet: getOriginalTweet,
+    contextTweet: getContextTweet,
+    contextUser: getContextUser,
+    type: root => root.type,
   },
   Query: {
     feed: getFeedQuery,

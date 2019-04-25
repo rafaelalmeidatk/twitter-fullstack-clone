@@ -2,14 +2,21 @@ type Query {
   feed(first: Int, after: String): FeedConnection
 }
 
-# Here we should use a union but then I would have
-# to use the IntrospectionFragmentMatcher and it
-# will take a lot of work so for this "simple"
-# project, no thanks, maybe later
+enum FeedNodeType {
+  TWEET
+  RETWEET
+  LIKE
+}
+
 type FeedNode {
-  tweet: Tweet
-  retweet: Retweet
-  like: Like
+  type: FeedNodeType!
+  # The original tweet, if it is not a retweet or like
+  # then it is the tweet itself
+  originalTweet: Tweet!
+  # The context tweet (for retweets and likes)
+  contextTweet: Tweet
+  # The user that created the context
+  contextUser: User
 }
 
 type FeedConnection {

@@ -726,6 +726,18 @@
     "@babel/plugin-transform-react-jsx-self" "^7.0.0"
     "@babel/plugin-transform-react-jsx-source" "^7.0.0"
 
+"@babel/register@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.4.0.tgz#d9d0a621db268fb14200f2685a4f8924c822404c"
+  integrity sha512-ekziebXBnS/7V6xk8sBfLSSD6YZuy6P29igBtR6OL/tswKdxOV+Yqq0nzICMguVYtGRZYUCGpfGV8J9Za2iBdw==
+  dependencies:
+    core-js "^3.0.0"
+    find-cache-dir "^2.0.0"
+    lodash "^4.17.11"
+    mkdirp "^0.5.1"
+    pirates "^4.0.0"
+    source-map-support "^0.5.9"
+
 "@babel/runtime-corejs2@7.1.2":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime-corejs2/-/runtime-corejs2-7.1.2.tgz#8695811a3fd8091f54f274b9320334e5e8c62200"
@@ -2561,7 +2573,7 @@ core-js@3.0.0-beta.13:
   version "3.0.0-beta.13"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.0.0-beta.13.tgz#7732c69be5e4758887917235fe7c0352c4cb42a1"
 
-core-js@3.0.1:
+core-js@3.0.1, core-js@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.0.1.tgz#1343182634298f7f38622f95e73f54e48ddf4738"
 
@@ -5790,7 +5802,7 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-pirates@^4.0.1:
+pirates@^4.0.0, pirates@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/pirates/-/pirates-4.0.1.tgz#643a92caf894566f91b2b986d2c66950a8e2fb87"
   dependencies:
@@ -6740,7 +6752,7 @@ source-map-support@^0.4.15:
   dependencies:
     source-map "^0.5.6"
 
-source-map-support@^0.5.6, source-map-support@~0.5.10, source-map-support@~0.5.9:
+source-map-support@^0.5.6, source-map-support@^0.5.9, source-map-support@~0.5.10, source-map-support@~0.5.9:
   version "0.5.12"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.12.tgz#b4f3b10d51857a5af0138d3ce8003b201613d599"
   dependencies:

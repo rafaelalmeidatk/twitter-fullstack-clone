@@ -17,13 +17,8 @@ const getUser = baseResolver.createResolver(async root => {
 });
 
 const getTweet = baseResolver.createResolver(async root => {
-  // If there is already a tweet inside the object, return it
-  if (root.tweet) return root.tweet;
-
-  // If we don't have the id of the tweet, return early
-  if (!root.tweetId) return null;
-
-  return await findTweetById(root.tweetId);
+  const id = root.retweetForTweetId || root.likeForTweetId;
+  return await findTweetById(id);
 });
 
 const getRetweeted = baseResolver.createResolver(

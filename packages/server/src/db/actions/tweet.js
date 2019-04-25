@@ -22,9 +22,9 @@ export async function createTweet({ userId, content }) {
 // Interation
 
 export async function toggleRetweet({ userId, tweetId }) {
-  const deleteResult = await knex('retweets')
+  const deleteResult = await knex('tweets')
     .del()
-    .where({ userId, tweetId })
+    .where({ userId, retweetForTweetId: tweetId })
     .returning('*');
 
   if (deleteResult[0]) {
@@ -32,10 +32,10 @@ export async function toggleRetweet({ userId, tweetId }) {
   }
 
   // The retweet didn't exist so we create now
-  const rows = await knex('retweets')
+  const rows = await knex('tweets')
     .insert({
       userId,
-      tweetId,
+      retweetForTweetId: tweetId,
     })
     .returning('*');
 
@@ -43,9 +43,9 @@ export async function toggleRetweet({ userId, tweetId }) {
 }
 
 export async function toggleLike({ userId, tweetId }) {
-  const deleteResult = await knex('likes')
+  const deleteResult = await knex('tweets')
     .del()
-    .where({ userId, tweetId })
+    .where({ userId, likeForTweetId: tweetId })
     .returning('*');
 
   if (deleteResult[0]) {
@@ -53,10 +53,10 @@ export async function toggleLike({ userId, tweetId }) {
   }
 
   // The likes didn't exist so we create now
-  const rows = await knex('likes')
+  const rows = await knex('tweets')
     .insert({
       userId,
-      tweetId,
+      likeForTweetId: tweetId,
     })
     .returning('*');
 
@@ -74,21 +74,21 @@ export async function getTweetsFromUser(userId) {
 }
 
 export async function getUserHasRetweeted({ userId, tweetId }) {
-  const row = await knex('retweets')
+  const row = await knex('tweets')
     .first('id')
     .where({
       userId,
-      tweetId,
+      retweetForTweetId: tweetId,
     });
   return !!row;
 }
 
 export async function getUserHasLiked({ userId, tweetId }) {
-  const row = await knex('likes')
+  const row = await knex('tweets')
     .first('id')
     .where({
       userId,
-      tweetId,
+      likeForTweetId: tweetId,
     });
   return !!row;
 }

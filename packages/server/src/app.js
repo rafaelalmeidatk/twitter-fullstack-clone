@@ -11,7 +11,7 @@ import auth from './auth';
 import schema from './graphql';
 
 const start = (options = {}) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     // if (!options.port) {
     //   reject(new Error('The server must specify a port!'));
     // }

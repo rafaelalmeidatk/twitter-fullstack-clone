@@ -36,22 +36,15 @@ const Feed = () => {
       variables: {
         after: lastCursor,
       },
-      updateQuery: (previousResult, data) => {
-        const { fetchMoreResult } = data;
-
-        if (!fetchMoreResult) {
-          return previousResult;
-        }
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        const newEdges = fetchMoreResult.feed.edges;
+        const pageInfo = fetchMoreResult.feed.pageInfo;
 
         return {
-          ...previousResult,
           feed: {
-            ...previousResult.feed,
-            edges: [
-              ...previousResult.feed.edges,
-              ...fetchMoreResult.feed.edges,
-            ],
-            pageInfo: fetchMoreResult.feed.pageInfo,
+            __typename: previousResult.feed.__typename,
+            edges: [...previousResult.feed.edges, ...newEdges],
+            pageInfo,
           },
         };
       },
@@ -69,32 +62,22 @@ const Feed = () => {
       >
         {data.feed.edges.map(edge => {
           const { node } = edge;
-          let tweet, id, context;
+          const { originalTweet, contextTweet, contextUser } = node;
 
-          if (node.tweet) {
-            id = node.tweet.id;
-            tweet = node.tweet;
-          }
-          if (node.retweet) {
-            id = node.retweet.id;
-            tweet = node.retweet.tweet;
-            context = { user: node.retweet.user, action: 'RETWEET' };
-          }
-          if (node.like) {
-            id = node.like.id;
-            tweet = node.like.tweet;
-            context = { user: node.like.user, action: 'LIKE' };
-          }
+          const id = contextTweet ? contextTweet.id : originalTweet.id;
+          const context = contextUser
+            ? { user: contextUser, action: node.type }
+            : null;
 
           return (
             <Tweet
               key={id}
-              id={tweet.id}
-              content={tweet.content}
-              name={tweet.user.name}
-              username={tweet.user.username}
-              retweeted={tweet.retweeted}
-              liked={tweet.liked}
+              id={originalTweet.id}
+              content={originalTweet.content}
+              name={originalTweet.user.name}
+              username={originalTweet.user.username}
+              retweeted={originalTweet.retweeted}
+              liked={originalTweet.liked}
               refetch={refetch}
               context={context}
             />
