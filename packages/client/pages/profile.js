@@ -53,6 +53,7 @@ const ProfilePage = ({ username }) => {
 
       <style jsx>{`
         .main {
+          padding-top: 46px;
           min-height: 100vh;
           background: #e6ecf0;
         }
