@@ -6,6 +6,7 @@ import UserCard from './UserCard';
 import NewTweet from './NewTweet';
 import Feed from './Feed';
 import WhoToFollow from './WhoToFollow';
+import Footer from './Footer';
 
 const GET_USER_QUERY = gql`
   query getUserProfile {
@@ -43,6 +44,7 @@ const MainPage = () => {
 
         <div className="main-right">
           <WhoToFollow user={user} />
+          <Footer />
         </div>
       </div>
 
@@ -66,6 +68,10 @@ const MainPage = () => {
 
         .content {
           flex: 1 1 auto;
+        }
+
+        .main :global(.footer) {
+          margin-top: 12px;
         }
 
         @media (max-width: 1280px) {
