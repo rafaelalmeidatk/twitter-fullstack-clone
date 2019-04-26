@@ -6,6 +6,7 @@ const Icon = ({ name, color, size, ...props }) => (
     <style jsx>{`
       i {
         font-size: ${size};
+        line-height: ${size};
         color: ${color};
       }
     `}</style>

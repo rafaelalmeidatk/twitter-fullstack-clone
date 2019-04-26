@@ -19,6 +19,11 @@ const GET_USER_QUERY = gql`
     }
     me {
       id
+      name
+      username
+      tweetsCount
+      followersCount
+      followingCount
       isFollowingUser(username: $username)
     }
   }
@@ -35,7 +40,7 @@ const ProfilePage = ({ username }) => {
 
   return (
     <div className="main">
-      <Navbar />
+      <Navbar user={me} />
       <ProfileHeader user={user} currentUser={me} />
 
       <div className="container">

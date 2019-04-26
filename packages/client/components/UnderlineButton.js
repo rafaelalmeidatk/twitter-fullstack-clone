@@ -32,7 +32,8 @@ const UnderlineButton = ({ children, selected, className, as, ...props }) => {
           transition: color 0.2s ease;
         }
 
-        a.underline-btn:hover {
+        a.underline-btn:hover,
+        a.underline-btn:focus {
           color: ${colors.twitterBlue};
         }
 
@@ -47,6 +48,7 @@ const UnderlineButton = ({ children, selected, className, as, ...props }) => {
 
         .underline-btn.selected,
         .underline-btn:hover,
+        .underline-btn:focus,
         .underline-btn.selected .icon :global(i),
         .underline-btn:hover .icon :global(i) {
           color: ${colors.twitterBlue};

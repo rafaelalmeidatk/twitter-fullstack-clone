@@ -1,22 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo-hooks';
 import colors from '../lib/colors';
 import Avatar from './Avatar';
-
-const GET_USER_PROFILE_QUERY = gql`
-  query getUserProfile {
-    me {
-      id
-      name
-      username
-      tweetsCount
-      followersCount
-      followingCount
-    }
-  }
-`;
 
 const Stats = ({ tweets, following, followers }) => (
   <div className="stats-container">
@@ -62,12 +47,7 @@ const Stats = ({ tweets, following, followers }) => (
   </div>
 );
 
-const UserCard = () => {
-  const { data, loading } = useQuery(GET_USER_PROFILE_QUERY);
-
-  const name = loading || !data.me ? '...' : data.me.name;
-  const username = loading || !data.me ? '...' : data.me.username;
-
+const UserCard = ({ user }) => {
   return (
     <div className="user-card">
       <div className="cover" />
@@ -77,31 +57,31 @@ const UserCard = () => {
           <div className="header-meta">
             <div>
               <Link
-                href={`/profile?username=${username}`}
-                as={`/profile/${username}`}
+                href={`/profile?username=${user.username}`}
+                as={`/profile/${user.username}`}
                 prefetch
               >
-                <a className="name">{name}</a>
+                <a className="name">{user.name}</a>
               </Link>
             </div>
             <div>
               <Link
-                href={`/profile?username=${username}`}
-                as={`/profile/${username}`}
+                href={`/profile?username=${user.username}`}
+                as={`/profile/${user.username}`}
                 prefetch
               >
-                <a className="username">@{username}</a>
+                <a className="username">@{user.username}</a>
               </Link>
             </div>
           </div>
         </div>
 
         <div className="stats">
-          {data.me && (
+          {user && (
             <Stats
-              tweets={data.me.tweetsCount}
-              following={data.me.followingCount}
-              followers={data.me.followersCount}
+              tweets={user.tweetsCount}
+              following={user.followingCount}
+              followers={user.followersCount}
             />
           )}
         </div>
