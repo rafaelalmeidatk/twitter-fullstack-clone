@@ -12,6 +12,7 @@ type User {
 
   profileTweets(first: Int, after: String): ProfileTweetsConnection!
   isFollowingUser(username: String): Boolean
+  whoToFollow: [User!]!
 }
 
 type ProfileTweetsConnection {

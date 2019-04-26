@@ -110,3 +110,19 @@ export async function getUserFollowingCount(user) {
     .where({ userId: user.id });
   return Number(entries[0].count);
 }
+
+export async function getWhoToFollow(user, count, columns = ['*']) {
+  // Selects "count" random users that the user doesn't follow yet
+  const rows = await knex('users')
+    .select(columns)
+    .select(knex.raw('random() as ordering'))
+    .whereNotIn('id', function() {
+      this.select('follows.followingId')
+        .from('follows')
+        .where('follows.userId', user.id);
+    })
+    .whereNot('id', user.id)
+    .orderBy('ordering')
+    .limit(count);
+  return rows;
+}

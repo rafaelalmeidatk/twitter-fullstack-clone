@@ -12,6 +12,7 @@ import {
   getUserFollowersCount,
   getUserFollowingCount,
   followsUser,
+  getWhoToFollow,
 } from 'db/actions/user';
 import { getTweetsFromUser } from 'db/actions/tweet';
 
@@ -82,6 +83,12 @@ const me = isAuthenticatedResolver.createResolver(
   }
 );
 
+const whoToFollow = isAuthenticatedResolver.createResolver(
+  async (root, data, { user }) => {
+    return await getWhoToFollow(user, 3);
+  }
+);
+
 // ------------------------------
 // Mutation
 
@@ -135,6 +142,7 @@ export default {
     followingCount: userFollowingCount,
     isFollowingUser,
     profileTweets: getProfileTweets,
+    whoToFollow,
   },
   Query: {
     allUsers,

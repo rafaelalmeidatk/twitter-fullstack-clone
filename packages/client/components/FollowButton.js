@@ -13,6 +13,15 @@ const FETCH_USER_FOLLOWERS_QUERY = gql`
   }
 `;
 
+const IS_FOLLOWING_USER_QUERY = gql`
+  query IsFollowingUser($username: String!) {
+    me {
+      id
+      isFollowingUser(username: $username)
+    }
+  }
+`;
+
 const FOLLOW_USER_MUTATION = gql`
   mutation FollowUser($input: FollowUserInput!, $targetUsername: String!) {
     followUser(input: $input) {
@@ -133,7 +142,11 @@ const UnfollowButton = ({ targetUser, onFollowersStatusChange }) => {
   );
 };
 
-const FollowButtonBase = ({ targetUser, currentUser }) => {
+const FollowButtonBase = ({ targetUser }) => {
+  const isFollowingUserQuery = useQuery(IS_FOLLOWING_USER_QUERY, {
+    variables: { username: targetUser.username },
+  });
+
   const refetchUserFollowers = useQuery(FETCH_USER_FOLLOWERS_QUERY, {
     skip: true,
     variables: { username: targetUser.username },
@@ -147,7 +160,11 @@ const FollowButtonBase = ({ targetUser, currentUser }) => {
     }
   };
 
-  return currentUser.isFollowingUser ? (
+  if (isFollowingUserQuery.loading) {
+    return 'Loading...';
+  }
+
+  return isFollowingUserQuery.data.me.isFollowingUser ? (
     <UnfollowButton
       targetUser={targetUser}
       onFollowersStatusChange={handleFollowingStatusChange}

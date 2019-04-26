@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import UserCard from './UserCard';
 import NewTweet from './NewTweet';
 import Feed from './Feed';
+import WhoToFollow from './WhoToFollow';
 
 const GET_USER_QUERY = gql`
   query getUserProfile {
@@ -40,7 +41,9 @@ const MainPage = () => {
           <Feed />
         </div>
 
-        <div className="main-right">right!</div>
+        <div className="main-right">
+          <WhoToFollow user={user} />
+        </div>
       </div>
 
       <style jsx>{`
