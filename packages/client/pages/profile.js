@@ -5,6 +5,8 @@ import Navbar from '../components/Navbar';
 import ProfileHeader from '../components/ProfileHeader';
 import ProfileDetails from '../components/ProfileDetails';
 import ProfileTweets from '../components/ProfileTweets';
+import WhoToFollow from '../components/WhoToFollow';
+import Footer from '../components/Footer';
 import colors from '../lib/colors';
 
 const GET_USER_QUERY = gql`
@@ -53,7 +55,10 @@ const ProfilePage = ({ username }) => {
           <ProfileTweets user={user} />
         </div>
 
-        <div className="main-right">right!</div>
+        <div className="main-right">
+          <WhoToFollow user={me} />
+          <Footer />
+        </div>
       </div>
 
       <style jsx>{`
@@ -88,6 +93,10 @@ const ProfilePage = ({ username }) => {
           line-height: 1.2em;
           color: ${colors.heading};
           border-bottom: 1px solid ${colors.boxBorder};
+        }
+
+        .main :global(.footer) {
+          margin-top: 12px;
         }
 
         @media (max-width: 1280px) {
