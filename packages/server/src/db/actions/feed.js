@@ -12,6 +12,7 @@ const buildQuery = ({ idCollection, order, after, first }) => {
       'created_at'
     )
     .whereIn('userId', idCollection)
+    .andWhere('replyForTweetId', null)
     .andWhere(function() {
       if (after) {
         this.where('tweets.created_at', '<', after);

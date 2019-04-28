@@ -92,7 +92,9 @@ export async function getTweetsFromUser(userId, { first, after, order }) {
     )
     .where({
       userId,
-      likeForTweetId: null, // We don't show likes in user's profile
+      // We don't show likes and replies in user's profile
+      likeForTweetId: null,
+      replyForTweetId: null,
     });
 
   const rows = await selectQuery
