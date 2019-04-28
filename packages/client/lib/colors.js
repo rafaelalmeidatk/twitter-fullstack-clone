@@ -16,6 +16,7 @@ export default {
   buttonDisabled: '#cbd6dc',
 
   // misc
+  tweetHover: '#f5f8fa',
   boxBorder: '#e6ecf0',
   searchInputBg: '#f5f8fa',
   newTweetBg: '#e8f4fb',

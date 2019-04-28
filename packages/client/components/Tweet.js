@@ -7,7 +7,7 @@ import colors from '../lib/colors';
 import Avatar from './Avatar';
 import Icon from './Icon';
 
-const TweetFooter = ({
+export const TweetFooter = ({
   retweetCount,
   likeCount,
   retweeted,
@@ -39,7 +39,7 @@ const TweetFooter = ({
         padding-right: 4px;
         display: flex;
         align-items: center;
-        min-width: 70px;
+        min-width: 80px;
         cursor: pointer;
       }
 
@@ -133,6 +133,7 @@ const Tweet = ({
   liked,
   refetch,
   context,
+  onClick,
 }) => {
   const variables = { input: { tweetId: id } };
   const retweet = useMutation(RETWEET_QUERY, { variables });
@@ -152,7 +153,7 @@ const Tweet = ({
   };
 
   return (
-    <div className="tweet">
+    <div className="tweet" onClick={() => onClick(id)}>
       {context && (
         <div className="context">
           <Icon name={CONTEXT_ACTION_ICONS[context.action]} size="14px" />
@@ -195,10 +196,15 @@ const Tweet = ({
       <style jsx>{`
         .tweet {
           padding: 9px 12px;
-          background: #fff;
+          cursor: pointer;
+          background-color: #fff;
           border-left: 1px solid ${colors.boxBorder};
           border-right: 1px solid ${colors.boxBorder};
           border-bottom: 1px solid ${colors.boxBorder};
+        }
+
+        .tweet:hover {
+          background-color: ${colors.tweetHover};
         }
 
         .context {

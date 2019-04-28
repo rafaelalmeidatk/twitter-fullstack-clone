@@ -23,6 +23,7 @@ const InfiniteTweetsList = ({
   loadMoreEntries,
   hasMore,
   extractEdges,
+  onTweetClick,
 }) => {
   const { data, loading, fetchMore, refetch, errors } = useQuery(fetchQuery, {
     variables,
@@ -63,6 +64,7 @@ const InfiniteTweetsList = ({
               liked={originalTweet.liked}
               refetch={refetch}
               context={context}
+              onClick={onTweetClick}
             />
           );
         })}

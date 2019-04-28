@@ -7,6 +7,7 @@ import NewTweet from './NewTweet';
 import Feed from './Feed';
 import WhoToFollow from './WhoToFollow';
 import Footer from './Footer';
+import TweetModal from './TweetModal';
 import ComposeNewTweetModal from './ComposeNewTweetModal';
 
 const GET_USER_QUERY = gql`
@@ -23,15 +24,17 @@ const GET_USER_QUERY = gql`
 `;
 
 const MainPage = () => {
-  const [isNewTweetModalOpen, setIsNewTweetModalOpen] = useState(false);
+  const [currentModalData, setCurrentModalData] = useState({});
   const { data, loading } = useQuery(GET_USER_QUERY);
 
   if (loading) return <div>Loading...</div>;
 
   const { me: user } = data;
 
-  const openNewTweetModal = () => setIsNewTweetModalOpen(true);
-  const closeNewTweetModal = () => setIsNewTweetModalOpen(false);
+  const openNewTweetModal = () => setCurrentModalData({ type: 'NEW_TWEET' });
+  const openTweetModal = tweetId =>
+    setCurrentModalData({ type: 'TWEET', tweetId });
+  const closeModal = () => setCurrentModalData({});
 
   return (
     <div className="main">
@@ -48,7 +51,7 @@ const MainPage = () => {
 
         <div className="content">
           <NewTweet />
-          <Feed />
+          <Feed onTweetClick={tweetId => openTweetModal(tweetId)} />
         </div>
 
         <div className="main-right">
@@ -57,9 +60,14 @@ const MainPage = () => {
         </div>
       </div>
 
+      <TweetModal
+        isOpen={currentModalData.type === 'TWEET'}
+        tweetId={currentModalData.tweetId}
+        onClose={closeModal}
+      />
       <ComposeNewTweetModal
-        isOpen={isNewTweetModalOpen}
-        onClose={closeNewTweetModal}
+        isOpen={currentModalData.type === 'NEW_TWEET'}
+        onClose={closeModal}
       />
 
       <style jsx>{`

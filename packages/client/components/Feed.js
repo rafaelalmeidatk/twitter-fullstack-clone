@@ -5,7 +5,7 @@ import GET_USER_FEED_QUERY, { DEFAULT_VARIABLES } from '../queries/getUserFeed';
 const hasMore = data => data.feed.pageInfo.hasNextPage;
 const extractEdges = data => data.feed.edges;
 
-const Feed = () => {
+const Feed = ({ onTweetClick }) => {
   const loadMoreEntries = (data, fetchMore) => {
     const lastCursor = data.feed.edges[data.feed.edges.length - 1].cursor;
     return fetchMore({
@@ -32,6 +32,7 @@ const Feed = () => {
       loadMoreEntries={loadMoreEntries}
       extractEdges={extractEdges}
       hasMore={hasMore}
+      onTweetClick={onTweetClick}
     />
   );
 };
