@@ -1,6 +1,6 @@
 import React from 'react';
 import colors from '../lib/colors';
-import HomeForm from './HomeForm';
+import HomeForm from 'components/HomeForm';
 
 const HomePage = () => (
   <div className="home-container">

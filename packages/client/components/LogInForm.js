@@ -5,8 +5,8 @@ import * as yup from 'yup';
 import { HTTPError } from 'ky-universal';
 
 import { loginRequest, login } from '../lib/auth';
-import Button from './Button';
-import FormField from './FormField';
+import Button from 'components/Button';
+import FormField from 'components/FormField';
 
 const { className, styles } = css.resolve`
   button {

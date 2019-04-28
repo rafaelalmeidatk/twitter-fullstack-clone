@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
-import Avatar from './Avatar';
-import FollowButton from './FollowButton';
+import Avatar from 'components/Avatar';
+import FollowButton from 'components/FollowButton';
 import colors from '../lib/colors';
 
 const WHO_TO_FOLLOW_QUERY = gql`

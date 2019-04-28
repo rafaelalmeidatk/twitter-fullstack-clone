@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import Avatar from './Avatar';
-import Dropdown, { Option as DropdownOption } from './Dropdown';
+import Avatar from 'components/Avatar';
+import Dropdown, { Option as DropdownOption } from 'components/Dropdown';
 
 const NavbarMenu = ({ user }) => {
   const DropdownButton = (

@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import cx from 'classnames';
 import colors from '../lib/colors';
-import Icon from './Icon';
-import OutsideClickHandler from './OutsideClickHandler';
+import Icon from 'components/Icon';
+import OutsideClickHandler from 'components/OutsideClickHandler';
 
 const Caret = () => (
   <div className="caret">

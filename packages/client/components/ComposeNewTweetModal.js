@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import colors from '../lib/colors';
-import NewTweet from './NewTweet';
-import Icon from './Icon';
+import NewTweet from 'components/NewTweet';
+import Icon from 'components/Icon';
 
 const ModalContent = ({ onClose }) => (
   <div className="content">

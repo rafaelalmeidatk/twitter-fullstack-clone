@@ -1,8 +1,8 @@
 import React from 'react';
 import colors from '../../lib/colors';
-import FollowButton from '../FollowButton';
-import Avatar from '../Avatar';
-import { TweetFooter } from '../Tweet';
+import FollowButton from 'components/FollowButton';
+import Avatar from 'components/Avatar';
+import { TweetFooter } from 'components/Tweet';
 
 const MainTweet = ({ tweet }) => (
   <div className="tweet-area">

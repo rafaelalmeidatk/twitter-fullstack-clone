@@ -1,5 +1,5 @@
 import React from 'react';
-import UnderlineButton from './UnderlineButton';
+import UnderlineButton from 'components/UnderlineButton';
 import colors from '../lib/colors';
 
 const ProfileHeaderStats = ({ tweets, following, followers, likes }) => (

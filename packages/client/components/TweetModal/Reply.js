@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
 import colors from '../../lib/colors';
-import NewTweetEx from '../NewTweetEx';
-import Tweet from '../Tweet';
+import NewTweetEx from 'components/NewTweetEx';
+import Tweet from 'components/Tweet';
 
 const REPLY_MUTATION = gql`
   mutation ReplyTweet($input: ReplyTweetInput!) {

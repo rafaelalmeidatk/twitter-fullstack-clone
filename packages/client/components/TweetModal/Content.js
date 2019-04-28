@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
-import Icon from '../Icon';
-import Tweet from '../Tweet';
+import Icon from 'components/Icon';
+import Tweet from 'components/Tweet';
 
 import MainTweet from './MainTweet';
 import Reply from './Reply';

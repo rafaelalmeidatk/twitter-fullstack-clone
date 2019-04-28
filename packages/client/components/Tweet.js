@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
 import colors from '../lib/colors';
-import Avatar from './Avatar';
-import Icon from './Icon';
+import Avatar from 'components/Avatar';
+import Icon from 'components/Icon';
 
 export const TweetFooter = ({
   replyCount,

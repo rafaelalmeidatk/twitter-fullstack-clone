@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
-import Navbar from './Navbar';
-import UserCard from './UserCard';
-import NewTweet from './NewTweet';
-import Feed from './Feed';
-import WhoToFollow from './WhoToFollow';
-import Footer from './Footer';
-import TweetModal from './TweetModal';
-import ComposeNewTweetModal from './ComposeNewTweetModal';
+import Navbar from 'components/Navbar';
+import UserCard from 'components/UserCard';
+import NewTweet from 'components/NewTweet';
+import Feed from 'components/Feed';
+import WhoToFollow from 'components/WhoToFollow';
+import Footer from 'components/Footer';
+import TweetModal from 'components/TweetModal';
+import ComposeNewTweetModal from 'components/ComposeNewTweetModal';
 
 const GET_USER_QUERY = gql`
   query getUserProfile {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
-import Button from './Button';
+import Button from 'components/Button';
 import colors from '../lib/colors';
 
 const FETCH_USER_FOLLOWERS_QUERY = gql`

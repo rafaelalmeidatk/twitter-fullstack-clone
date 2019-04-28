@@ -1,6 +1,6 @@
 import React from 'react';
 import colors from '../lib/colors';
-import Icon from './Icon';
+import Icon from 'components/Icon';
 
 const ToolbarButton = ({ iconName, disabled, onClick }) => (
   <button className="toolbar-btn" disabled={disabled}>

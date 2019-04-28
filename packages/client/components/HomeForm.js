@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import css from 'styled-jsx/css';
-import Button from './Button';
-import SignUpForm from './SignUpForm';
-import LogInForm from './LogInForm';
+import Button from 'components/Button';
+import SignUpForm from 'components/SignUpForm';
+import LogInForm from 'components/LogInForm';
 
 const { className, styles } = css.resolve`
   button {

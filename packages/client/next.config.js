@@ -1,3 +1,4 @@
+const path = require('path');
 const withCss = require('@zeit/next-css');
 
 module.exports = withCss({
@@ -14,6 +15,8 @@ module.exports = withCss({
         },
       },
     });
+
+    config.resolve.alias['components'] = path.join(__dirname, 'components');
 
     return config;
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import InfiniteTweetsList from './InfiniteTweetsList';
+import InfiniteTweetsList from 'components/InfiniteTweetsList';
 import GET_USER_PROFILE_TWEETS_QUERY, {
   DEFAULT_VARIABLES,
 } from '../queries/getUserProfileTweets';

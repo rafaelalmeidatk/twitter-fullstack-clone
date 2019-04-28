@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import InfiniteScroll from 'react-infinite-scroller';
-import Tweet from './Tweet';
+import Tweet from 'components/Tweet';
 
 const LoadingMessage = ({ initial }) => (
   <div className="feed-loader">

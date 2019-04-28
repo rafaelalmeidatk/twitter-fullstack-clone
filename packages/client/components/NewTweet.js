@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { useMutation } from 'react-apollo-hooks';
 import colors from '../lib/colors';
-import AutoResizeTextarea from './AutoResizeTextarea';
-import Avatar from './Avatar';
-import Button from './Button';
-import NewTweetToolbar from './NewTweetToolbar';
+import AutoResizeTextarea from 'components/AutoResizeTextarea';
+import Avatar from 'components/Avatar';
+import Button from 'components/Button';
+import NewTweetToolbar from 'components/NewTweetToolbar';
 import GET_USER_FEED_QUERY, { DEFAULT_VARIABLES } from '../queries/getUserFeed';
 
 const CREATE_TWEET_QUERY = gql`

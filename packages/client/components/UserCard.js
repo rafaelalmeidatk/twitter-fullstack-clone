@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import colors from '../lib/colors';
-import Avatar from './Avatar';
+import Avatar from 'components/Avatar';
 
 const Stats = ({ tweets, following, followers }) => (
   <div className="stats-container">

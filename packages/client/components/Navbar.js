@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import colors from '../lib/colors';
-import Icon from './Icon';
-import Button from './Button';
-import UnderlineButton from './UnderlineButton';
-import Search from './Search';
-import NavbarMenu from './NavbarMenu';
+import Icon from 'components/Icon';
+import Button from 'components/Button';
+import UnderlineButton from 'components/UnderlineButton';
+import Search from 'components/Search';
+import NavbarMenu from 'components/NavbarMenu';
 
 const NavButton = ({ text, icon, iconSelected, selected, ...props }) => (
   <UnderlineButton className="nav-button" selected={selected} {...props}>

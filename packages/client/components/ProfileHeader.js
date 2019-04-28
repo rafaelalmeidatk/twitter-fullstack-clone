@@ -1,8 +1,8 @@
 import React from 'react';
-import Avatar from './Avatar';
-import ProfileHeaderStats from './ProfileHeaderStats';
-import Button from './Button';
-import FollowButton from './FollowButton';
+import Avatar from 'components/Avatar';
+import ProfileHeaderStats from 'components/ProfileHeaderStats';
+import Button from 'components/Button';
+import FollowButton from 'components/FollowButton';
 
 const ProfileHeader = ({ user, currentUser }) => {
   const actionButton =

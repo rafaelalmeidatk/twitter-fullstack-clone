@@ -1,6 +1,6 @@
 import React from 'react';
 import colors from '../../lib/colors';
-import Tweet from '../Tweet';
+import Tweet from 'components/Tweet';
 
 const Replies = ({ tweetAuthor, replies }) => {
   return (
