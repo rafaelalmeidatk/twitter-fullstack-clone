@@ -8,17 +8,19 @@ import Avatar from './Avatar';
 import Icon from './Icon';
 
 export const TweetFooter = ({
+  replyCount,
   retweetCount,
   likeCount,
   retweeted,
   liked,
+  onReply,
   onRetweet,
   onLike,
 }) => (
   <div className="tweet-footer">
-    <div className="reply">
+    <div className={cx('reply')} onClick={onReply}>
       <Icon name="reply" />
-      <span>15</span>
+      <span>{replyCount || ''}</span>
     </div>
     <div className={cx('retweet', { active: retweeted })} onClick={onRetweet}>
       <Icon name="retweet" />
@@ -122,20 +124,8 @@ const CONTEXT_ACTION_TEXT = {
   LIKE: 'liked',
 };
 
-const Tweet = ({
-  id,
-  name,
-  username,
-  content,
-  retweetCount,
-  likeCount,
-  retweeted,
-  liked,
-  refetch,
-  context,
-  onClick,
-}) => {
-  const variables = { input: { tweetId: id } };
+const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
+  const variables = { input: { tweetId: tweet.id } };
   const retweet = useMutation(RETWEET_QUERY, { variables });
   const like = useMutation(LIKE_QUERY, { variables });
 
@@ -152,8 +142,14 @@ const Tweet = ({
     // TODO: add message of success
   };
 
+  const { id, content, retweetCount, likeCount, retweeted, liked } = tweet;
+  const { username, name } = tweet.user;
+
   return (
-    <div className="tweet" onClick={() => onClick(id)}>
+    <div
+      className={cx('tweet', { 'no-borders': noBorders })}
+      onClick={() => onClick(id)}
+    >
       {context && (
         <div className="context">
           <Icon name={CONTEXT_ACTION_ICONS[context.action]} size="14px" />
@@ -181,8 +177,12 @@ const Tweet = ({
               </a>
             </Link>
           </div>
+          {replyingTo && (
+            <div className="replying-to">
+              Replying to <a>@{replyingTo}</a>
+            </div>
+          )}
           <div className="text-content">{content}</div>
-
           <TweetFooter
             retweetCount={retweetCount}
             likeCount={likeCount}
@@ -203,8 +203,12 @@ const Tweet = ({
           border-bottom: 1px solid ${colors.boxBorder};
         }
 
+        .tweet.no-borders {
+          border: 0;
+        }
+
         .tweet:hover {
-          background-color: ${colors.tweetHover};
+          background-color: ${colors.gray};
         }
 
         .context {
@@ -219,6 +223,12 @@ const Tweet = ({
         .context :global(i) {
           margin-left: -24px;
           margin-right: 6px;
+          color: ${colors.blueGray};
+        }
+
+        .replying-to {
+          margin: 4px 0;
+          font-size: 0.87em;
           color: ${colors.blueGray};
         }
 
@@ -259,6 +269,25 @@ const Tweet = ({
       `}</style>
     </div>
   );
+};
+
+Tweet.fragments = {
+  tweet: gql`
+    fragment TweetFields on Tweet {
+      id
+      content
+      replyCount
+      retweetCount
+      likeCount
+      retweeted
+      liked
+      user {
+        id
+        name
+        username
+      }
+    }
+  `,
 };
 
 export default Tweet;

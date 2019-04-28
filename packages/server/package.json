@@ -7,7 +7,7 @@
     "dev": "backpack",
     "build": "backpack build",
     "migrate": "knex-migrate",
-    "reset-db": "knex-migrate down --to 0 && knex-migrate up",
+    "reset-db": "knex-migrate down --to 0 && knex-migrate up && knex seed:run",
     "test": "jest --runInBand",
     "test:auth": "jest src/__tests__/auth.test.js",
     "test:tweet": "jest src/__tests__/tweet.test.js --watch"

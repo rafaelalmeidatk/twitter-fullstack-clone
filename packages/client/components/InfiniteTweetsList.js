@@ -54,14 +54,7 @@ const InfiniteTweetsList = ({
           return (
             <Tweet
               key={id}
-              id={originalTweet.id}
-              content={originalTweet.content}
-              name={originalTweet.user.name}
-              username={originalTweet.user.username}
-              retweetCount={originalTweet.retweetCount}
-              likeCount={originalTweet.likeCount}
-              retweeted={originalTweet.retweeted}
-              liked={originalTweet.liked}
+              tweet={originalTweet}
               refetch={refetch}
               context={context}
               onClick={onTweetClick}

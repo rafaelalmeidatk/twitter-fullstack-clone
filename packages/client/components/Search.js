@@ -25,7 +25,7 @@ const Search = () => (
         color: ${colors.blueGray};
         border: 1px solid ${colors.boxBorder};
         border-radius: 20px;
-        background-color: ${colors.searchInputBg};
+        background-color: ${colors.gray};
         transition: border 0.5s ease;
       }
 

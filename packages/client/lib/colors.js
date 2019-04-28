@@ -5,6 +5,7 @@ export default {
   blueGray: '#657786',
   blueGrayStrong: '#66757f',
   error: '#ff3860',
+  gray: '#f5f8fa',
   heading: 'rgba(0, 0, 0, 0.85)',
 
   // buttons
@@ -16,9 +17,7 @@ export default {
   buttonDisabled: '#cbd6dc',
 
   // misc
-  tweetHover: '#f5f8fa',
   boxBorder: '#e6ecf0',
-  searchInputBg: '#f5f8fa',
   newTweetBg: '#e8f4fb',
   inputBlueBorder: '#a3d6f5',
   retweet: '#1ebe69',
