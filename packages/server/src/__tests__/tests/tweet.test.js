@@ -61,3 +61,49 @@ it('should create a tweet', async () => {
   const result = await request(query, { context, variables });
   expect(result).toMatchSnapshot();
 });
+
+it('should reply a tweet', async () => {
+  const context = { user };
+
+  const query = `
+    mutation ReplyTweet($input: ReplyTweetInput!) {
+      replyTweet(input: $input) {
+        repliedTweet {
+          id
+          content
+          replyCount
+          user {
+            id
+            username
+          }
+          replies {
+            id
+            content
+            user {
+              id
+              username
+            }
+          }
+        }
+        replyTweet {
+          id
+          content
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
+  `;
+
+  const variables = {
+    input: {
+      tweetId: 'e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca',
+      content: 'Replying to the tweet from User Two',
+    },
+  };
+
+  const result = await request(query, { context, variables });
+  expect(result).toMatchSnapshot();
+});

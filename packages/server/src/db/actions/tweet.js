@@ -18,6 +18,17 @@ export async function createTweet({ userId, content }) {
   return rows[0];
 }
 
+export async function replyTweet({ userId, tweetId, content }) {
+  const rows = await knex('tweets')
+    .insert({
+      content,
+      userId,
+      replyForTweetId: tweetId,
+    })
+    .returning('*');
+  return rows[0];
+}
+
 // ------------------------------
 // Interation
 
@@ -117,6 +128,13 @@ export async function getTweetsFromUser(userId, { first, after, order }) {
   };
 }
 
+export async function getReplyCount(tweetId) {
+  const rows = await knex('tweets')
+    .count('id')
+    .where({ replyForTweetId: tweetId });
+  return rows[0].count;
+}
+
 export async function getRetweetCount(tweetId) {
   const rows = await knex('tweets')
     .count('id')
@@ -129,6 +147,13 @@ export async function getLikeCount(tweetId) {
     .count('id')
     .where({ likeForTweetId: tweetId });
   return rows[0].count;
+}
+
+export async function getReplies(tweetId, columns = ['*']) {
+  const rows = await knex('tweets')
+    .select(columns)
+    .where({ replyForTweetId: tweetId });
+  return rows;
 }
 
 export async function getUserHasRetweeted({ userId, tweetId }) {

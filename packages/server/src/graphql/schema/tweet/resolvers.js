@@ -2,10 +2,13 @@ import { baseResolver, isAuthenticatedResolver } from '../../baseResolvers';
 import {
   findTweetById,
   createTweet,
+  replyTweet,
   toggleRetweet,
   toggleLike,
+  getReplyCount,
   getRetweetCount,
   getLikeCount,
+  getReplies,
   getUserHasRetweeted,
   getUserHasLiked,
 } from 'db/actions/tweet';
@@ -18,12 +21,20 @@ const getUser = baseResolver.createResolver(async root => {
   return await findUserById(root.userId);
 });
 
+const replyCount = baseResolver.createResolver(async root => {
+  return await getReplyCount(root.id);
+});
+
 const retweetCount = baseResolver.createResolver(async root => {
   return await getRetweetCount(root.id);
 });
 
 const likeCount = baseResolver.createResolver(async root => {
   return await getLikeCount(root.id);
+});
+
+const getTweetReplies = baseResolver.createResolver(async root => {
+  return await getReplies(root.id);
 });
 
 const getRetweeted = baseResolver.createResolver(
@@ -94,6 +105,22 @@ const createTweetMutation = isAuthenticatedResolver.createResolver(
   }
 );
 
+const replyTweetMutation = isAuthenticatedResolver.createResolver(
+  async (_, { input }, { user }) => {
+    const { tweetId, content } = input;
+
+    const createdTweet = await replyTweet({
+      content,
+      tweetId,
+      userId: user.id,
+    });
+
+    const repliedTweet = await findTweetById(tweetId);
+
+    return { replyTweet: createdTweet, repliedTweet };
+  }
+);
+
 const retweetMutation = isAuthenticatedResolver.createResolver(
   async (_, { input }, { user }) => {
     const { tweetId } = input;
@@ -128,8 +155,10 @@ const likeMutation = isAuthenticatedResolver.createResolver(
 export default {
   Tweet: {
     user: getUser,
+    replyCount,
     retweetCount,
     likeCount,
+    replies: getTweetReplies,
     retweeted: getRetweeted,
     liked: getLiked,
   },
@@ -144,6 +173,7 @@ export default {
   },
   Mutation: {
     createTweet: createTweetMutation,
+    replyTweet: replyTweetMutation,
     retweet: retweetMutation,
     like: likeMutation,
   },

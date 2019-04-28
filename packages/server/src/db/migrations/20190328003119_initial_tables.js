@@ -29,6 +29,10 @@ exports.up = async function(knex) {
       .references('id')
       .inTable('users');
     table
+      .uuid('replyForTweetId')
+      .references('id')
+      .inTable('tweets');
+    table
       .uuid('retweetForTweetId')
       .references('id')
       .inTable('tweets');

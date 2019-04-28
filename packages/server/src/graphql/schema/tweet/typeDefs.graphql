@@ -3,8 +3,10 @@ type Tweet {
   content: String
   user: User
   createdAt: String!
+  replyCount: Int
   retweetCount: Int
   likeCount: Int
+  replies: [Tweet!]!
 
   # If the authenticated user retweeted the tweet
   retweeted: Boolean!
@@ -40,12 +42,23 @@ type Query {
 type Mutation {
   # TODO: change the return to include a payload instead of the value directly
   createTweet(input: CreateTweetInput!): Tweet
+  replyTweet(input: ReplyTweetInput!): ReplyTweetPayload!
   retweet(input: RetweetInput!): RetweetPayload!
   like(input: LikeInput!): LikePayload!
 }
 
 input CreateTweetInput {
   content: String!
+}
+
+input ReplyTweetInput {
+  tweetId: ID!
+  content: String!
+}
+
+type ReplyTweetPayload {
+  repliedTweet: Tweet
+  replyTweet: Tweet
 }
 
 input RetweetInput {

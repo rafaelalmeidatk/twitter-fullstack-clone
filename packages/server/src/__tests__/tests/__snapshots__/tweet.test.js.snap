@@ -33,3 +33,39 @@ Object {
   },
 }
 `;
+
+exports[`should reply a tweet 1`] = `
+Object {
+  "data": Object {
+    "replyTweet": Object {
+      "repliedTweet": Object {
+        "content": "Hello World from User Two!",
+        "id": "e2a7c8d1-70c4-4e43-b7f0-a9c75d1f92ca",
+        "replies": Array [
+          Object {
+            "content": "Replying to the tweet from User Two",
+            "id": "a6f77ad7-434f-4837-9cfe-49fbfa8f038d",
+            "user": Object {
+              "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+              "username": "test_user",
+            },
+          },
+        ],
+        "replyCount": 1,
+        "user": Object {
+          "id": "4173dd82-7c8f-4bfa-9c8e-0158082fe07c",
+          "username": "test_user_two",
+        },
+      },
+      "replyTweet": Object {
+        "content": "Replying to the tweet from User Two",
+        "id": "a6f77ad7-434f-4837-9cfe-49fbfa8f038d",
+        "user": Object {
+          "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+          "username": "test_user",
+        },
+      },
+    },
+  },
+}
+`;
