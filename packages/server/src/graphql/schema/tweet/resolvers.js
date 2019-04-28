@@ -80,6 +80,10 @@ const allTweets = async () => {
   return [];
 };
 
+const getTweet = baseResolver.createResolver(async (_, { id }) => {
+  return await findTweetById(id);
+});
+
 // ------------------------------
 // Mutation
 
@@ -136,6 +140,7 @@ export default {
   },
   Query: {
     allTweets,
+    tweet: getTweet,
   },
   Mutation: {
     createTweet: createTweetMutation,

@@ -13,3 +13,23 @@ Object {
   },
 }
 `;
+
+exports[`should fetch a tweet 1`] = `
+Object {
+  "data": Object {
+    "tweet": Object {
+      "content": "Hello World from User One!",
+      "id": "53c1c783-bebf-4f62-bd46-766c827e7d62",
+      "likeCount": 0,
+      "liked": false,
+      "retweetCount": 0,
+      "retweeted": false,
+      "user": Object {
+        "id": "551cf7db-df68-4ad5-af6c-1935759b9291",
+        "name": "Test User One",
+        "username": "test_user",
+      },
+    },
+  },
+}
+`;

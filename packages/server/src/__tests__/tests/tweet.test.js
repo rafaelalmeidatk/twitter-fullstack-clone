@@ -12,6 +12,31 @@ beforeAll(async () => {
   user = (await knex.table('users').where({ username: 'test_user' }))[0];
 });
 
+it('should fetch a tweet', async () => {
+  const query = `
+    query GetTweet($tweetId: ID!) {
+      tweet(id: $tweetId) {
+        id
+        content
+        retweetCount
+        likeCount
+        retweeted
+        liked
+        user {
+          id
+          name
+          username
+        }
+      }
+    }
+  `;
+
+  const variables = { tweetId: '53c1c783-bebf-4f62-bd46-766c827e7d62' };
+
+  const result = await request(query, { variables });
+  expect(result).toMatchSnapshot();
+});
+
 it('should create a tweet', async () => {
   const context = { user };
 
