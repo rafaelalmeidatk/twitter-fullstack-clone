@@ -15,6 +15,8 @@ const CREATE_TWEET_QUERY = gql`
       content
       retweeted
       liked
+      retweetCount
+      likeCount
       user {
         id
         name
@@ -24,7 +26,7 @@ const CREATE_TWEET_QUERY = gql`
   }
 `;
 
-const NewTweetForm = ({ onCancel }) => {
+const NewTweetForm = ({ onCancel, onTweetCreated }) => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const createTweet = useMutation(CREATE_TWEET_QUERY);
@@ -82,6 +84,7 @@ const NewTweetForm = ({ onCancel }) => {
       .then(() => {
         setLoading(false);
         setContent('');
+        onTweetCreated && onTweetCreated();
       })
       .catch(err => {
         console.error('[NEW TWEET]', err);
@@ -142,17 +145,18 @@ const NewTweetForm = ({ onCancel }) => {
   );
 };
 
-const NewTweet = () => {
+const NewTweet = ({ expanded, onTweetCreated }) => {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="new-tweet">
       <Avatar size="small" />
-      {open ? (
+      {open || expanded ? (
         <NewTweetForm
           onCancel={() => {
             setOpen(false);
           }}
+          onTweetCreated={onTweetCreated}
         />
       ) : (
         <form>
@@ -170,7 +174,6 @@ const NewTweet = () => {
           padding: 10px 12px 10px 18px;
           display: flex;
           background-color: ${colors.newTweetBg};
-          border: 1px solid ${colors.boxBorder};
         }
 
         form {

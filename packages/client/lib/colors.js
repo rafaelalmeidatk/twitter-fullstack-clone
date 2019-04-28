@@ -1,6 +1,7 @@
 export default {
   twitterBlue: '#1da1f2',
   twitterBlueStrong: '#1B95E0',
+  twitterBlueWeak: '#48AAE6',
   blueGray: '#657786',
   blueGrayStrong: '#66757f',
   error: '#ff3860',

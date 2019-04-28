@@ -5,6 +5,7 @@ import colors from '../lib/colors';
 const Button = ({
   primary,
   gray,
+  muted,
   full,
   narrow,
   simple,
@@ -14,7 +15,14 @@ const Button = ({
 }) => {
   return (
     <button
-      className={cx('btn', className, { primary, gray, full, narrow, simple })}
+      className={cx('btn', className, {
+        primary,
+        gray,
+        muted,
+        full,
+        narrow,
+        simple,
+      })}
       {...props}
     >
       {children}
@@ -73,6 +81,10 @@ const Button = ({
         .btn.primary[disabled] {
           background: ${colors.buttonDisabled};
           opacity: 0.9;
+        }
+
+        .btn.muted {
+          background-color: ${colors.twitterBlueWeak};
         }
 
         .btn.full {

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import colors from '../lib/colors';
 import Icon from './Icon';
+import Button from './Button';
 import UnderlineButton from './UnderlineButton';
 import Search from './Search';
 import NavbarMenu from './NavbarMenu';
@@ -39,7 +40,7 @@ const NavButton = ({ text, icon, iconSelected, selected, ...props }) => (
   </UnderlineButton>
 );
 
-const Navbar = ({ currentPage, user }) => (
+const Navbar = ({ currentPage, user, onNewTweetClick }) => (
   <div className="app-navbar">
     <div className="container">
       <div className="bird">
@@ -64,6 +65,15 @@ const Navbar = ({ currentPage, user }) => (
       <div className="right">
         <Search />
         <NavbarMenu user={user} />
+        <Button
+          narrow
+          primary
+          muted
+          className="tweet-btn"
+          onClick={onNewTweetClick}
+        >
+          Tweet
+        </Button>
       </div>
     </div>
 
@@ -91,6 +101,7 @@ const Navbar = ({ currentPage, user }) => (
         left: 50%;
         transform: translateX(-50%);
       }
+
       .bird i {
         color: ${colors.twitterBlue};
         font-size: 1.28em;
@@ -104,6 +115,10 @@ const Navbar = ({ currentPage, user }) => (
       .right {
         display: flex;
         align-items: center;
+      }
+
+      .right :global(.tweet-btn) {
+        margin-left: 16px;
       }
     `}</style>
   </div>
