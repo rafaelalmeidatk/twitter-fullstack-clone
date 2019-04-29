@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { gql } from 'apollo-boost';
 import { useMutation } from 'react-apollo-hooks';
 import Tweet from 'components/Tweet';

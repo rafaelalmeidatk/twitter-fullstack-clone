@@ -1,12 +1,14 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import InfiniteScroll from 'react-infinite-scroller';
+import colors from '../lib/colors';
 import Tweet from 'components/Tweet';
 import TweetsListFooter from 'components/TweetsListFooter';
+import Loading from 'components/Loading';
 
-const LoadingMessage = ({ initial }) => (
+const LoadingMessage = () => (
   <div className="feed-loader">
-    {initial ? 'Loading tweets...' : 'Loading more tweets...'}
+    <Loading color={colors.loadingGray} noSsr={true} />
 
     <style jsx>{`
       .feed-loader {
@@ -31,15 +33,24 @@ const InfiniteTweetsList = ({
   });
 
   if (loading) {
-    return <LoadingMessage key="initial-feed-loader" initial />;
+    return <LoadingMessage key="initial-feed-loader" />;
   }
 
-  const loader = <LoadingMessage key="feed-loader" />;
+  const loader = (
+    <TweetsListFooter
+      key="feed-loader"
+      loading
+      loadingNoSsr={true}
+      whiteVariant
+    />
+  );
+
+  const hasMoreToLoad = hasMore(data);
 
   return (
     <>
       <InfiniteScroll
-        hasMore={hasMore(data)}
+        hasMore={hasMoreToLoad}
         loader={loader}
         loadMore={() => loadMoreEntries(data, fetchMore)}
       >
@@ -63,7 +74,7 @@ const InfiniteTweetsList = ({
           );
         })}
       </InfiniteScroll>
-      <TweetsListFooter whiteVariant />
+      {!hasMoreToLoad && <TweetsListFooter whiteVariant />}
     </>
   );
 };

@@ -15,10 +15,6 @@ const getFeedQuery = isAuthenticatedResolver.createResolver(
       order: cursorData.order,
     });
 
-    if (cursorData.after) {
-      await new Promise(r => setTimeout(r, 20000));
-    }
-
     return {
       edges: buildEdgesForTweetsPagination(tweets, cursorData.order),
       pageInfo: {
