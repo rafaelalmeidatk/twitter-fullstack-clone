@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import colors from '../../lib/colors';
 import Content from './Content';
+import Icon from 'components/Icon';
 
 const TweetModal = ({ isOpen, onClose, tweetId }) => (
   <ReactModal
@@ -11,11 +13,17 @@ const TweetModal = ({ isOpen, onClose, tweetId }) => (
     className="tweet-modal-content"
     htmlOpenClassName="tweet-modal-html-open"
   >
-    <Content
-      tweetId={('d3815867-fbae-48bb-8290-6427d6e4ad7f', tweetId)}
-      // tweetId={'754c1bf5-caa9-43b5-bdec-1bc2694430de'}
-      onClose={onClose}
-    />
+    <button className="tweet-modal-btn-close" onClick={onClose}>
+      <Icon name="close" color="#ffffff" size="27px" />
+    </button>
+
+    <div className="inner-content">
+      <Content
+        tweetId={('d3815867-fbae-48bb-8290-6427d6e4ad7f', tweetId)}
+        // tweetId={'754c1bf5-caa9-43b5-bdec-1bc2694430de'}
+        onClose={onClose}
+      />
+    </div>
     <style jsx global>{`
       .tweet-modal-html-open {
         overflow: hidden;
@@ -33,6 +41,23 @@ const TweetModal = ({ isOpen, onClose, tweetId }) => (
       }
 
       .tweet-modal-content {
+        outline: none;
+      }
+
+      .tweet-modal-btn-close {
+        position: fixed;
+        top: 10px;
+        right: 24px;
+
+        width: 27px;
+        height: 27px;
+        cursor: pointer;
+        background: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      .tweet-modal-content > .inner-content {
         position: relative;
         top: 60px;
         left: 50%;
@@ -40,9 +65,10 @@ const TweetModal = ({ isOpen, onClose, tweetId }) => (
         width: 610px;
         margin-bottom: 30px;
 
-        background: #fff;
-        border-radius: 6px;
+        background-color: ${colors.gray};
+        border-radius: 8px;
         outline: none;
+        overflow: hidden;
       }
     `}</style>
   </ReactModal>

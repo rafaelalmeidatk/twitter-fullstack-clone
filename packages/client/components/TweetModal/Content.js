@@ -7,6 +7,7 @@ import Tweet from 'components/Tweet';
 import MainTweet from './MainTweet';
 import Reply from './Reply';
 import Replies from './Replies';
+import TweetsListFooter from 'components/TweetsListFooter';
 
 const GET_TWEET_QUERY = gql`
   query GetTweet($tweetId: ID!) {
@@ -25,7 +26,7 @@ const GET_TWEET_QUERY = gql`
   ${Tweet.fragments.tweet}
 `;
 
-const Content = ({ tweetId, onClose }) => {
+const Content = ({ tweetId }) => {
   const { data, loading } = useQuery(GET_TWEET_QUERY, {
     variables: { tweetId },
   });
@@ -37,29 +38,19 @@ const Content = ({ tweetId, onClose }) => {
   const { tweet } = data;
 
   return (
-    <div className="content">
+    <div className="root">
       <MainTweet tweet={tweet} />
       <Reply tweetId={tweet.id} />
-
-      <button className="btn-close" onClick={onClose}>
-        <Icon name="close" color="#ffffff" size="27px" />
-      </button>
-
       <Replies replies={tweet.replies} tweetAuthor={tweet.user} />
 
-      <style jsx>{`
-        .btn-close {
-          position: absolute;
-          top: -50px;
-          left: calc(100% + (100vw - 610px) / 2);
-          transform: translateX(-200%);
+      {tweet.replies && tweet.replies.length > 0 && <TweetsListFooter />}
 
-          width: 27px;
-          height: 27px;
-          cursor: pointer;
-          background: 0;
-          padding: 0;
-          border: 0;
+      <style jsx>{`
+        .inner-content {
+          background-color: #fff;
+        }
+
+        .btn-close {
         }
       `}</style>
     </div>

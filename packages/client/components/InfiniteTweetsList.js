@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import InfiniteScroll from 'react-infinite-scroller';
 import Tweet from 'components/Tweet';
+import TweetsListFooter from 'components/TweetsListFooter';
 
 const LoadingMessage = ({ initial }) => (
   <div className="feed-loader">
@@ -36,7 +37,7 @@ const InfiniteTweetsList = ({
   const loader = <LoadingMessage key="feed-loader" />;
 
   return (
-    <div className="feed">
+    <>
       <InfiniteScroll
         hasMore={hasMore(data)}
         loader={loader}
@@ -62,7 +63,8 @@ const InfiniteTweetsList = ({
           );
         })}
       </InfiniteScroll>
-    </div>
+      <TweetsListFooter whiteVariant />
+    </>
   );
 };
 
