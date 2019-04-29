@@ -62,6 +62,7 @@ const FollowButton = ({ targetUser, onFollowersStatusChange }) => {
       await follow();
       onFollowersStatusChange();
     } catch (err) {
+      console.error('[FOLLOW]', err);
       setLoading(false);
     }
   };
@@ -88,6 +89,7 @@ const UnfollowButton = ({ targetUser, onFollowersStatusChange }) => {
       await unfollow();
       onFollowersStatusChange();
     } catch (err) {
+      console.error('[UNFOLLOW]', err);
       setLoading(false);
     }
   };

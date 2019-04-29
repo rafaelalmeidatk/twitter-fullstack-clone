@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import knex from '../knex';
 import { POSTGRES_UNIQUE_VIOLATION } from '../constants';
-import { UniqueViolation } from '../errors';
+import { UniqueViolation, InvalidOperation } from '../errors';
 
 export async function hashPassword(password) {
   return new Promise(resolve =>
@@ -56,6 +56,9 @@ export async function createUser({ name, username, password, email }) {
 // Interation
 
 export async function followUser(userId, targetId) {
+  if (userId === targetId)
+    throw new InvalidOperation('You cannot follow yourself');
+
   return await knex('follows')
     .insert({ userId, followingId: targetId })
     .returning('id');

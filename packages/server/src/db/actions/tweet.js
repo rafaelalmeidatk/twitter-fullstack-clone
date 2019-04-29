@@ -154,7 +154,8 @@ export async function getLikeCount(tweetId) {
 export async function getReplies(tweetId, columns = ['*']) {
   const rows = await knex('tweets')
     .select(columns)
-    .where({ replyForTweetId: tweetId });
+    .where({ replyForTweetId: tweetId })
+    .orderBy('created_at', 'desc');
   return rows;
 }
 

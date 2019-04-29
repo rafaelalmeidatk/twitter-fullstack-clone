@@ -6,3 +6,11 @@ export class UniqueViolation extends Error {
     this.field = field;
   }
 }
+
+export class InvalidOperation extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'InvalidOperation';
+    this.message = message;
+  }
+}
