@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import Navbar from 'components/Navbar';
 import UserCard from 'components/UserCard';
-import NewTweet from 'components/NewTweet';
+import NewTweetWithMutation from 'components/NewTweetWithMutation';
 import Feed from 'components/Feed';
 import WhoToFollow from 'components/WhoToFollow';
 import Footer from 'components/Footer';
@@ -50,7 +50,7 @@ const MainPage = () => {
         </div>
 
         <div className="content">
-          <NewTweet />
+          <NewTweetWithMutation />
           <Feed onTweetClick={tweetId => openTweetModal(tweetId)} />
         </div>
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
 import colors from '../../lib/colors';
-import NewTweetEx from 'components/NewTweetEx';
+import NewTweet from 'components/NewTweet';
 import Tweet from 'components/Tweet';
 
 const REPLY_MUTATION = gql`
@@ -37,7 +37,7 @@ const Reply = ({ tweetId }) => {
 
   return (
     <div className="reply-area">
-      <NewTweetEx
+      <NewTweet
         transparent
         replyingTo="rafaelalmeidatk"
         submitButtonText="Reply"

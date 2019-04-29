@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import colors from '../lib/colors';
-import NewTweet from 'components/NewTweet';
+import NewTweetWithMutation from 'components/NewTweetWithMutation';
 import Icon from 'components/Icon';
 
 const ModalContent = ({ onClose }) => (
@@ -11,7 +11,7 @@ const ModalContent = ({ onClose }) => (
     </div>
 
     <div className="body">
-      <NewTweet expanded={true} onTweetCreated={onClose} />
+      <NewTweetWithMutation expanded={true} onTweetCreated={onClose} />
     </div>
 
     <button className="btn-close" onClick={onClose}>

@@ -1,35 +1,14 @@
 import React, { useState } from 'react';
-import { gql } from 'apollo-boost';
-import { useMutation } from 'react-apollo-hooks';
+import cx from 'classnames';
 import colors from '../lib/colors';
 import AutoResizeTextarea from 'components/AutoResizeTextarea';
 import Avatar from 'components/Avatar';
 import Button from 'components/Button';
 import NewTweetToolbar from 'components/NewTweetToolbar';
-import GET_USER_FEED_QUERY, { DEFAULT_VARIABLES } from '../queries/getUserFeed';
 
-const CREATE_TWEET_QUERY = gql`
-  mutation CreateTweet($input: CreateTweetInput!) {
-    createTweet(input: $input) {
-      id
-      content
-      retweeted
-      liked
-      retweetCount
-      likeCount
-      user {
-        id
-        name
-        username
-      }
-    }
-  }
-`;
-
-const NewTweetForm = ({ onCancel, onTweetCreated }) => {
+const NewTweetForm = ({ onCancel, submitButtonText, onSubmit }) => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const createTweet = useMutation(CREATE_TWEET_QUERY);
 
   const handleContentChange = e => {
     const { value } = e.target;
@@ -38,57 +17,9 @@ const NewTweetForm = ({ onCancel, onTweetCreated }) => {
 
   const handleCreateTweet = async () => {
     setLoading(true);
-
-    createTweet({
-      variables: { input: { content } },
-      update: (proxy, { data: { createTweet } }) => {
-        try {
-          const data = proxy.readQuery({
-            query: GET_USER_FEED_QUERY,
-            variables: DEFAULT_VARIABLES,
-          });
-
-          const newTweetEdge = {
-            cursor: null, // we can't compute the cursor on front-end
-            node: {
-              type: 'TWEET',
-              originalTweet: {
-                ...createTweet,
-                __typename: 'Tweet',
-              },
-              contextTweet: null,
-              contextUser: null,
-              __typename: 'FeedNode',
-            },
-            __typename: 'FeedEdge',
-          };
-
-          const newData = {
-            ...data,
-            feed: {
-              ...data.feed,
-              edges: [newTweetEdge, ...data.feed.edges],
-            },
-          };
-
-          proxy.writeQuery({
-            query: GET_USER_FEED_QUERY,
-            variables: DEFAULT_VARIABLES,
-            data: newData,
-          });
-        } catch (err) {
-          console.error('[UPDATE CACHE]', err);
-        }
-      },
-    })
-      .then(() => {
-        setLoading(false);
-        setContent('');
-        onTweetCreated && onTweetCreated();
-      })
-      .catch(err => {
-        console.error('[NEW TWEET]', err);
-      });
+    await onSubmit(content);
+    setLoading(false);
+    setContent('');
   };
 
   const handleBlur = () => {
@@ -109,8 +40,13 @@ const NewTweetForm = ({ onCancel, onTweetCreated }) => {
 
       <NewTweetToolbar
         tweetButton={
-          <Button narrow primary onClick={handleCreateTweet} disabled={loading}>
-            Tweet
+          <Button
+            narrow
+            primary
+            onClick={handleCreateTweet}
+            disabled={loading || !content}
+          >
+            {submitButtonText || 'Tweet'}
           </Button>
         }
       />
@@ -145,35 +81,69 @@ const NewTweetForm = ({ onCancel, onTweetCreated }) => {
   );
 };
 
-const NewTweet = ({ expanded, onTweetCreated }) => {
+const NewTweet = ({
+  expanded,
+  onSubmit,
+  replyingTo,
+  transparent,
+  submitButtonText,
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="new-tweet">
-      <Avatar size="small" />
-      {open || expanded ? (
-        <NewTweetForm
-          onCancel={() => {
-            setOpen(false);
-          }}
-          onTweetCreated={onTweetCreated}
-        />
-      ) : (
-        <form>
-          <textarea
-            className="input"
-            placeholder="What's hapenning?"
-            onFocus={() => setOpen(true)}
-            onBlur={() => setOpen(false)}
-          />
-        </form>
+    <div className={cx('new-tweet', { transparent })}>
+      {replyingTo && (open || expanded) && (
+        <div className="replying-to">
+          Replying to <a>@{replyingTo}</a>
+        </div>
       )}
 
+      <div className="body">
+        <Avatar size="small" />
+        {open || expanded ? (
+          <NewTweetForm
+            onCancel={() => setOpen(false)}
+            submitButtonText={submitButtonText}
+            onSubmit={onSubmit}
+          />
+        ) : (
+          <form>
+            <textarea
+              className="input"
+              placeholder="What's hapenning?"
+              onFocus={() => setOpen(true)}
+              onBlur={() => setOpen(false)}
+            />
+          </form>
+        )}
+      </div>
       <style jsx>{`
         .new-tweet {
           padding: 10px 12px 10px 18px;
-          display: flex;
           background-color: ${colors.newTweetBg};
+        }
+
+        .new-tweet.transparent {
+          background-color: unset;
+        }
+
+        .replying-to {
+          margin-left: 40px;
+          margin-bottom: 8px;
+          font-size: 0.87em;
+          color: ${colors.blueGray};
+        }
+
+        .replying-to a {
+          color: ${colors.twitterBlue};
+        }
+
+        .replying-to a:hover {
+          text-decoration: underline;
+        }
+
+        .new-tweet .body {
+          display: flex;
         }
 
         form {
