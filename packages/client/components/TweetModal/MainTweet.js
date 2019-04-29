@@ -38,6 +38,8 @@ const MainTweet = ({ tweet }) => (
       replyCount={tweet.replyCount}
       retweetCount={tweet.retweetCount}
       likeCount={tweet.likeCount}
+      retweeted={tweet.retweeted}
+      liked={tweet.liked}
     />
 
     <style jsx>{`

@@ -18,7 +18,15 @@ const CONTEXT_ACTION_TEXT = {
 };
 
 const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
-  const { id, content, retweetCount, likeCount, retweeted, liked } = tweet;
+  const {
+    id,
+    content,
+    replyCount,
+    retweetCount,
+    likeCount,
+    retweeted,
+    liked,
+  } = tweet;
   const { username, name } = tweet.user;
 
   return (
@@ -64,6 +72,7 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
 
           <Footer
             tweetId={id}
+            replyCount={replyCount}
             retweetCount={retweetCount}
             likeCount={likeCount}
             retweeted={retweeted}

@@ -1,4 +1,5 @@
 import { gql } from 'apollo-boost';
+import Tweet from 'components/Tweet';
 
 export const DEFAULT_VARIABLES = { username: null, first: 10, after: null };
 
@@ -12,17 +13,7 @@ export default gql`
           node {
             type
             originalTweet {
-              id
-              content
-              retweetCount
-              likeCount
-              retweeted
-              liked
-              user {
-                id
-                name
-                username
-              }
+              ...TweetFields
             }
             contextTweet {
               id
@@ -39,4 +30,5 @@ export default gql`
       }
     }
   }
+  ${Tweet.fragments.tweet}
 `;
