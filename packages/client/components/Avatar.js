@@ -1,8 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 
-const Avatar = ({ url, size, withBorder }) => (
-  <div className={cx('avatar', { [size]: true, 'with-border': withBorder })}>
+const Avatar = ({ url, size, withBorder, className }) => (
+  <div
+    className={cx('avatar', className, {
+      [size]: true,
+      'with-border': withBorder,
+    })}
+  >
     <img src={url} />
     <style jsx>{`
       .avatar {

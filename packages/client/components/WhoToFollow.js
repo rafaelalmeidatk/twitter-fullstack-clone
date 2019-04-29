@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { useQuery } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
 import Avatar from 'components/Avatar';
@@ -41,16 +42,24 @@ const WhoToFollow = ({ user: currentUser }) => {
       {!loading &&
         users.map(user => (
           <div key={user.id} className="user-row">
-            <Avatar size="medium" />
             <div className="content">
-              <div className="user-info">
-                <span className="name">{user.name}</span>
-                <span className="username">@{user.username}</span>
-              </div>
+              <Link
+                href={`/profile?username=${user.username}`}
+                as={`/profile/${user.username}`}
+              >
+                <a>
+                  <Avatar className="user-avatar" size="medium" />
+                  <span className="user-info">
+                    <span className="name">{user.name}</span>
+                    <span className="username tt">@{user.username}abcde</span>
+                  </span>
+                </a>
+              </Link>
               <FollowButton targetUser={user} currentUser={currentUser} />
             </div>
           </div>
         ))}
+
       <style jsx>{`
         .wtf {
           padding: 15px 18px;
@@ -71,23 +80,65 @@ const WhoToFollow = ({ user: currentUser }) => {
         }
 
         .user-row {
+          position: relative;
           display: flex;
           align-items: center;
+          margin-top: 10px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid ${colors.boxBorder};
+        }
+
+        .user-row:nth-child(2) {
+          margin-top: 0;
+        }
+
+        .user-row:last-child {
+          padding-bottom: 0;
+          border-bottom: none;
         }
 
         .content {
-          margin-left: 8px;
+          padding-left: 58px;
+          min-height: 48px;
+          width: 100%;
+        }
+
+        .content > a {
+          display: block;
+        }
+
+        .user-row :global(.user-avatar) {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
         }
 
         .user-info {
           line-height: 0.9em;
-          margin-bottom: 6px;
+          padding-bottom: 6px;
+
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          display: block;
+          width: 100%;
+          white-space: nowrap;
         }
 
-        .name {
+        a span {
+          color: rgba(0, 0, 0, 0.6);
+        }
+
+        span .name {
           font-weight: bold;
           font-size: 0.9em;
           color: rgba(0, 0, 0, 0.85);
+        }
+
+        a:hover .name {
+          color: ${colors.twitterBlueStrong};
+          text-decoration: underline;
         }
 
         .username {

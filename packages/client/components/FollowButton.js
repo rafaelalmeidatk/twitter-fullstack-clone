@@ -106,7 +106,7 @@ const UnfollowButton = ({ targetUser, onFollowersStatusChange }) => {
       </Button>
 
       <style jsx>{`
-        .unfollow-btn-wrapper {
+        .unfollow-btn-wrapper :global(.unfollow-btn) {
           position: relative;
         }
 

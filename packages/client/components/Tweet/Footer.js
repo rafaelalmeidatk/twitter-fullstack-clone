@@ -89,8 +89,13 @@ const Footer = ({
 
       <style jsx>{`
         .tweet-footer {
+          min-height: 19px;
           display: flex;
           color: rgba(55, 55, 55, 0.8);
+        }
+
+        .tweet-footer :global(i) {
+          margin-top: -4px;
         }
 
         .tweet-footer > div {
