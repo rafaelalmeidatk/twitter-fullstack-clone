@@ -13,10 +13,14 @@ const Replies = ({ tweetAuthor, replies }) => {
 
       <style jsx>{`
         .tweet-wrapper {
-          padding: 0 28px;
           border-left: 1px solid ${colors.boxBorder};
           border-right: 1px solid ${colors.boxBorder};
           border-bottom: 1px solid ${colors.boxBorder};
+        }
+
+        .tweet-wrapper :global(.tweet) {
+          padding-left: 40px;
+          padding-right: 40px;
         }
       `}</style>
     </div>

@@ -6,8 +6,8 @@ import Icon from 'components/Icon';
 
 const TweetModal = ({ isOpen, onClose, tweetId }) => (
   <ReactModal
-    isOpen={isOpen}
-    // isOpen={true}
+    // isOpen={isOpen}
+    isOpen={true}
     onRequestClose={onClose}
     overlayClassName="tweet-modal-overlay"
     className="tweet-modal-content"
@@ -19,8 +19,8 @@ const TweetModal = ({ isOpen, onClose, tweetId }) => (
 
     <div className="inner-content">
       <Content
-        tweetId={('d3815867-fbae-48bb-8290-6427d6e4ad7f', tweetId)}
-        // tweetId={'754c1bf5-caa9-43b5-bdec-1bc2694430de'}
+        // tweetId={('d3815867-fbae-48bb-8290-6427d6e4ad7f', tweetId)}
+        tweetId={'754c1bf5-caa9-43b5-bdec-1bc2694430de'}
         onClose={onClose}
       />
     </div>
@@ -40,14 +40,11 @@ const TweetModal = ({ isOpen, onClose, tweetId }) => (
         overflow-y: scroll;
       }
 
-      .tweet-modal-content {
-        outline: none;
-      }
-
       .tweet-modal-btn-close {
         position: fixed;
-        top: 10px;
-        right: 24px;
+        top: -50px;
+        left: calc(100% + (100vw - 610px) / 2);
+        transform: translateX(-200%);
 
         width: 27px;
         height: 27px;
@@ -57,15 +54,18 @@ const TweetModal = ({ isOpen, onClose, tweetId }) => (
         border: 0;
       }
 
-      .tweet-modal-content > .inner-content {
+      .tweet-modal-content {
         position: relative;
         top: 60px;
         left: 50%;
         transform: translateX(-50%);
         width: 610px;
         margin-bottom: 30px;
+        outline: none;
+      }
 
-        background-color: ${colors.gray};
+      .tweet-modal-content > .inner-content {
+        background-color: #fff;
         border-radius: 8px;
         outline: none;
         overflow: hidden;

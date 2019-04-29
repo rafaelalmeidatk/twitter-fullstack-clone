@@ -38,22 +38,13 @@ const Content = ({ tweetId }) => {
   const { tweet } = data;
 
   return (
-    <div className="root">
+    <>
       <MainTweet tweet={tweet} />
       <Reply tweetId={tweet.id} />
       <Replies replies={tweet.replies} tweetAuthor={tweet.user} />
 
       {tweet.replies && tweet.replies.length > 0 && <TweetsListFooter />}
-
-      <style jsx>{`
-        .inner-content {
-          background-color: #fff;
-        }
-
-        .btn-close {
-        }
-      `}</style>
-    </div>
+    </>
   );
 };
 

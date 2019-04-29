@@ -16,6 +16,7 @@ const TweetsListFooter = ({ whiteVariant }) => (
         padding: 15px 20px;
         background: transparent;
         text-align: center;
+        background: ${colors.gray};
       }
 
       .tweets-list-footer.white-variant {
