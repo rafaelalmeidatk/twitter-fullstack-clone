@@ -32,8 +32,9 @@ const MainPage = () => {
   const { me: user } = data;
 
   const openNewTweetModal = () => setCurrentModalData({ type: 'NEW_TWEET' });
-  const openTweetModal = tweetId =>
+  const openTweetModal = tweetId => {
     setCurrentModalData({ type: 'TWEET', tweetId });
+  };
   const closeModal = () => setCurrentModalData({});
 
   return (

@@ -7,7 +7,7 @@ import GET_USER_PROFILE_TWEETS_QUERY, {
 const hasMore = data => data.user.profileTweets.pageInfo.hasNextPage;
 const extractEdges = data => data.user.profileTweets.edges;
 
-const ProfileTweets = ({ user }) => {
+const ProfileTweets = ({ user, onTweetClick }) => {
   const loadMoreEntries = (data, fetchMore) => {
     const lastCursor =
       data.user.profileTweets.edges[data.user.profileTweets.edges.length - 1]
@@ -40,6 +40,7 @@ const ProfileTweets = ({ user }) => {
       loadMoreEntries={loadMoreEntries}
       extractEdges={extractEdges}
       hasMore={hasMore}
+      onTweetClick={onTweetClick}
     />
   );
 };

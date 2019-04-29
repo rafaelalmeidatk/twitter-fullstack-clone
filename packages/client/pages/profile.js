@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
-import Navbar from '../components/Navbar';
-import ProfileHeader from '../components/ProfileHeader';
-import ProfileDetails from '../components/ProfileDetails';
-import ProfileTweets from '../components/ProfileTweets';
-import WhoToFollow from '../components/WhoToFollow';
-import Footer from '../components/Footer';
 import colors from '../lib/colors';
+import Navbar from 'components/Navbar';
+import ProfileHeader from 'components/ProfileHeader';
+import ProfileDetails from 'components/ProfileDetails';
+import ProfileTweets from 'components/ProfileTweets';
+import WhoToFollow from 'components/WhoToFollow';
+import TweetModal from 'components/TweetModal';
+import ComposeNewTweetModal from 'components/ComposeNewTweetModal';
+import Footer from 'components/Footer';
 
 const GET_USER_QUERY = gql`
   query getUser($username: String!) {
@@ -32,17 +34,24 @@ const GET_USER_QUERY = gql`
 `;
 
 const ProfilePage = ({ username }) => {
+  const [currentModalData, setCurrentModalData] = useState({});
   const { data, loading } = useQuery(GET_USER_QUERY, {
     variables: { username },
   });
 
   if (loading) return <div>Loading...</div>;
 
+  const openNewTweetModal = () => setCurrentModalData({ type: 'NEW_TWEET' });
+  const openTweetModal = tweetId => {
+    setCurrentModalData({ type: 'TWEET', tweetId });
+  };
+  const closeModal = () => setCurrentModalData({});
+
   const { user, me } = data;
 
   return (
     <div className="main">
-      <Navbar user={me} />
+      <Navbar user={me} onNewTweetClick={openNewTweetModal} />
       <ProfileHeader user={user} currentUser={me} />
 
       <div className="container">
@@ -52,7 +61,10 @@ const ProfilePage = ({ username }) => {
 
         <div className="content">
           <div className="content-heading">Tweets</div>
-          <ProfileTweets user={user} />
+          <ProfileTweets
+            user={user}
+            onTweetClick={tweetId => openTweetModal(tweetId)}
+          />
         </div>
 
         <div className="main-right">
@@ -60,6 +72,17 @@ const ProfilePage = ({ username }) => {
           <Footer />
         </div>
       </div>
+
+      <TweetModal
+        isOpen={currentModalData.type === 'TWEET'}
+        tweetId={currentModalData.tweetId}
+        onClose={closeModal}
+        onTweetClick={id => openTweetModal(id)}
+      />
+      <ComposeNewTweetModal
+        isOpen={currentModalData.type === 'NEW_TWEET'}
+        onClose={closeModal}
+      />
 
       <style jsx>{`
         .main {
@@ -92,7 +115,7 @@ const ProfilePage = ({ username }) => {
           font-weight: 700;
           line-height: 1.2em;
           color: ${colors.heading};
-          border-bottom: 1px solid ${colors.boxBorder};
+          border: 1px solid ${colors.boxBorder};
         }
 
         .main :global(.footer) {
