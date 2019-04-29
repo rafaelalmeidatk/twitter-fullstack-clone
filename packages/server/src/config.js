@@ -1,13 +1,16 @@
 const env = process.env.NODE_ENV || 'development';
+const { DATABASE_URL } = process.env;
+
+const baseDatabaseConnection = DATABASE_URL || {
+  host: '127.0.0.1',
+  user: 'twitterclone',
+  password: 'twitterclone',
+  database: 'dev_twitter_clone',
+};
 
 // Used on development
 const base = {
-  databaseConnection: {
-    host: '127.0.0.1',
-    user: 'twitterclone',
-    password: 'twitterclone',
-    database: 'dev_twitter_clone',
-  },
+  databaseConnection: baseDatabaseConnection,
   databasePool: {
     min: 2,
     max: 10,

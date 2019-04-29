@@ -8,12 +8,21 @@ import fetch from 'isomorphic-unfetch';
 import { onError } from 'apollo-link-error';
 import { logout } from './auth';
 
+const IS_DEV = process.env.NODE_ENV !== 'production';
 let apolloClient = null;
 
 // Polyfill fetch() on the server (used by apollo-client)
 if (!process.browser) {
   global.fetch = fetch;
 }
+
+const getClientUri = () => {
+  // When developing with Docker, we need to switch from
+  // localhost to "http://api" between server and client
+  return process.browser && IS_DEV
+    ? 'http://localhost:4100/graphql'
+    : process.env.API_URL + '/graphql';
+};
 
 const errorLink = onError(({ graphQLErrors, forward, operation }) => {
   return new Observable(async observer => {
@@ -44,7 +53,7 @@ function create(initialState, { headers }) {
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: errorLink.concat(
       new HttpLink({
-        uri: 'http://localhost:4100/graphql',
+        uri: getClientUri(),
         // Include the credentials on the requests so the user
         // can fetch queries that require authentication
         credentials: 'include',

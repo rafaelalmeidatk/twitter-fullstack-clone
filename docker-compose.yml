@@ -1,0 +1,46 @@
+version: '3.4'
+services:
+  web:
+    build:
+      context: .
+      target: web
+    environment:
+      - API_URL=http://api:4100
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    networks:
+      - app-network
+
+  api:
+    build:
+      context: .
+      target: api
+    environment:
+      - DATABASE_URL=postgres://twitterclone:twitterclone@db:5432/dev_twitter_clone
+    ports:
+      - '4100:4100'
+    depends_on:
+      - db
+    volumes:
+      - .:/app/
+      - /app/node_modules
+    networks:
+      - app-network
+
+  db:
+    image: postgres:11.1-alpine
+    environment:
+      - POSTGRES_USER=twitterclone
+      - POSTGRES_PASSWORD=twitterclone
+      - POSTGRES_DB=dev_twitter_clone
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
