@@ -1,118 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
 import Link from 'next/link';
-import { useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
-import colors from '../lib/colors';
+import colors from '../../lib/colors';
 import Avatar from 'components/Avatar';
 import Icon from 'components/Icon';
-
-export const TweetFooter = ({
-  replyCount,
-  retweetCount,
-  likeCount,
-  retweeted,
-  liked,
-  onReply,
-  onRetweet,
-  onLike,
-}) => (
-  <div className="tweet-footer">
-    <div className={cx('reply')} onClick={onReply}>
-      <Icon name="reply" />
-      <span>{replyCount || ''}</span>
-    </div>
-    <div className={cx('retweet', { active: retweeted })} onClick={onRetweet}>
-      <Icon name="retweet" />
-      <span>{retweetCount || ''}</span>
-    </div>
-    <div className={cx('like', { active: liked })} onClick={onLike}>
-      <Icon name={liked ? 'heartBadge' : 'heart'} />
-      <span>{likeCount || ''}</span>
-    </div>
-
-    <style jsx>{`
-      .tweet-footer {
-        display: flex;
-        color: rgba(55, 55, 55, 0.8);
-      }
-
-      .tweet-footer > div {
-        padding-right: 4px;
-        display: flex;
-        align-items: center;
-        min-width: 80px;
-        cursor: pointer;
-      }
-
-      .tweet-footer span {
-        margin-left: 8px;
-        font-size: 0.8em;
-        font-weight: bold;
-      }
-
-      .tweet-footer :global(i) {
-        font-size: 1.1em;
-        color: rgba(55, 55, 55, 0.8);
-      }
-
-      .tweet-footer span,
-      .tweet-footer :global(i) {
-        transition: color 0.2s ease;
-      }
-
-      .tweet-footer > div.reply:hover,
-      .tweet-footer > div.reply:hover :global(i) {
-        color: ${colors.twitterBlue};
-      }
-
-      .tweet-footer > div.retweet.active,
-      .tweet-footer > div.retweet:hover,
-      .tweet-footer > div.retweet.active :global(i),
-      .tweet-footer > div.retweet:hover :global(i) {
-        color: ${colors.retweet};
-      }
-
-      .tweet-footer > div.like.active,
-      .tweet-footer > div.like:hover,
-      .tweet-footer > div.like.active :global(i),
-      .tweet-footer > div.like:hover :global(i) {
-        color: ${colors.like};
-      }
-    `}</style>
-  </div>
-);
-
-const RETWEET_QUERY = gql`
-  mutation RetweetQuery($input: RetweetInput!) {
-    retweet(input: $input) {
-      context {
-        originalTweet {
-          id
-          content
-          retweeted
-        }
-        contextTweet {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const LIKE_QUERY = gql`
-  mutation LikeQuery($input: LikeInput!) {
-    like(input: $input) {
-      context {
-        originalTweet {
-          id
-          content
-          liked
-        }
-      }
-    }
-  }
-`;
+import Footer from './Footer';
 
 const CONTEXT_ACTION_ICONS = {
   RETWEET: 'retweeted',
@@ -125,23 +18,6 @@ const CONTEXT_ACTION_TEXT = {
 };
 
 const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
-  const variables = { input: { tweetId: tweet.id } };
-  const retweet = useMutation(RETWEET_QUERY, { variables });
-  const like = useMutation(LIKE_QUERY, { variables });
-
-  const handleRetweet = async () => {
-    const r = await retweet();
-    console.log(' r', r);
-    // refetch && refetch();
-    // TODO: add message of success
-  };
-
-  const handleLike = async () => {
-    await like();
-    refetch && refetch();
-    // TODO: add message of success
-  };
-
   const { id, content, retweetCount, likeCount, retweeted, liked } = tweet;
   const { username, name } = tweet.user;
 
@@ -177,19 +53,22 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
               </a>
             </Link>
           </div>
+
           {replyingTo && (
             <div className="replying-to">
               Replying to <a>@{replyingTo}</a>
             </div>
           )}
+
           <div className="text-content">{content}</div>
-          <TweetFooter
+
+          <Footer
+            tweetId={id}
             retweetCount={retweetCount}
             likeCount={likeCount}
             retweeted={retweeted}
             liked={liked}
-            onRetweet={handleRetweet}
-            onLike={handleLike}
+            refetch={refetch}
           />
         </div>
       </div>
@@ -291,3 +170,4 @@ Tweet.fragments = {
 };
 
 export default Tweet;
+export { Footer as TweetFooter };

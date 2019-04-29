@@ -34,6 +34,7 @@ const MainTweet = ({ tweet }) => (
     ) : null}
 
     <TweetFooter
+      tweetId={tweet.id}
       replyCount={tweet.replyCount}
       retweetCount={tweet.retweetCount}
       likeCount={tweet.likeCount}
