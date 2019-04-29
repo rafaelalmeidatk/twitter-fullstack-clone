@@ -2,12 +2,17 @@ import React from 'react';
 import colors from '../../lib/colors';
 import Tweet from 'components/Tweet';
 
-const Replies = ({ tweetAuthor, replies }) => {
+const Replies = ({ replies, tweetAuthor, onTweetClick }) => {
   return (
     <div className="replies-area">
       {replies.map(tweet => (
         <div key={tweet.id} className="tweet-wrapper">
-          <Tweet tweet={tweet} noBorders replyingTo={tweetAuthor.username} />
+          <Tweet
+            tweet={tweet}
+            replyingTo={tweetAuthor.username}
+            onClick={onTweetClick}
+            noBorders
+          />
         </div>
       ))}
 

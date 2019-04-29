@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactModal from 'react-modal';
-import colors from '../../lib/colors';
 import Content from './Content';
 import Icon from 'components/Icon';
 
-const TweetModal = ({ isOpen, onClose, tweetId }) => (
+const TweetModal = ({ isOpen, tweetId, onTweetClick, onClose }) => (
   <ReactModal
-    // isOpen={isOpen}
-    isOpen={true}
+    isOpen={isOpen}
+    // isOpen={true}
     onRequestClose={onClose}
     overlayClassName="tweet-modal-overlay"
     className="tweet-modal-content"
@@ -19,8 +18,9 @@ const TweetModal = ({ isOpen, onClose, tweetId }) => (
 
     <div className="inner-content">
       <Content
-        // tweetId={('d3815867-fbae-48bb-8290-6427d6e4ad7f', tweetId)}
-        tweetId={'754c1bf5-caa9-43b5-bdec-1bc2694430de'}
+        tweetId={tweetId}
+        // tweetId={'754c1bf5-caa9-43b5-bdec-1bc2694430de'}
+        onTweetClick={onTweetClick}
         onClose={onClose}
       />
     </div>

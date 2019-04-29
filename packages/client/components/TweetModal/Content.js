@@ -1,13 +1,14 @@
 import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
-import Icon from 'components/Icon';
+import colors from '../../lib/colors';
 import Tweet from 'components/Tweet';
+import TweetsListFooter from 'components/TweetsListFooter';
+import Loading from 'components/Loading';
 
 import MainTweet from './MainTweet';
 import Reply from './Reply';
 import Replies from './Replies';
-import TweetsListFooter from 'components/TweetsListFooter';
 
 const GET_TWEET_QUERY = gql`
   query GetTweet($tweetId: ID!) {
@@ -26,13 +27,23 @@ const GET_TWEET_QUERY = gql`
   ${Tweet.fragments.tweet}
 `;
 
-const Content = ({ tweetId }) => {
+const Content = ({ tweetId, onTweetClick }) => {
   const { data, loading } = useQuery(GET_TWEET_QUERY, {
     variables: { tweetId },
   });
 
   if (loading) {
-    return 'Loading...';
+    return (
+      <div className="loading">
+        <Loading color={colors.loadingGray} />
+        <style jsx>{`
+          .loading {
+            padding: 60px 10px;
+            text-align: center;
+          }
+        `}</style>
+      </div>
+    );
   }
 
   const { tweet } = data;
@@ -41,7 +52,11 @@ const Content = ({ tweetId }) => {
     <>
       <MainTweet tweet={tweet} />
       <Reply tweetId={tweet.id} />
-      <Replies replies={tweet.replies} tweetAuthor={tweet.user} />
+      <Replies
+        replies={tweet.replies}
+        tweetAuthor={tweet.user}
+        onTweetClick={onTweetClick}
+      />
 
       {tweet.replies && tweet.replies.length > 0 && <TweetsListFooter />}
     </>

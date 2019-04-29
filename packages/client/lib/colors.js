@@ -7,6 +7,7 @@ export default {
   error: '#ff3860',
   gray: '#f5f8fa',
   heading: 'rgba(0, 0, 0, 0.85)',
+  loadingGray: '#8697a4',
 
   // buttons
   buttonPrimaryHover: '#1899e8',

@@ -64,6 +64,7 @@ const MainPage = () => {
         isOpen={currentModalData.type === 'TWEET'}
         tweetId={currentModalData.tweetId}
         onClose={closeModal}
+        onTweetClick={id => openTweetModal(id)}
       />
       <ComposeNewTweetModal
         isOpen={currentModalData.type === 'NEW_TWEET'}
