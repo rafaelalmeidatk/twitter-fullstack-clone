@@ -26,11 +26,11 @@ const createRandomTweets = () => {
     Object.keys(usersId).forEach(key => {
       const userId = usersId[key];
 
-      if (Math.random() > 0.2) return; // 20% chance
+      if (Math.random() > 0.05) return; // 5% chance to create
       tweets.push({
         id: faker.random.uuid(),
         userId,
-        created_at: faker.date.between(tweet.created_at, new Date()),
+        created_at: faker.date.recent(20),
         retweetForTweetId: tweet.id,
       });
     });
@@ -43,11 +43,11 @@ const createRandomTweets = () => {
     Object.keys(usersId).forEach(key => {
       const userId = usersId[key];
 
-      if (Math.random() > 0.5) return; // 50% chance
+      if (Math.random() > 0.1) return; // 10% chance to create
       tweets.push({
         id: faker.random.uuid(),
         userId,
-        created_at: faker.date.between(tweet.created_at, new Date()),
+        created_at: faker.date.recent(20),
         likeForTweetId: tweet.id,
       });
     });
