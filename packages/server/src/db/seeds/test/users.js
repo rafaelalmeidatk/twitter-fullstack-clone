@@ -3,7 +3,7 @@ const { hashPassword } = require('../../actions/user');
 const TEST_USER_ONE_ID = '551cf7db-df68-4ad5-af6c-1935759b9291';
 const TEST_USER_TWO_ID = '4173dd82-7c8f-4bfa-9c8e-0158082fe07c';
 
-exports.seed = function(knex, Promise) {
+exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex('users')
     .del()

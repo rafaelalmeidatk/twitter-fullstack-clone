@@ -1,0 +1,12 @@
+{
+  "extends": ["eslint:recommended", "prettier"],
+  "parser": "babel-eslint",
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest": true
+  },
+  "globals": {
+    "__DEV__": true
+  }
+}

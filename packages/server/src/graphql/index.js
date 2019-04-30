@@ -1,4 +1,4 @@
-import fs from 'fs';
+// import fs from 'fs';
 import path from 'path';
 import { makeExecutableSchema } from 'graphql-tools';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';

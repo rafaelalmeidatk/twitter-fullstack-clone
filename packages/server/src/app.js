@@ -10,12 +10,8 @@ import { findUserById } from './db/actions/user';
 import auth from './auth';
 import schema from './graphql';
 
-const start = (options = {}) => {
-  return new Promise(async (resolve, reject) => {
-    // if (!options.port) {
-    //   reject(new Error('The server must specify a port!'));
-    // }
-
+const start = () => {
+  return new Promise(async resolve => {
     //--------------------
     // Server startup
 

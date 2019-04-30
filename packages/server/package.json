@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "backpack",
     "build": "backpack build",
+    "lint": "eslint ./src",
     "migrate": "knex-migrate",
     "reset-db": "knex-migrate down --to 0 && knex-migrate up && knex seed:run",
     "test": "jest --runInBand",
@@ -35,8 +36,12 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.4.0",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.2.0",
     "jest": "^24.7.0",
+    "prettier": "^1.17.0",
     "supertest": "^4.0.2"
   }
 }

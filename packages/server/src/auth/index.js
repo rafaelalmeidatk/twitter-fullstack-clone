@@ -54,6 +54,7 @@ export default ({ cookieSettings }) => {
   // Temporary route to test the session
   router.get('/auth/check', async (req, res) => {
     const userId = req.session.userId;
+    // eslint-disable-next-line no-console
     console.log('== AUTH CHECK USER ID ==', req.session.userId);
     res.json({ check: !!userId });
   });
