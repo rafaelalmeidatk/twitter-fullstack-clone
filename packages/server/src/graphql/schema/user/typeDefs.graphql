@@ -34,7 +34,7 @@ input UserInput {
 type Query {
   allUsers: [User!]!
   user(input: UserInput!): User
-  me: User!
+  me: User
 }
 
 type Mutation {

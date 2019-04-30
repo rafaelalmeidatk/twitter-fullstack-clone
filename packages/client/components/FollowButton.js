@@ -166,7 +166,14 @@ const FollowButtonBase = ({ targetUser }) => {
     return 'Loading...';
   }
 
-  return isFollowingUserQuery.data.me.isFollowingUser ? (
+  const { me } = isFollowingUserQuery.data;
+
+  if (!me) {
+    // There is no user logged in, don't render anything
+    return null;
+  }
+
+  return me.isFollowingUser ? (
     <UnfollowButton
       targetUser={targetUser}
       onFollowersStatusChange={handleFollowingStatusChange}

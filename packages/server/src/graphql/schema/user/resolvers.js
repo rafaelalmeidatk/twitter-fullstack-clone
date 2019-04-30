@@ -77,11 +77,9 @@ const getUser = baseResolver.createResolver(async (root, { input }) => {
   return null;
 });
 
-const me = isAuthenticatedResolver.createResolver(
-  async (root, data, { user }) => {
-    return user;
-  }
-);
+const me = baseResolver.createResolver(async (root, data, { user }) => {
+  return user;
+});
 
 const whoToFollow = isAuthenticatedResolver.createResolver(
   async (root, data, { user }) => {

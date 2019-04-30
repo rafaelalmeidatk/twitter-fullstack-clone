@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Avatar from 'components/Avatar';
 import Dropdown, { Option as DropdownOption } from 'components/Dropdown';
 
-const NavbarMenu = ({ user }) => {
+const Menu = ({ loggedInUser }) => {
   const DropdownButton = (
     <button>
       <Avatar size={'small'} />
@@ -15,13 +15,13 @@ const NavbarMenu = ({ user }) => {
       <Dropdown triggerButton={DropdownButton}>
         <DropdownOption>
           <Link
-            href={`/profile?username=${user.username}`}
-            as={`/profile/${user.username}`}
+            href={`/profile?username=${loggedInUser.username}`}
+            as={`/profile/${loggedInUser.username}`}
             prefetch
           >
             <a className="user-header">
-              <p className="name">{user.name}</p>
-              <p className="username">@{user.username}</p>
+              <p className="name">{loggedInUser.name}</p>
+              <p className="username">@{loggedInUser.username}</p>
             </a>
           </Link>
         </DropdownOption>
@@ -76,4 +76,4 @@ const NavbarMenu = ({ user }) => {
   );
 };
 
-export default NavbarMenu;
+export default Menu;

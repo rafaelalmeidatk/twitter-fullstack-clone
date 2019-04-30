@@ -1,46 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
-import colors from '../lib/colors';
+import colors from '../../lib/colors';
 import Icon from 'components/Icon';
-import Button from 'components/Button';
-import UnderlineButton from 'components/UnderlineButton';
-import Search from 'components/Search';
-import NavbarMenu from 'components/NavbarMenu';
 
-const NavButton = ({ text, icon, iconSelected, selected, ...props }) => (
-  <UnderlineButton className="nav-button" selected={selected} {...props}>
-    <div className="icon">
-      <Icon
-        name={selected && iconSelected ? iconSelected : icon}
-        size="1.4em"
-      />
-    </div>
-    {text}
+import NavButton from './NavButton';
+import Toolbar from './Toolbar';
 
-    <style jsx>{`
-      :global(.nav-button) {
-        cursor: pointer;
-      }
-      :global(.nav-button.selected) .icon :global(i),
-      :global(.nav-button:hover) .icon :global(i),
-      :global(.nav-button:focus) .icon :global(i) {
-        color: ${colors.twitterBlue};
-      }
-      .icon {
-        width: 23px;
-        height: 23px;
-        margin-top: -2px;
-        margin-right: 6px;
-      }
-      .icon :global(.Icon.Icon--home),
-      .icon :global(.Icon.Icon--homeFilled) {
-        margin-top: -2px;
-      }
-    `}</style>
-  </UnderlineButton>
-);
-
-const Navbar = ({ currentPage, user, onNewTweetClick }) => (
+const Navbar = ({ currentPage, onNewTweetClick }) => (
   <div className="app-navbar">
     <div className="container">
       <div className="bird">
@@ -63,17 +29,7 @@ const Navbar = ({ currentPage, user, onNewTweetClick }) => (
         />
       </div>
       <div className="right">
-        <Search />
-        <NavbarMenu user={user} />
-        <Button
-          narrow
-          primary
-          muted
-          className="tweet-btn"
-          onClick={onNewTweetClick}
-        >
-          Tweet
-        </Button>
+        <Toolbar onNewTweetClick={onNewTweetClick} />
       </div>
     </div>
 

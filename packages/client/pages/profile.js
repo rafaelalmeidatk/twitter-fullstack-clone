@@ -10,6 +10,7 @@ import WhoToFollow from 'components/WhoToFollow';
 import TweetModal from 'components/TweetModal';
 import ComposeNewTweetModal from 'components/ComposeNewTweetModal';
 import Footer from 'components/Footer';
+import { LoggedInUserProvider } from 'components/LoggedInUserProvider';
 
 const GET_USER_QUERY = gql`
   query getUser($username: String!) {
@@ -51,38 +52,40 @@ const ProfilePage = ({ username }) => {
 
   return (
     <div className="main">
-      <Navbar user={me} onNewTweetClick={openNewTweetModal} />
-      <ProfileHeader user={user} currentUser={me} />
+      <LoggedInUserProvider loggedInUser={me}>
+        <Navbar onNewTweetClick={openNewTweetModal} />
+        <ProfileHeader user={user} />
 
-      <div className="container">
-        <div className="main-left">
-          <ProfileDetails name={user.name} username={user.username} />
+        <div className="container">
+          <div className="main-left">
+            <ProfileDetails name={user.name} username={user.username} />
+          </div>
+
+          <div className="content">
+            <div className="content-heading">Tweets</div>
+            <ProfileTweets
+              user={user}
+              onTweetClick={tweetId => openTweetModal(tweetId)}
+            />
+          </div>
+
+          <div className="main-right">
+            <WhoToFollow />
+            <Footer />
+          </div>
         </div>
 
-        <div className="content">
-          <div className="content-heading">Tweets</div>
-          <ProfileTweets
-            user={user}
-            onTweetClick={tweetId => openTweetModal(tweetId)}
-          />
-        </div>
-
-        <div className="main-right">
-          <WhoToFollow user={me} />
-          <Footer />
-        </div>
-      </div>
-
-      <TweetModal
-        isOpen={currentModalData.type === 'TWEET'}
-        tweetId={currentModalData.tweetId}
-        onClose={closeModal}
-        onTweetClick={id => openTweetModal(id)}
-      />
-      <ComposeNewTweetModal
-        isOpen={currentModalData.type === 'NEW_TWEET'}
-        onClose={closeModal}
-      />
+        <TweetModal
+          isOpen={currentModalData.type === 'TWEET'}
+          tweetId={currentModalData.tweetId}
+          onClose={closeModal}
+          onTweetClick={id => openTweetModal(id)}
+        />
+        <ComposeNewTweetModal
+          isOpen={currentModalData.type === 'NEW_TWEET'}
+          onClose={closeModal}
+        />
+      </LoggedInUserProvider>
 
       <style jsx>{`
         .main {
@@ -104,7 +107,7 @@ const ProfilePage = ({ username }) => {
         }
 
         .content {
-          flex: 1 1 auto;
+          flex: 1 1 0%;
           border-top: 1px solid ${colors.boxBorder};
         }
 
@@ -118,8 +121,8 @@ const ProfilePage = ({ username }) => {
           border: 1px solid ${colors.boxBorder};
         }
 
-        .main :global(.footer) {
-          margin-top: 12px;
+        .main :global(.wtf) {
+          margin-bottom: 12px;
         }
 
         @media (max-width: 1280px) {

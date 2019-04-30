@@ -19,10 +19,15 @@ const WHO_TO_FOLLOW_QUERY = gql`
   }
 `;
 
-const WhoToFollow = ({ user: currentUser }) => {
+const WhoToFollow = () => {
   const { data, loading } = useQuery(WHO_TO_FOLLOW_QUERY);
 
   if (loading) return 'Loading...';
+
+  if (!data.me) {
+    // There is no user logged in, don't render anything
+    return null;
+  }
 
   const users = data.me.whoToFollow;
 
@@ -55,7 +60,7 @@ const WhoToFollow = ({ user: currentUser }) => {
                   </span>
                 </a>
               </Link>
-              <FollowButton targetUser={user} currentUser={currentUser} />
+              <FollowButton targetUser={user} />
             </div>
           </div>
         ))}

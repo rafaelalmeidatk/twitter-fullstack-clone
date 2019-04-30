@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import cx from 'classnames';
 import { useMutation } from 'react-apollo-hooks';
 import { gql } from 'apollo-boost';
 import colors from '../../lib/colors';
 import Icon from 'components/Icon';
+import { LoggedInContext } from 'components/LoggedInUserProvider';
 
 const RETWEET_QUERY = gql`
   mutation RetweetQuery($input: RetweetInput!) {
@@ -51,11 +52,14 @@ const Footer = ({
   onReply,
   refetch,
 }) => {
+  const loggedInUser = useContext(LoggedInContext);
   const variables = { input: { tweetId } };
   const retweet = useMutation(RETWEET_QUERY, { variables });
   const like = useMutation(LIKE_QUERY, { variables });
+  const actionsDisabled = !loggedInUser;
 
   const handleRetweet = async e => {
+    if (actionsDisabled) return;
     e.stopPropagation();
     await retweet();
     refetch && refetch();
@@ -63,6 +67,7 @@ const Footer = ({
   };
 
   const handleLike = async e => {
+    if (actionsDisabled) return;
     e.stopPropagation();
     await like();
     refetch && refetch();
@@ -75,14 +80,25 @@ const Footer = ({
         <Icon name="reply" />
         <span>{replyCount || ''}</span>
       </div>
+
       <div
-        className={cx('retweet', { active: retweeted })}
+        className={cx('retweet', {
+          active: retweeted,
+          disabled: actionsDisabled,
+        })}
         onClick={handleRetweet}
       >
         <Icon name="retweet" />
         <span>{retweetCount || ''}</span>
       </div>
-      <div className={cx('like', { active: liked })} onClick={handleLike}>
+
+      <div
+        className={cx('like', {
+          active: liked,
+          disabled: actionsDisabled,
+        })}
+        onClick={handleLike}
+      >
         <Icon name={liked ? 'heartBadge' : 'heart'} />
         <span>{likeCount || ''}</span>
       </div>
@@ -120,6 +136,10 @@ const Footer = ({
         .tweet-footer span,
         .tweet-footer :global(i) {
           transition: color 0.2s ease;
+        }
+
+        .tweet-footer .disabled {
+          opacity: 0.7;
         }
 
         .tweet-footer > div.reply:hover,

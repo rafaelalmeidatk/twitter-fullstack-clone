@@ -6,7 +6,6 @@ import Icon from 'components/Icon';
 const TweetModal = ({ isOpen, tweetId, onTweetClick, onClose }) => (
   <ReactModal
     isOpen={isOpen}
-    // isOpen={true}
     onRequestClose={onClose}
     overlayClassName="tweet-modal-overlay"
     className="tweet-modal-content"
@@ -19,7 +18,6 @@ const TweetModal = ({ isOpen, tweetId, onTweetClick, onClose }) => (
     <div className="inner-content">
       <Content
         tweetId={tweetId}
-        // tweetId={'754c1bf5-caa9-43b5-bdec-1bc2694430de'}
         onTweetClick={onTweetClick}
         onClose={onClose}
       />

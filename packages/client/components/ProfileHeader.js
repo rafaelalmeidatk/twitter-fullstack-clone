@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Avatar from 'components/Avatar';
 import ProfileHeaderStats from 'components/ProfileHeaderStats';
 import Button from 'components/Button';
 import FollowButton from 'components/FollowButton';
+import { LoggedInContext } from 'components/LoggedInUserProvider';
 
-const ProfileHeader = ({ user, currentUser }) => {
+const ProfileHeader = ({ user }) => {
+  const loggedInUser = useContext(LoggedInContext);
+
   const actionButton =
-    currentUser && user.id === currentUser.id ? (
+    loggedInUser && user.id === loggedInUser.id ? (
       <div className="action-btn">
         <Button gray narrow disabled>
           Edit Profile

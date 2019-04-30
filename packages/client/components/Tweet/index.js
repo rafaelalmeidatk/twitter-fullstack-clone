@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import cx from 'classnames';
 import Link from 'next/link';
 import { gql } from 'apollo-boost';
@@ -6,6 +6,7 @@ import colors from '../../lib/colors';
 import Avatar from 'components/Avatar';
 import Icon from 'components/Icon';
 import Footer from './Footer';
+import { LoggedInContext } from 'components/LoggedInUserProvider';
 
 const CONTEXT_ACTION_ICONS = {
   RETWEET: 'retweeted',
@@ -18,6 +19,7 @@ const CONTEXT_ACTION_TEXT = {
 };
 
 const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
+  const loggedInUser = useContext(LoggedInContext);
   const {
     id,
     content,
@@ -29,6 +31,9 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
   } = tweet;
   const { username, name } = tweet.user;
 
+  const loggedInUserIsContextAuthor =
+    context && loggedInUser && context.user.id === loggedInUser.id;
+
   return (
     <div
       className={cx('tweet', { 'no-borders': noBorders })}
@@ -38,7 +43,8 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
         <div className="context">
           <Icon name={CONTEXT_ACTION_ICONS[context.action]} size="14px" />
           <span>
-            {context.user.name} {CONTEXT_ACTION_TEXT[context.action]}
+            {loggedInUserIsContextAuthor ? 'You' : context.user.name}{' '}
+            {CONTEXT_ACTION_TEXT[context.action]}
           </span>
         </div>
       )}
