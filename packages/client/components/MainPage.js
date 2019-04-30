@@ -91,7 +91,7 @@ const MainPage = () => {
         }
 
         .content {
-          flex: 1 1 auto;
+          flex: 1 1 0%;
         }
 
         .main :global(.footer) {
