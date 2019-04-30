@@ -22,6 +22,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "faker": "^4.1.0",
     "graphql": "^14.2.0",
     "graphql-tools": "^4.0.4",
     "knex": "^0.16.3",
