@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
+import PageLoader from 'components/PageLoader';
 import Navbar from 'components/Navbar';
 import UserCard from 'components/UserCard';
 import NewTweetWithMutation from 'components/NewTweetWithMutation';
@@ -28,7 +29,9 @@ const MainPage = () => {
   const [currentModalData, setCurrentModalData] = useState({});
   const { data, loading } = useQuery(GET_USER_QUERY);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <PageLoader />;
+  }
 
   const { me: user } = data;
 

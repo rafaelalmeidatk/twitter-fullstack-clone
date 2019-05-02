@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import colors from '../lib/colors';
+import PageLoader from 'components/PageLoader';
 import Navbar from 'components/Navbar';
 import ProfileHeader from 'components/ProfileHeader';
 import ProfileDetails from 'components/ProfileDetails';
@@ -40,7 +41,9 @@ const ProfilePage = ({ username }) => {
     variables: { username },
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return <PageLoader />;
+  }
 
   const openNewTweetModal = () => setCurrentModalData({ type: 'NEW_TWEET' });
   const openTweetModal = tweetId => {
