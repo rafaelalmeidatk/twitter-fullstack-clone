@@ -53,6 +53,24 @@ const createRandomTweets = () => {
     });
   });
 
+  // Replies
+  tweets.forEach(tweet => {
+    if (!tweet.content) return;
+
+    Object.keys(usersId).forEach(key => {
+      const userId = usersId[key];
+
+      if (Math.random() > 0.3) return; // 30% chance to create
+      tweets.push({
+        id: faker.random.uuid(),
+        userId,
+        content: faker.lorem.sentence(faker.random.number({ min: 5, max: 18 })),
+        created_at: faker.date.recent(20),
+        replyForTweetId: tweet.id,
+      });
+    });
+  });
+
   return tweets;
 };
 
