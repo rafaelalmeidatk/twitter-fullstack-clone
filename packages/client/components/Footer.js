@@ -1,16 +1,11 @@
 import React from 'react';
+import FooterText from 'components/FooterText';
 
 const Footer = () => (
   <div className="footer">
-    <p className="content">
-      Twitter clone created by{' '}
-      <a href="https://github.com/rafaelalmeidatk">Rafael Almeida</a>. Check the
-      source code{' '}
-      <a href="https://github.com/rafaelalmeidatk/twitter-fullstack-clone">
-        here
-      </a>
-      . All rights reserved for <a href="https://twitter.com/">Twitter</a>.
-    </p>
+    <div className="content">
+      <FooterText />
+    </div>
     <style jsx>{`
       .footer {
         padding: 15px 18px;

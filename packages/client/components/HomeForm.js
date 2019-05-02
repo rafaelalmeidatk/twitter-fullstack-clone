@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import css from 'styled-jsx/css';
+import Icon from 'components/Icon';
 import Button from 'components/Button';
 import SignUpForm from 'components/SignUpForm';
 import LogInForm from 'components/LogInForm';
+import colors from '../lib/colors';
 
 const { className, styles } = css.resolve`
   button {
@@ -35,6 +37,7 @@ const HomeForm = () => {
 
   return (
     <div className="home-form">
+      <Icon name="bird" color={colors.twitterBlue} size="45px" />
       <h1>See what’s happening in the world right now</h1>
       <h2>Join Twitter today.</h2>
 
