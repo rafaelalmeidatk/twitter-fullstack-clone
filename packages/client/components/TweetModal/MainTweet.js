@@ -12,7 +12,7 @@ const MainTweet = ({ tweet }) => {
   return (
     <div className="tweet-area">
       <div className="header">
-        <Avatar size="medium" />
+        <Avatar src={tweet.user.avatarSourceUrl} size="medium" />
         <div className="user-data">
           <div className="name">{tweet.user.name}</div>
           <div className="username">@{tweet.user.username}</div>

@@ -29,7 +29,7 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
     retweeted,
     liked,
   } = tweet;
-  const { username, name } = tweet.user;
+  const { username, name, avatarSourceUrl } = tweet.user;
 
   const loggedInUserIsContextAuthor =
     context && loggedInUser && context.user.id === loggedInUser.id;
@@ -51,7 +51,7 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
 
       <div className="tweet-content">
         <div className="left">
-          <Avatar size="medium" />
+          <Avatar src={avatarSourceUrl} size="medium" />
         </div>
 
         <div className="body">
@@ -179,6 +179,7 @@ Tweet.fragments = {
         id
         name
         username
+        avatarSourceUrl
       }
     }
   `,

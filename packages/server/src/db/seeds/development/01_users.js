@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { createUserAvatarUrl } = require('../../../utils/createImagesUrl');
 
 const hashPassword = password =>
   new Promise(resolve =>
@@ -32,6 +33,7 @@ exports.seed = function(knex) {
           password: await hashPassword('steve'),
           name: 'Steve',
           email: 'steve@email.com',
+          avatar_source_url: createUserAvatarUrl('steve@email.com'),
         },
         {
           id: ids.rafaelalmeidatk,
@@ -39,6 +41,7 @@ exports.seed = function(knex) {
           password: await hashPassword('rafael'),
           name: 'Rafael Almeida',
           email: 'rafael@email.com',
+          avatar_source_url: createUserAvatarUrl('rafael@email.com'),
         },
         {
           id: ids.mahek,
@@ -46,6 +49,7 @@ exports.seed = function(knex) {
           password: await hashPassword('pass'),
           name: 'Mahek',
           email: 'mahek@email.com',
+          avatar_source_url: createUserAvatarUrl('mahek@email.com'),
         },
         {
           id: ids.cassie,
@@ -53,6 +57,7 @@ exports.seed = function(knex) {
           password: await hashPassword('pass'),
           name: 'Cassie Hunter',
           email: 'cassie@email.com',
+          avatar_source_url: createUserAvatarUrl('cassie@email.com'),
         },
         {
           id: ids.flynn,
@@ -60,6 +65,7 @@ exports.seed = function(knex) {
           password: await hashPassword('pass'),
           name: 'Fynn Williams',
           email: 'flynn@email.com',
+          avatar_source_url: createUserAvatarUrl('flynn@email.com'),
         },
         {
           id: ids.alexie,
@@ -67,6 +73,7 @@ exports.seed = function(knex) {
           password: await hashPassword('pass'),
           name: 'Alexie Whitley',
           email: 'alexie@email.com',
+          avatar_source_url: createUserAvatarUrl('alexie@email.com'),
         },
         {
           id: ids.saim,
@@ -74,6 +81,7 @@ exports.seed = function(knex) {
           password: await hashPassword('pass'),
           name: 'Saim Wagner',
           email: 'saim@email.com',
+          avatar_source_url: createUserAvatarUrl('saim@email.com'),
         },
         {
           id: ids.mariyah,
@@ -81,6 +89,7 @@ exports.seed = function(knex) {
           password: await hashPassword('pass'),
           name: 'Mariyah Huber',
           email: 'mariyah@email.com',
+          avatar_source_url: createUserAvatarUrl('mariyah@email.com'),
         },
         {
           id: ids.stevie,
@@ -88,6 +97,7 @@ exports.seed = function(knex) {
           password: await hashPassword('pass'),
           name: 'Stevie Roche',
           email: 'stevie@email.com',
+          avatar_source_url: createUserAvatarUrl('stevie@email.com'),
         },
       ]);
     });

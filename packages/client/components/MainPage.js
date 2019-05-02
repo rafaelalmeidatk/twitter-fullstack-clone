@@ -18,6 +18,7 @@ const GET_USER_QUERY = gql`
       id
       name
       username
+      avatarSourceUrl
       tweetsCount
       followersCount
       followingCount

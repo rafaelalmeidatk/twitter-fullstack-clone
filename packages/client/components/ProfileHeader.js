@@ -27,7 +27,7 @@ const ProfileHeader = ({ user }) => {
       <div className="header-bar">
         <div className="container">
           <div className="main-left">
-            <Avatar size="very-big" withBorder />
+            <Avatar src={user.avatarSourceUrl} size="very-big" withBorder />
           </div>
 
           <div className="stats">

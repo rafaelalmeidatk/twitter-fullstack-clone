@@ -19,6 +19,7 @@ const GET_TWEET_QUERY = gql`
         id
         name
         username
+        avatarSourceUrl
       }
       replies {
         ...TweetFields

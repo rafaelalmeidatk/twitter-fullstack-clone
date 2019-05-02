@@ -141,6 +141,7 @@ export default {
     isFollowingUser,
     profileTweets: getProfileTweets,
     whoToFollow,
+    avatarSourceUrl: root => root.avatar_source_url,
   },
   Query: {
     allUsers,

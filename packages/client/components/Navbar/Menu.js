@@ -11,7 +11,7 @@ const Menu = ({ loggedInUser }) => {
 
   const DropdownButton = (
     <button>
-      <Avatar size={'small'} />
+      <Avatar src={loggedInUser.avatarSourceUrl} size={'small'} />
     </button>
   );
 

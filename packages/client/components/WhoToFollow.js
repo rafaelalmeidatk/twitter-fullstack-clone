@@ -14,6 +14,7 @@ const WHO_TO_FOLLOW_QUERY = gql`
         id
         name
         username
+        avatarSourceUrl
       }
     }
   }
@@ -53,7 +54,11 @@ const WhoToFollow = () => {
                 as={`/profile/${user.username}`}
               >
                 <a>
-                  <Avatar className="user-avatar" size="medium" />
+                  <Avatar
+                    src={user.avatarSourceUrl}
+                    className="user-avatar"
+                    size="medium"
+                  />
                   <span className="user-info">
                     <span className="name">{user.name}</span>
                     <span className="username tt">@{user.username}abcde</span>

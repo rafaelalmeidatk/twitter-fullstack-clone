@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import cx from 'classnames';
 import colors from '../lib/colors';
 import AutoResizeTextarea from 'components/AutoResizeTextarea';
 import Avatar from 'components/Avatar';
 import Button from 'components/Button';
 import NewTweetToolbar from 'components/NewTweetToolbar';
+import { LoggedInContext } from 'components/LoggedInUserProvider';
 
 const NewTweetForm = ({ onCancel, submitButtonText, onSubmit }) => {
   const [content, setContent] = useState('');
@@ -88,6 +89,7 @@ const NewTweet = ({
   transparent,
   submitButtonText,
 }) => {
+  const loggedInUser = useContext(LoggedInContext);
   const [open, setOpen] = useState(false);
 
   return (
@@ -99,7 +101,7 @@ const NewTweet = ({
       )}
 
       <div className="body">
-        <Avatar size="small" />
+        <Avatar src={loggedInUser.avatarSourceUrl} size="small" />
         {open || expanded ? (
           <NewTweetForm
             onCancel={() => setOpen(false)}

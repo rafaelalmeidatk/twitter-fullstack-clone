@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import knex from '../knex';
 import { POSTGRES_UNIQUE_VIOLATION } from '../constants';
 import { UniqueViolation, InvalidOperation } from '../errors';
+import { createUserAvatarUrl } from '../../utils/createImagesUrl';
 
 export async function hashPassword(password) {
   return new Promise(resolve =>
@@ -38,6 +39,7 @@ export async function createUser({ name, username, password, email }) {
       username,
       password: hashedPassword,
       email,
+      avatar_source_url: createUserAvatarUrl(email),
     });
   } catch (err) {
     if (err.code === POSTGRES_UNIQUE_VIOLATION) {

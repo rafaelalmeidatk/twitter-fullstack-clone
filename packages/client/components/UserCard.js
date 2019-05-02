@@ -58,7 +58,7 @@ const UserCard = ({ user }) => {
       <div className="cover" />
       <div className="content">
         <div className="header">
-          <Avatar size="big" withBorder />
+          <Avatar src={user.avatarSourceUrl} size="big" withBorder />
           <div className="header-meta">
             <div>
               <Link

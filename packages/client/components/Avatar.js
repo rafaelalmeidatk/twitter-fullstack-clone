@@ -1,14 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 
-const Avatar = ({ url, size, withBorder, className }) => (
+const Avatar = ({ src, size, withBorder, className }) => (
   <div
     className={cx('avatar', className, {
       [size]: true,
       'with-border': withBorder,
     })}
   >
-    <img src={url} />
+    <img src={src} />
     <style jsx>{`
       .avatar {
         border-radius: 50%;
@@ -53,8 +53,7 @@ const Avatar = ({ url, size, withBorder, className }) => (
 );
 
 Avatar.defaultProps = {
-  url:
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg',
+  src: 'https://api.adorable.io/avatars/200/default.png',
   size: 'medium',
 };
 
