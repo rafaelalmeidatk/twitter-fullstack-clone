@@ -10,7 +10,7 @@ const GET_USER_QUERY = gql`
 
 export default apolloClient =>
   apolloClient
-    .query({ query: GET_USER_QUERY })
+    .query({ query: GET_USER_QUERY, fetchPolicy: 'no-cache' })
     .then(({ data }) => {
       return data && data.me;
     })

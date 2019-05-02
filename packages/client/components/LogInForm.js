@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useApolloClient } from 'react-apollo-hooks';
 import css from 'styled-jsx/css';
 import useFormal from '@kevinwolf/formal-web';
 import * as yup from 'yup';
@@ -20,6 +21,7 @@ const schema = yup.object().shape({
 });
 
 const LogInForm = ({ onBack }) => {
+  const apolloClient = useApolloClient();
   const [loginError, setLoginError] = useState(null);
 
   const formal = useFormal(
@@ -39,7 +41,7 @@ const LogInForm = ({ onBack }) => {
             // away then formal will try to update the form state
             // when the component is already unmonted. Delaying the
             // redirect solves this problem
-            setTimeout(() => login({ redirectUrl: '/' }), 1);
+            setTimeout(() => login({ apolloClient, redirectUrl: '/' }), 1);
           })
           .catch(err => {
             if (err instanceof HTTPError) {
