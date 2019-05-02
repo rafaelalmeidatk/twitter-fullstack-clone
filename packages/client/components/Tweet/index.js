@@ -55,7 +55,7 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
         </div>
 
         <div className="body">
-          <div className="meta">
+          <div className="meta" onClick={e => e.stopPropagation()}>
             <Link
               href={`/profile?username=${username}`}
               as={`/profile/${username}`}
