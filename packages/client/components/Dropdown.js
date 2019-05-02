@@ -52,10 +52,11 @@ export const Option = ({
   children,
   href,
   linkComponent,
+  ...props
 }) => {
   const LinkComponent = linkComponent || 'a';
   return (
-    <li className={cx({ divider })}>
+    <li className={cx({ divider })} {...props}>
       {children}
       {!divider && !children && (
         <LinkComponent href={href}>

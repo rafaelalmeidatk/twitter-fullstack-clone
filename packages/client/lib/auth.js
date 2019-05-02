@@ -21,12 +21,12 @@ export const login = ({ apolloClient, redirectUrl }) => {
   redirectUrl && Router.push(redirectUrl);
 };
 
-export const logout = async ({ withRedirect } = {}) => {
+export const logout = async ({ withRefresh } = {}) => {
   // Make the request to destroy the session and
   // remove the session cookie
   await ky.post('http://localhost:4100/auth/logout', {
     credentials: 'include',
   });
 
-  withRedirect && Router.push('/');
+  withRefresh && window.location.reload();
 };

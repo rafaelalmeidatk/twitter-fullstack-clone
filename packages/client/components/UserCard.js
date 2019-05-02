@@ -48,6 +48,11 @@ const Stats = ({ tweets, following, followers }) => (
 );
 
 const UserCard = ({ user }) => {
+  if (!user) {
+    // There is no user, don't render anything
+    return null;
+  }
+
   return (
     <div className="user-card">
       <div className="cover" />

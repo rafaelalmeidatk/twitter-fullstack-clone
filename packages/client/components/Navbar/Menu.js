@@ -1,9 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
+import { logout } from '../../lib/auth';
 import Avatar from 'components/Avatar';
 import Dropdown, { Option as DropdownOption } from 'components/Dropdown';
 
 const Menu = ({ loggedInUser }) => {
+  const handleLogout = () => {
+    logout({ withRefresh: true });
+  };
+
   const DropdownButton = (
     <button>
       <Avatar size={'small'} />
@@ -30,7 +35,7 @@ const Menu = ({ loggedInUser }) => {
         <DropdownOption icon="list" text="Lists" />
         <DropdownOption icon="lightning" text="Moments" />
         <DropdownOption divider />
-        <DropdownOption text="Log out" />
+        <DropdownOption text="Log out" onClick={handleLogout} />
       </Dropdown>
 
       <style jsx>{`
