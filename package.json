@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "heroku-prebuild": "yarn install && cd packages/server && yarn build",
+    "heroku-postbuild": "cd packages/server && yarn build",
     "start": "cd packages/server && yarn start"
   },
   "engines": {

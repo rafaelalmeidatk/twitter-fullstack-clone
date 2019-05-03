@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "backpack",
     "build": "backpack build",
+    "start": "knex-migrate up && node dist/index.js",
     "lint": "eslint ./src",
     "migrate": "knex-migrate",
     "reset-db": "knex-migrate down --to 0 && knex-migrate up && knex seed:run",
