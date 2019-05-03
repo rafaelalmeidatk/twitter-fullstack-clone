@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import colors from '../../lib/colors';
+import { getTweetTime } from '../../lib/time';
 import FollowButton from 'components/FollowButton';
 import Avatar from 'components/Avatar';
 import { TweetFooter } from 'components/Tweet';
@@ -8,6 +9,7 @@ import { LoggedInContext } from 'components/LoggedInUserProvider';
 const MainTweet = ({ tweet }) => {
   const loggedInUser = useContext(LoggedInContext);
   const renderFollowButton = loggedInUser && tweet.user.id !== loggedInUser.id;
+  const time = getTweetTime(tweet.createdAt);
 
   return (
     <div className="tweet-area">
@@ -21,6 +23,7 @@ const MainTweet = ({ tweet }) => {
       </div>
 
       <div className="body">{tweet.content}</div>
+      <div className="time">{time}</div>
 
       {tweet.retweetCount || tweet.likeCount ? (
         <div className="stats">
@@ -84,6 +87,13 @@ const MainTweet = ({ tweet }) => {
           line-height: 1.3em;
           letter-spacing: 0.01em;
           color: rgba(0, 0, 0, 0.85);
+        }
+
+        .time {
+          cursor: default;
+          margin-top: 10px;
+          font-size: 0.88em;
+          color: ${colors.blueGray};
         }
 
         .stats {

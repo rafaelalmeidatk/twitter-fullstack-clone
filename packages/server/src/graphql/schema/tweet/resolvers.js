@@ -161,6 +161,7 @@ export default {
     replies: getTweetReplies,
     retweeted: getRetweeted,
     liked: getLiked,
+    createdAt: root => root.created_at,
   },
   ContextTweet: {
     originalTweet: getOriginalTweet,

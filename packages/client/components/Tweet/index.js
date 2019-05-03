@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import cx from 'classnames';
 import Link from 'next/link';
 import { gql } from 'apollo-boost';
 import colors from '../../lib/colors';
+import { getRelativeTweetTime } from '../../lib/time';
 import Avatar from 'components/Avatar';
 import Icon from 'components/Icon';
 import Footer from './Footer';
@@ -28,8 +29,16 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
     likeCount,
     retweeted,
     liked,
+    createdAt,
   } = tweet;
   const { username, name, avatarSourceUrl } = tweet.user;
+  const [time, setTime] = useState('...');
+
+  useEffect(() => {
+    // Set time only when in the client because the server doesn't know the
+    // timezone of the client
+    setTime(getRelativeTweetTime(createdAt));
+  }, []);
 
   const loggedInUserIsContextAuthor =
     context && loggedInUser && context.user.id === loggedInUser.id;
@@ -66,6 +75,7 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
                 <span className="username">@{username}</span>
               </a>
             </Link>
+            <span className="time">{time}</span>
           </div>
 
           {replyingTo && (
@@ -155,6 +165,20 @@ const Tweet = ({ tweet, refetch, context, onClick, noBorders, replyingTo }) => {
           font-size: 0.9em;
         }
 
+        .time {
+          margin-left: 5px;
+          color: rgba(0, 0, 0, 0.6);
+          font-size: 0.86em;
+        }
+
+        .time:before {
+          margin-right: 5px;
+          content: '\\00b7';
+          font-weight: bold;
+          font-size: 0.9em;
+          color: rgba(0, 0, 0, 0.5);
+        }
+
         .text-content {
           margin: 2px 0 8px;
           font-size: 0.9em;
@@ -175,6 +199,7 @@ Tweet.fragments = {
       likeCount
       retweeted
       liked
+      createdAt
       user {
         id
         name
