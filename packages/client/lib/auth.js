@@ -1,8 +1,11 @@
 import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
+import getApiUrl from './getApiUrl';
+
+const API_URL = getApiUrl();
 
 export const loginRequest = ({ username, password }) => {
-  return fetch('http://localhost:4100/auth/login', {
+  return fetch(API_URL + '/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -28,7 +31,7 @@ export const login = ({ apolloClient, redirectUrl }) => {
 export const logout = async ({ withRefresh } = {}) => {
   // Make the request to destroy the session and
   // remove the session cookie
-  await fetch('http://localhost:4100/auth/logout', {
+  await fetch(API_URL + '/auth/logout', {
     method: 'POST',
     credentials: 'include',
   });
