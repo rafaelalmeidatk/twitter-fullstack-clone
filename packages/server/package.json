@@ -48,5 +48,9 @@
     "nodemon": "^1.19.0",
     "prettier": "^1.17.0",
     "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": "10.x",
+    "yarn": "1.x"
   }
 }
