@@ -1,0 +1,5 @@
+{
+  "name": "twitter-fullstack-clone",
+  "version": 2,
+  "builds": [{ "src": "packages/client/next.config.js", "use": "@now/next" }]
+}

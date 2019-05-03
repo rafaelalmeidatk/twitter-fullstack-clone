@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon server/index.js",
     "build": "next build",
+    "now-build": "next build",
     "start": "cross-env NODE_ENV=production node server/index.js"
   },
   "dependencies": {
