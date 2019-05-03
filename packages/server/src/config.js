@@ -32,7 +32,7 @@ const test = {
 
 const production = {
   ...base,
-  databaseConnection: process.env.PROD_DB_URL,
+  databaseConnection: process.env.DATABASE_URL,
   databaseDebug: false,
 };
 

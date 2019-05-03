@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -10,6 +12,8 @@ import { findUserById } from './db/actions/user';
 import auth from './auth';
 import schema from './graphql';
 
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+
 const start = () => {
   return new Promise(async resolve => {
     //--------------------
@@ -18,14 +22,14 @@ const start = () => {
     const app = express();
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+    app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
     //--------------------
     // Cookies settings
 
     const cookieSettings = {
       httpOnly: true,
-      secure: false,
+      secure: IS_PRODUCTION,
     };
 
     //--------------------
