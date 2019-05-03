@@ -6,6 +6,7 @@
     "start": "cd packages/server && yarn start"
   },
   "engines": {
-    "node": "10.x"
+    "node": "10.x",
+    "yarn": "1.x"
   }
 }
