@@ -41,6 +41,7 @@ const Reply = ({ tweetId }) => {
         transparent
         replyingTo="rafaelalmeidatk"
         submitButtonText="Reply"
+        placeholder="Tweet your reply"
         onSubmit={handleReply}
       />
 

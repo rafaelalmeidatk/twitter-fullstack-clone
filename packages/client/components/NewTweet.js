@@ -88,6 +88,7 @@ const NewTweet = ({
   replyingTo,
   transparent,
   submitButtonText,
+  placeholder,
 }) => {
   const loggedInUser = useContext(LoggedInContext);
   const [open, setOpen] = useState(false);
@@ -112,7 +113,7 @@ const NewTweet = ({
           <form>
             <textarea
               className="input"
-              placeholder="What's hapenning?"
+              placeholder={placeholder}
               onFocus={() => setOpen(true)}
               onBlur={() => setOpen(false)}
             />
@@ -173,6 +174,10 @@ const NewTweet = ({
       `}</style>
     </div>
   );
+};
+
+NewTweet.defaultProps = {
+  placeholder: "What's hapenning?",
 };
 
 export default NewTweet;
