@@ -61,8 +61,8 @@ const start = () => {
         // Extract userId from request and find it from DB
         user: session.userId && (await findUserById(session.userId)),
       }),
-      playground: !!__DEV__,
-      debug: !!__DEV__,
+      playground: !IS_PRODUCTION,
+      debug: !IS_PRODUCTION,
     });
     apolloServer.applyMiddleware({ app, cors: false });
 
