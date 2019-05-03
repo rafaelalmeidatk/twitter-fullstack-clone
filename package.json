@@ -1,11 +1,8 @@
 {
   "name": "twitter-clone",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "heroku-postbuild": "cd packages/server && yarn build",
+    "heroku-postbuild": "cd packages/server && yarn install && yarn build",
     "start": "cd packages/server && yarn start"
   },
   "engines": {
