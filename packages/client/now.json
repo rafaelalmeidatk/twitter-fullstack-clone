@@ -1,0 +1,10 @@
+{
+  "name": "twitter-fullstack-clone",
+  "version": 2,
+  "builds": [{ "src": "next.config.js", "use": "@now/next" }],
+  "build": {
+    "env": {
+      "API_URL": "https://twitter-fullstack-clone-api.herokuapp.com"
+    }
+  }
+}
