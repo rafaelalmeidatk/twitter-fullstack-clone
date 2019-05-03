@@ -61,7 +61,7 @@ const WhoToFollow = () => {
                   />
                   <span className="user-info">
                     <span className="name">{user.name}</span>
-                    <span className="username tt">@{user.username}abcde</span>
+                    <span className="username">@{user.username}</span>
                   </span>
                 </a>
               </Link>
