@@ -1,13 +1,17 @@
 import Router from 'next/router';
-import ky from 'ky-universal';
+import fetch from 'isomorphic-unfetch';
 
 export const loginRequest = ({ username, password }) => {
-  return ky
-    .post('http://localhost:4100/auth/login', {
-      json: { username, password },
-      credentials: 'include',
-    })
-    .json();
+  return fetch('http://localhost:4100/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+    credentials: 'include',
+  })
+    .then(checkStatus)
+    .then(r => r.json());
 };
 
 export const login = ({ apolloClient, redirectUrl }) => {
@@ -24,9 +28,27 @@ export const login = ({ apolloClient, redirectUrl }) => {
 export const logout = async ({ withRefresh } = {}) => {
   // Make the request to destroy the session and
   // remove the session cookie
-  await ky.post('http://localhost:4100/auth/logout', {
+  await fetch('http://localhost:4100/auth/logout', {
+    method: 'POST',
     credentials: 'include',
   });
 
   withRefresh && window.location.reload();
+};
+
+export class HTTPError extends Error {
+  constructor(response) {
+    super(response.statusText);
+    this.name = 'HTTPError';
+    this.response = response;
+  }
+}
+
+const checkStatus = response => {
+  if (response.ok) {
+    return response;
+  } else {
+    const error = new HTTPError(response);
+    return Promise.reject(error);
+  }
 };

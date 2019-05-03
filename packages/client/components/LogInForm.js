@@ -3,9 +3,8 @@ import { useApolloClient } from 'react-apollo-hooks';
 import css from 'styled-jsx/css';
 import useFormal from '@kevinwolf/formal-web';
 import * as yup from 'yup';
-import { HTTPError } from 'ky-universal';
 
-import { loginRequest, login } from '../lib/auth';
+import { loginRequest, login, HTTPError } from '../lib/auth';
 import Button from 'components/Button';
 import FormField from 'components/FormField';
 
@@ -46,6 +45,7 @@ const LogInForm = ({ onBack }) => {
           .catch(err => {
             if (err instanceof HTTPError) {
               if (err.response.status === 400) {
+                formal.setErrors({ _: 0 }); // Force formal to reenable the submit button
                 return setLoginError(
                   'Username or password is incorrect, try again'
                 );
@@ -57,6 +57,7 @@ const LogInForm = ({ onBack }) => {
               }
             }
 
+            formal.setErrors({ _: 0 }); // Force formal to reenable the submit button
             setLoginError('Oops, something unexpected happened, try again');
           });
       },
