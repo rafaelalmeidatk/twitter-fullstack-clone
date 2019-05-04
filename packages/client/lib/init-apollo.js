@@ -24,15 +24,17 @@ const getClientUri = () => {
 
 const errorLink = onError(({ graphQLErrors, forward, operation }) => {
   return new Observable(async observer => {
-    let isUnauthenticated = graphQLErrors.some(
-      error => error.extensions.code === 'UNAUTHENTICATED'
-    );
+    if (graphQLErrors) {
+      let isUnauthenticated = graphQLErrors.some(
+        error => error.extensions.code === 'UNAUTHENTICATED'
+      );
 
-    if (isUnauthenticated && process.browser) {
-      // Use is not authenticated, so we run the logout function
-      // (to clear any session cookies) and redirect him back to the
-      // initial page
-      await logout({ withRedirect: true });
+      if (isUnauthenticated && process.browser) {
+        // Use is not authenticated, so we run the logout function
+        // (to clear any session cookies) and redirect him back to the
+        // initial page
+        await logout({ withRedirect: true });
+      }
     }
 
     const subscriber = {
