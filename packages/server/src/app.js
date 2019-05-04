@@ -22,7 +22,7 @@ const start = () => {
     const app = express();
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+    app.use(cors({ origin: [process.env.FRONTEND_URL, 'http://localhost:3000'], credentials: true }));
 
     //--------------------
     // Cookies settings
