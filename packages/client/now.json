@@ -1,6 +1,6 @@
 {
-  "name": "twitter-fullstack-clone",
+  "name": "twitter",
   "version": 1,
-  "alias": "twitter-fullstack-clone.rafaelalmeidatk.now.sh",
+  "alias": "twitter.rafaelalmeidatk.now.sh",
   "dotenv": "deploy.env"
 }
