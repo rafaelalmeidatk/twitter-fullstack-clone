@@ -7,8 +7,6 @@ export default ({ cookieSettings }) => {
   router.post('/auth/login', async (req, res) => {
     const { username, password } = req.body;
 
-    console.log('Login request: ' + username + ' - ' + password);
-
     if (!username || !password) {
       return res.status(400).json({
         error: 'Email and Password are required.',
