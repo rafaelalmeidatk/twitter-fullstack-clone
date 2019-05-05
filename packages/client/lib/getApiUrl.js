@@ -6,7 +6,10 @@ export default () => {
   // because the client don't know how to resolve "http://api".
   // In this case we just return the localhost value
 
-  return process.browser && IS_DEV
-    ? 'http://localhost:4100'
-    : process.env.API_URL;
+  const clientUrl =
+    process.browser && IS_DEV
+      ? 'http://localhost:3000'
+      : process.env.CLIENT_URL;
+
+  return clientUrl + '/api';
 };
