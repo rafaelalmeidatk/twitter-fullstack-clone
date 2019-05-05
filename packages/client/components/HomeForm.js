@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
-import css from 'styled-jsx/css';
 import Icon from 'components/Icon';
 import Button from 'components/Button';
 import SignUpForm from 'components/SignUpForm';
 import LogInForm from 'components/LogInForm';
+import IWannaTestItLoginButton from 'components/IWannaTestItLoginButton';
 import colors from '../lib/colors';
-
-const { className, styles } = css.resolve`
-  button {
-    margin: 18px 0 12px;
-  }
-`;
 
 const HomeForm = () => {
   const [phase, setPhase] = useState('');
@@ -41,13 +35,7 @@ const HomeForm = () => {
       <h1>See what’s happening in the world right now</h1>
       <h2>Join Twitter today.</h2>
 
-      <Button
-        primary
-        full
-        narrow
-        className={className}
-        onClick={handleSignUpClick}
-      >
+      <Button primary full narrow onClick={handleSignUpClick}>
         Sign Up
       </Button>
 
@@ -55,7 +43,8 @@ const HomeForm = () => {
         Log In
       </Button>
 
-      {styles}
+      <IWannaTestItLoginButton />
+
       <style jsx>{`
         .home-form {
           max-width: 350px;
@@ -73,6 +62,10 @@ const HomeForm = () => {
           color: rgba(0, 0, 0, 0.85);
           font-size: 1.25em;
           font-weight: bold;
+        }
+
+        .home-form :global(button) {
+          margin: 16px 0 0;
         }
       `}</style>
     </div>
