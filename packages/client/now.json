@@ -1,5 +1,5 @@
 {
-  "name": "twitter-now-v2",
+  "name": "twitter",
   "version": 2,
   "builds": [
     { "src": "next.config.js", "use": "@now/next" },
@@ -10,8 +10,7 @@
     {
       "src": "/profile/(?<username>[^/]+)$",
       "dest": "/profile?username=$username"
-    },
-    { "src": "/(.*)", "use": "/$1" }
+    }
   ],
   "build": {
     "env": {
