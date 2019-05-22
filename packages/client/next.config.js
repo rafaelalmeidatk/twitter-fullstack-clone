@@ -1,10 +1,8 @@
-require('dotenv').config();
-
 const path = require('path');
 const withCss = require('@zeit/next-css');
-const Dotenv = require('dotenv-webpack');
 
 module.exports = {
+  target: 'serverless',
   ...withCss({
     webpack(config) {
       // CSS
@@ -24,23 +22,10 @@ module.exports = {
       // Modules alias
       config.resolve.alias['components'] = path.join(__dirname, 'components');
 
-      // Plugins
-      config.plugins = config.plugins || [];
-
-      config.plugins = [
-        ...config.plugins,
-
-        // Read the .env file
-        new Dotenv({
-          path: path.join(__dirname, '.env'),
-          systemvars: true,
-        }),
-      ];
-
       return config;
     },
   }),
   env: {
-    API_URL: process.env.API_URL,
+    CLIENT_URL: process.env.CLIENT_URL,
   },
 };

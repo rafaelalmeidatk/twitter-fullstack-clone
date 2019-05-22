@@ -1,6 +1,23 @@
 {
   "name": "twitter",
-  "version": 1,
-  "alias": "twitter.rafaelalmeidatk.now.sh",
-  "dotenv": "deploy.env"
+  "version": 2,
+  "builds": [
+    { "src": "next.config.js", "use": "@now/next" },
+    { "src": "proxy/index.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/proxy/index.js" },
+    {
+      "src": "/profile/(?<username>[^/]+)$",
+      "dest": "/profile?username=$username"
+    }
+  ],
+  "build": {
+    "env": {
+      "CLIENT_URL": "https://twitter.rafaelalmeidatk.now.sh"
+    }
+  },
+  "env": {
+    "API_URL": "https://twitter-fullstack-clone-api.herokuapp.com"
+  }
 }

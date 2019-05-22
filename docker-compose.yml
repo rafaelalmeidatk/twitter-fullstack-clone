@@ -1,21 +1,5 @@
 version: '3.4'
 services:
-  web:
-    build:
-      context: .
-      target: web
-    environment:
-      - API_URL=http://api:4100
-    ports:
-      - '3000:3000'
-    depends_on:
-      - api
-    volumes:
-      - .:/app/
-      - /app/node_modules
-    networks:
-      - app-network
-
   api:
     build:
       context: .
