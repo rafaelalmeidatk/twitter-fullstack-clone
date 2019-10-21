@@ -27,7 +27,7 @@
     "faker": "^4.1.0",
     "graphql": "^14.2.0",
     "graphql-tools": "^4.0.4",
-    "knex": "^0.16.3",
+    "knex": "^0.19.5",
     "knex-cleaner": "^1.1.4",
     "knex-migrate": "^1.7.2",
     "merge-graphql-schemas": "^1.5.8",
